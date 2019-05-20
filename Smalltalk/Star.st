@@ -1,5 +1,33 @@
-'From Pharo7.0.3 of 12 April 2019 [Build information: Pharo-7.0.3+build.158.sha.0903ade8a6c96633f07e0a7f1baa9a5d48cfdf55 (64 Bit)] on 20 May 2019 at 3:54:36.135453 pm'!PolygonMorph subclass: #Star	instanceVariableNames: ''	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!Star commentStamp: 'count 5/20/2019 15:32' prior: 0!I am a very flexible star..
-!!Star methodsFor: 'editing' stamp: 'rz 5/20/2019 15:30'!withCenterOuterHandles
+'From Pharo7.0.3 of 12 April 2019 [Build information: Pharo-7.0.3+build.158.sha.0903ade8a6c96633f07e0a7f1baa9a5d48cfdf55 (64 Bit)] on 20 May 2019 at 4:02:18.417794 pm'!PolygonMorph subclass: #Star	instanceVariableNames: ''	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!Star commentStamp: 'count 5/20/2019 15:32' prior: 0!I am a very flexible star..
+!!Star methodsFor: 'menu' stamp: 'rz 5/20/2019 15:32'!addCustomMenuItems: aCustomMenu hand: aHandMorph 
+	super addCustomMenuItems: aCustomMenu hand: aHandMorph.
+self addChangeSidesMenuItems: aCustomMenu hand: aHandMorph.
+self addTwinkleMenuItems: aCustomMenu hand: aHandMorph.
+	! !!Star methodsFor: 'menu' stamp: 'rz 5/20/2019 12:12'!oneLessVertex
+	self
+		makeVertices: (3 max: 1 negated + vertices size)! !!Star methodsFor: 'menu' stamp: 'rz 5/20/2019 13:32'!addChangeSidesMenuItems: aCustomMenu hand: aHandMorph 
+	"Menu items to change number of sides."
+	aCustomMenu addLine.
+	aCustomMenu add: 'more sides' translated action: #moreVertices.
+	aCustomMenu add: 'fewer sides' translated action: #lessVertices.
+"	Regular polygons can be simulated with the one of the skip stars 
+	and it would confuse users to have stars be limited to Regular polygons.
+	So we've removed those menu items - wiz"
+"	aCustomMenu add: 'one more side' translated action: #oneMoreVertex.
+	aCustomMenu add: 'one fewer side' translated action: #oneLessVertex"! !!Star methodsFor: 'menu' stamp: 'rz 5/20/2019 14:54'!addTwinkleMenuItems: aCustomMenu hand: aHandMorph 
+	"Menu items to change the sharpness of the star."
+	aCustomMenu addLine.
+	aCustomMenu add: 'twinkle fatter' translated action: #nextTwinkle.
+	aCustomMenu add: 'twinkle thinner' translated action: #prevTwinkle.
+"	aCustomMenu add: 'fatter star' translated action: #nextFatter.
+	aCustomMenu add: 'thinner star' translated action: #prevThinner"
+	
+	
+
+
+! !!Star methodsFor: 'menu' stamp: 'rz 5/20/2019 16:46'!oneMoreVertex
+	self makeVertices: 1 + vertices size! !!Star methodsFor: 'parts bin' stamp: 'rz 5/20/2019 15:32'!initializeToStandAlone
+	^ self initialize removeHandles! !!Star methodsFor: 'editing' stamp: 'rz 5/20/2019 15:30'!withCenterOuterHandles
 	"Add to our handles the center positioning and outer resizing
 	handles. Outer handle must not be blocked so it comes first. 
 	The editing routine expects to find the center handle second.
@@ -149,12 +177,7 @@
 	"Add the handles to my submorphs."
 	handles reverseDo: [:each | self addMorphFront: each ] .
 	
-	! !!Star methodsFor: 'parts bin' stamp: 'rz 5/20/2019 15:32'!initializeToStandAlone
-	^ self initialize removeHandles! !!Star methodsFor: '*Etoys-Squeakland-menus' stamp: 'rz 5/20/2019 12:12'!nextFatter
-	self makeVertices: vertices size starRatio: self nextSkip .
-	self computeBounds.! !!Star methodsFor: '*Etoys-Squeakland-menus' stamp: 'rz 5/20/2019 13:22'!nextThinner
-	self makeVertices: vertices size starRatio: self prevSkip .
-	self computeBounds.! !!Star methodsFor: 'initialization' stamp: 'rz 5/20/2019 15:32'!defaultStarRatio
+	! !!Star methodsFor: 'initialization' stamp: 'rz 5/20/2019 15:32'!defaultStarRatio
 	"answer the default ratio of outer radius to inner radius for the receiver"
 	^ 5.0 / 12.0! !!Star methodsFor: 'initialization' stamp: 'rz 5/20/2019 15:32'!makeVertices: nSides 
 	"Assuming vertices has at least one point, make a new star 
@@ -248,51 +271,7 @@ c := vertices average rounded.
 		withPoint: self defaultFirstVertex.
 	self computeBounds! !!Star methodsFor: 'initialization' stamp: 'rz 5/20/2019 15:32'!defaultSides
 	"answer the default number of sides for the receiver"
-	^ 10! !!Star methodsFor: 'geometry' stamp: 'rz 5/20/2019 15:32'!prevTwinkleSkip
-	"Set starRatio to next skip wrapping if necessary"
-	| skips n c r1 rN |
-	c := vertices average rounded.
-	r1 := c dist: vertices first.
-	rN := (c dist: vertices last) truncated asFloat.
-	skips := self skipRatios.
-	n := skips * r1
-				findLast: [:r | r + 1.0 < rN].
-	"n = 0
-	ifTrue: [^ oldR]."
-	^ skips atWrap: n! !!Star methodsFor: 'geometry' stamp: 'rz 5/20/2019 15:32'!nextSkip
-	"Set starRatio to next skip wrapping if needed."
-	| skips n c r1 rN |
-	c := vertices average rounded.
-	r1 := (c dist: vertices first) truncated asFloat.
-	rN := c dist: vertices last.
-	skips := self skipRatios.
-	n := skips * r1
-				findFirst: [:r | r > (rN + 1.0)].
-	"n = 0
-		ifTrue: [n := skips size]."
-	^ skips atWrap: n! !!Star methodsFor: 'geometry' stamp: 'rz 5/20/2019 15:32'!prevSkip
-	"Set starRatio to next skip wrapping if necessary"
-	| skips n c r1 rN |
-	c := vertices average rounded.
-	r1 := c dist: vertices first.
-	rN := (c dist: vertices last) truncated asFloat.
-	skips := self skipRatios.
-	n := skips * r1
-				findLast: [:r | r + 1.0 < rN].
-	n = 0
-		ifTrue: [n := 1].
-	^ skips at: n! !!Star methodsFor: 'geometry' stamp: 'rz 5/20/2019 15:32'!nextTwinkleSkip
-	"Set starRatio to next skip wrapping if needed."
-	| skips n c r1 rN |
-	c := vertices average rounded.
-	r1 := (c dist: vertices first) truncated asFloat.
-	rN := c dist: vertices last.
-	skips := self skipRatios.
-	n := skips * r1
-				findFirst: [:r | r > (rN + 1.0)].
-	n = 0
-		ifTrue: [ n := 1].
-	^ skips atWrap: n! !!Star methodsFor: 'menus' stamp: 'rz 5/20/2019 15:02'!updateFormFromUser
+	^ 10! !!Star methodsFor: 'menus' stamp: 'rz 5/20/2019 15:02'!updateFormFromUser
 "Does nothing here. Overridden in subclasses e.g. Kaleidoscope."
 ^ self.! !!Star methodsFor: 'menus' stamp: 'rz 5/20/2019 12:32'!prevTwinkle
 	self makeVertices: vertices size starRatio: self prevTwinkleSkip .
@@ -304,7 +283,17 @@ c := vertices average rounded.
 		makeVertices: nVerts]! !!Star methodsFor: 'menus' stamp: 'rz 5/20/2019 9:08'!nextTwinkle
 	self makeVertices: vertices size starRatio: self nextTwinkleSkip .
 	self computeBounds.! !!Star methodsFor: 'menus' stamp: 'rz 5/20/2019 11:07'!moreVertices
-	self makeVertices: 2+ vertices size! !!Star methodsFor: 'access' stamp: 'rz 5/20/2019 15:32'!starRatio
+	self makeVertices: 2+ vertices size! !!Star methodsFor: '*Etoys-Squeakland-menus' stamp: 'rz 5/20/2019 12:12'!nextFatter
+	self makeVertices: vertices size starRatio: self nextSkip .
+	self computeBounds.! !!Star methodsFor: '*Etoys-Squeakland-menus' stamp: 'rz 5/20/2019 13:22'!nextThinner
+	self makeVertices: vertices size starRatio: self prevSkip .
+	self computeBounds.! !!Star methodsFor: 'accessing' stamp: 'rz 5/20/2019 15:32'!starRatio: r
+"Set the star s.t. the ratio of the inner radius to the outer radius is r.
+If r is > 1 use the reciprocal to keep the outer radius first."
+"Assume we have at least one vertex.
+set
+All ways return a number <= 1.0"
+self makeVertices: vertices size starRatio:( r > 1.0  ifTrue: [  r reciprocal ] ifFalse: [r ] ).! !!Star methodsFor: 'access' stamp: 'rz 5/20/2019 15:32'!starRatio
 "Return the ratio of the inner radius to the outer radius."
 "Assume we have at least one vertex.
 All ways return a number <= 1.0"
@@ -326,40 +315,51 @@ alpha := Float pi / (n//2)  asFloat .
 ^ ((((    Float halfPi -alpha  to: alpha /2.0  by: alpha  negated ) 
 	collect:  [:angle |( (angle) sin )/
 					(angle + alpha ) sin ]
-	) copyWith: 0.0) copyWithFirst: 1.0) reversed .! !!Star methodsFor: 'accessing' stamp: 'rz 5/20/2019 15:32'!starRatio: r
-"Set the star s.t. the ratio of the inner radius to the outer radius is r.
-If r is > 1 use the reciprocal to keep the outer radius first."
-"Assume we have at least one vertex.
-set
-All ways return a number <= 1.0"
-self makeVertices: vertices size starRatio:( r > 1.0  ifTrue: [  r reciprocal ] ifFalse: [r ] ).! !!Star methodsFor: 'menu' stamp: 'rz 5/20/2019 15:32'!addCustomMenuItems: aCustomMenu hand: aHandMorph 
-	super addCustomMenuItems: aCustomMenu hand: aHandMorph.
-self addChangeSidesMenuItems: aCustomMenu hand: aHandMorph.
-self addTwinkleMenuItems: aCustomMenu hand: aHandMorph.
-	! !!Star methodsFor: 'menu' stamp: 'rz 5/20/2019 12:12'!oneLessVertex
-	self
-		makeVertices: (3 max: 1 negated + vertices size)! !!Star methodsFor: 'menu' stamp: 'rz 5/20/2019 13:32'!addChangeSidesMenuItems: aCustomMenu hand: aHandMorph 
-	"Menu items to change number of sides."
-	aCustomMenu addLine.
-	aCustomMenu add: 'more sides' translated action: #moreVertices.
-	aCustomMenu add: 'fewer sides' translated action: #lessVertices.
-"	Regular polygons can be simulated with the one of the skip stars 
-	and it would confuse users to have stars be limited to Regular polygons.
-	So we've removed those menu items - wiz"
-"	aCustomMenu add: 'one more side' translated action: #oneMoreVertex.
-	aCustomMenu add: 'one fewer side' translated action: #oneLessVertex"! !!Star methodsFor: 'menu' stamp: 'rz 5/20/2019 14:54'!addTwinkleMenuItems: aCustomMenu hand: aHandMorph 
-	"Menu items to change the sharpness of the star."
-	aCustomMenu addLine.
-	aCustomMenu add: 'twinkle fatter' translated action: #nextTwinkle.
-	aCustomMenu add: 'twinkle thinner' translated action: #prevTwinkle.
-"	aCustomMenu add: 'fatter star' translated action: #nextFatter.
-	aCustomMenu add: 'thinner star' translated action: #prevThinner"
-	
-	
-
-
-! !!Star methodsFor: 'menu' stamp: 'rz 5/20/2019 16:46'!oneMoreVertex
-	self makeVertices: 1 + vertices size! !"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!Star class	instanceVariableNames: ''!!Star class methodsFor: 'parts bin' stamp: 'rz 5/20/2019 00:11'!descriptionForPartsBin
+	) copyWith: 0.0) copyWithFirst: 1.0) reversed .! !!Star methodsFor: 'geometry' stamp: 'rz 5/20/2019 15:32'!nextTwinkleSkip
+	"Set starRatio to next skip wrapping if needed."
+	| skips n c r1 rN |
+	c := vertices average rounded.
+	r1 := (c dist: vertices first) truncated asFloat.
+	rN := c dist: vertices last.
+	skips := self skipRatios.
+	n := skips * r1
+				findFirst: [:r | r > (rN + 1.0)].
+	n = 0
+		ifTrue: [ n := 1].
+	^ skips atWrap: n! !!Star methodsFor: 'geometry' stamp: 'rz 5/20/2019 15:32'!nextSkip
+	"Set starRatio to next skip wrapping if needed."
+	| skips n c r1 rN |
+	c := vertices average rounded.
+	r1 := (c dist: vertices first) truncated asFloat.
+	rN := c dist: vertices last.
+	skips := self skipRatios.
+	n := skips * r1
+				findFirst: [:r | r > (rN + 1.0)].
+	"n = 0
+		ifTrue: [n := skips size]."
+	^ skips atWrap: n! !!Star methodsFor: 'geometry' stamp: 'rz 5/20/2019 15:32'!prevTwinkleSkip
+	"Set starRatio to next skip wrapping if necessary"
+	| skips n c r1 rN |
+	c := vertices average rounded.
+	r1 := c dist: vertices first.
+	rN := (c dist: vertices last) truncated asFloat.
+	skips := self skipRatios.
+	n := skips * r1
+				findLast: [:r | r + 1.0 < rN].
+	"n = 0
+	ifTrue: [^ oldR]."
+	^ skips atWrap: n! !!Star methodsFor: 'geometry' stamp: 'rz 5/20/2019 15:32'!prevSkip
+	"Set starRatio to next skip wrapping if necessary"
+	| skips n c r1 rN |
+	c := vertices average rounded.
+	r1 := c dist: vertices first.
+	rN := (c dist: vertices last) truncated asFloat.
+	skips := self skipRatios.
+	n := skips * r1
+				findLast: [:r | r + 1.0 < rN].
+	n = 0
+		ifTrue: [n := 1].
+	^ skips at: n! !"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!Star class	instanceVariableNames: ''!!Star class methodsFor: 'parts bin' stamp: 'rz 5/20/2019 00:11'!descriptionForPartsBin
 	^ self partName:	'Star' translatedNoop
 		categories:		{'Graphics' translatedNoop}
 		documentation:	'A symmetrical polygon in the shape of a star'  translatedNoop! !!Star class methodsFor: 'class initialization' stamp: 'rz 5/20/2019 12:41'!unload

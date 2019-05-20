@@ -1,4 +1,4 @@
-'From Pharo7.0.3 of 12 April 2019 [Build information: Pharo-7.0.3+build.158.sha.0903ade8a6c96633f07e0a7f1baa9a5d48cfdf55 (64 Bit)] on 20 May 2019 at 3:25:49.918453 pm'!StyleRectangle subclass: #BounceBall	instanceVariableNames: 'phase ball star'	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!BounceBall commentStamp: 'count 5/20/2019 15:09' prior: 0!This is a example of how to use a morph. It consists of only two 
+'From Pharo7.0.3 of 12 April 2019 [Build information: Pharo-7.0.3+build.158.sha.0903ade8a6c96633f07e0a7f1baa9a5d48cfdf55 (64 Bit)] on 20 May 2019 at 3:40:20.814453 pm'!StyleRectangle subclass: #BounceBall	instanceVariableNames: 'phase ball star'	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!BounceBall commentStamp: 'count 5/20/2019 15:09' prior: 0!This is a example of how to use a morph. It consists of only two 
 methods, initialize and step.
 
 DoIt:

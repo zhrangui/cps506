@@ -1,4 +1,4 @@
-'From Pharo7.0.3 of 12 April 2019 [Build information: Pharo-7.0.3+build.158.sha.0903ade8a6c96633f07e0a7f1baa9a5d48cfdf55 (64 Bit)] on 20 May 2019 at 4:02:18.417794 pm'!PolygonMorph subclass: #Star	instanceVariableNames: ''	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!Star commentStamp: 'count 5/20/2019 15:32' prior: 0!I am a very flexible star..
+'From Pharo7.0.3 of 12 April 2019 [Build information: Pharo-7.0.3+build.158.sha.0903ade8a6c96633f07e0a7f1baa9a5d48cfdf55 (64 Bit)] on 24 May 2019 at 10:17:47.611892 pm'!PolygonMorph subclass: #Star	instanceVariableNames: ''	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!Star commentStamp: 'count 5/20/2019 15:32' prior: 0!I am a very flexible star..
 !!Star methodsFor: 'menu' stamp: 'rz 5/20/2019 15:32'!addCustomMenuItems: aCustomMenu hand: aHandMorph 
 	super addCustomMenuItems: aCustomMenu hand: aHandMorph.
 self addChangeSidesMenuItems: aCustomMenu hand: aHandMorph.
@@ -237,9 +237,9 @@ c := vertices average rounded.
 	self computeBounds.
 	self changed! !!Star methodsFor: 'initialization' stamp: 'rz 5/20/2019 15:32'!defaultCenter
 	"answer the default center for the receiver"
-	^ 0 asPoint! !!Star methodsFor: 'initialization' stamp: 'rz 5/20/2019 15:32'!defaultColor
+	^ 0 asPoint! !!Star methodsFor: 'initialization' stamp: 'count 5/24/2019 22:14'!defaultColor
 	"answer the default color/fill style for the receiver"
-	^ Color lightBlue! !!Star methodsFor: 'initialization' stamp: 'rz 5/20/2019 15:32'!makeVertices: nSides starRatio: fraction withCenter: center withPoint: aPoint 
+	^ Color lightMagenta ! !!Star methodsFor: 'initialization' stamp: 'rz 5/20/2019 15:32'!makeVertices: nSides starRatio: fraction withCenter: center withPoint: aPoint 
 	"Make a new star or regular polygon (for odd sided polygons).
 	This makes star vertices from scratch without any feedback from existing vertices."
 	| r1 rN rNext a1 rTotal |

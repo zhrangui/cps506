@@ -1,4 +1,4 @@
-'From Squeak5.3alpha of 13 December 2018 [latest update: #18222] on 25 May 2019 at 10:50:44 am'!RectangleStyle subclass: #BounceBall	instanceVariableNames: 'phase ball star'	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!BounceBall commentStamp: 'count 5/20/2019 15:50' prior: 0!This is a example of how to use a morph. It consists of only two 
+'From Squeak5.3alpha of 13 December 2018 [latest update: #18222] on 25 May 2019 at 11:38:30 am'!RectangleStyle subclass: #BounceBall	instanceVariableNames: 'phase ball star'	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!BounceBall commentStamp: 'count 5/20/2019 15:50' prior: 0!This is a example of how to use a morph. It consists of only two 
 methods, initialize and step.
 
 DoIt:

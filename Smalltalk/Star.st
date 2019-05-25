@@ -1,4 +1,4 @@
-'From Squeak5.3alpha of 13 December 2018 [latest update: #18222] on 25 May 2019 at 10:59:26 am'!PolygonMorph subclass: #Star	instanceVariableNames: ''	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!Star commentStamp: 'count 5/20/2019 15:32' prior: 0!I am a very flexible star..
+'From Squeak5.3alpha of 13 December 2018 [latest update: #18222] on 25 May 2019 at 11:38:26 am'!PolygonMorph subclass: #Star	instanceVariableNames: ''	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!Star commentStamp: 'count 5/20/2019 15:32' prior: 0!I am a very flexible star..
 !!Star methodsFor: 'parts bin' stamp: 'rz 5/20/2019 15:32'!initializeToStandAlone
 	^ self initialize removeHandles! !!Star methodsFor: 'initialization' stamp: 'rz 5/20/2019 15:32'!defaultBorderColor
 	"answer the default border color/fill style for the receiver"
@@ -94,23 +94,7 @@ c := vertices average rounded.
 				collect: [:angle | center
 						+ (Point r: (rNext := rTotal - rNext) degrees: angle)].
 	self computeBounds.
-	self changed! !!Star methodsFor: 'menus' stamp: 'rz 5/20/2019 14:32'!lessVertices
-"Reduce the number of points by one until we are  a diamond. If odd reduce the number of sides by two until we become a triangle. See class comment."
-	| nVerts |
-	( nVerts := 2 negated + vertices size) < 3 ifFalse: [
-	self
-		makeVertices: nVerts]! !!Star methodsFor: 'menus' stamp: 'rz 5/20/2019 11:07'!moreVertices
-	self makeVertices: 2+ vertices size! !!Star methodsFor: 'menus' stamp: 'rz 5/20/2019 9:08'!nextTwinkle
-	self makeVertices: vertices size starRatio: self nextTwinkleSkip .
-	self computeBounds.! !!Star methodsFor: 'menus' stamp: 'rz 5/20/2019 12:32'!prevTwinkle
-	self makeVertices: vertices size starRatio: self prevTwinkleSkip .
-	self computeBounds.! !!Star methodsFor: 'menus' stamp: 'rz 5/20/2019 15:02'!updateFormFromUser
-"Does nothing here. Overridden in subclasses e.g. Kaleidoscope."
-^ self.! !!Star methodsFor: '*Etoys-Squeakland-menus' stamp: 'rz 5/20/2019 12:12'!nextFatter
-	self makeVertices: vertices size starRatio: self nextSkip .
-	self computeBounds.! !!Star methodsFor: '*Etoys-Squeakland-menus' stamp: 'rz 5/20/2019 13:22'!nextThinner
-	self makeVertices: vertices size starRatio: self prevSkip .
-	self computeBounds.! !!Star methodsFor: 'accessing' stamp: 'rz 5/20/2019 15:32'!starRatio: r
+	self changed! !!Star methodsFor: 'accessing' stamp: 'rz 5/20/2019 15:32'!starRatio: r
 "Set the star s.t. the ratio of the inner radius to the outer radius is r.
 If r is > 1 use the reciprocal to keep the outer radius first."
 "Assume we have at least one vertex.

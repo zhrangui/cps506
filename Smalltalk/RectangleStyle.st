@@ -1,4 +1,4 @@
-'From Squeak5.3alpha of 13 December 2018 [latest update: #18222] on 25 May 2019 at 10:50:39 am'!BorderedMorph subclass: #RectangleStyle	instanceVariableNames: ''	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!RectangleStyle commentStamp: 'count 5/20/2019 15:51' prior: 0!A subclass of BorderedMorph that supports different fillStyles.
+'From Squeak5.3alpha of 13 December 2018 [latest update: #18222] on 25 May 2019 at 11:38:35 am'!BorderedMorph subclass: #RectangleStyle	instanceVariableNames: ''	classVariableNames: ''	poolDictionaries: ''	category: 'CCPS506-Object'!!RectangleStyle commentStamp: 'count 5/20/2019 15:51' prior: 0!A subclass of BorderedMorph that supports different fillStyles.
 
 RectangleStyle diagonalPrototype openInWorld.
 RectangleStyle gradientPrototype openInWorld.!!RectangleStyle methodsFor: 'visual properties' stamp: 'count 5/20/2019 15:51'!canHaveFillStyles

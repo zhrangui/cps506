@@ -5,14 +5,20 @@ defmodule Calculator do
 
   @doc """
   Hello world.
-
-  ## Examples
-
-      iex> Calculator.hello()
-      :world
-
   """
-  def hello do
-    :world
+  def add(a, b) do
+    a + b
+  end
+
+  def sub(a, b) do
+    a - b
+  end
+
+  def multiply(a, b) do
+    a * b
+  end
+
+  def divide(a, b) do
+    a / b
   end
 end

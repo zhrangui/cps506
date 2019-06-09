@@ -21,4 +21,12 @@ defmodule Calculator do
   def divide(a, b) do
     a / b
   end
+
+  def sin(x) do
+    :math.sin(x)
+  end
+
+  def cos(x) do
+    :math.cos(x)
+  end
 end

@@ -17,4 +17,12 @@ defmodule CalculatorTest do
   test "divide" do
     assert Calculator.divide(6, 3) == 2
   end
+
+  test "sin" do
+    assert Calculator.sin(:math.pi/2) == 1
+  end
+
+  test "cos" do
+    assert Calculator.cos(0) == 1
+  end
 end

@@ -4,36 +4,35 @@ module Assignment3 where
   import System.FilePath.Posix
   import System.IO
 
-  getRecursiveContents :: FilePath -> IO [FilePath]
-  getRecursiveContents topPath = do
-    names <- getDirectoryContents topPath
+  {-find all contents in specified directory-}
+  dir_walk :: FilePath -> IO [FilePath]
+  dir_walk top = do
+    names <- getDirectoryContents top
     let properNames = filter (`notElem` [".", ".."]) names
     paths <- forM properNames $ \name -> do
-      let path = topPath </> name
-      isDirectory <- doesDirectoryExist path
-      if isDirectory
-        then getRecursiveContents path
+      let path = top </> name
+      isDir <- doesDirectoryExist path
+      if isDir
+        then dir_walk path
         else return [path]
     return (concat paths)
 
-  simpleFind :: (FilePath -> Bool) -> FilePath -> IO [FilePath]
-  simpleFind p path = do
-    names <- getRecursiveContents path
+  {-determin if file in under specified directory -}
+  search :: (FilePath -> Bool) -> FilePath -> IO [FilePath]
+  search p path = do
+    names <- dir_walk path
     return (filter p names)
-   
-  dir_walk :: FilePath -> (FilePath -> IO ()) -> IO ()
-  dir_walk top filefunc = do
-    isDirectory <- doesDirectoryExist top
-    if isDirectory
-      then 
-        do
-          files <- listDirectory top
-          mapM_ (\file -> dir_walk (top </> file) filefunc) files
-      else
-        filefunc top
-
+  
+  {-Test current directory and name is in it-}
   main :: IO ()
   main = do
-    let worker fname = do
-          putStrLn fname
-    dir_walk ".." worker
+    let dir = "."
+    let searchKey = "./assignment3.hs"
+    pathes <- dir_walk dir
+    putStrLn (dir ++ " directory:")
+    print pathes
+    putStrLn (searchKey ++ " under " ++ dir ++ ":")
+    files <- search (\name -> name == "./assignment3.hs") "."
+    print files
+    
+      

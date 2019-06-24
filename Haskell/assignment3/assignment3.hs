@@ -19,10 +19,10 @@ module Assignment3 where
     return (concat paths)
 
   {-determin if file in under specified directory -}
-  search :: (FilePath -> Bool) -> FilePath -> IO [FilePath]
-  search p path = do
+  search :: FilePath -> FilePath -> IO [FilePath]
+  search key path = do
     names <- dir_walk path
-    return (filter p names)
+    return (filter (\name -> key `isInfixOf` name) names)
   
   {-Test current directory and name is in it-}
   main :: IO ()
@@ -33,7 +33,7 @@ module Assignment3 where
     putStrLn (dir ++ " directory:")
     print pathes
     putStrLn (searchKey ++ " under " ++ dir ++ ":")
-    files <- search (\name -> searchKey `isInfixOf` name) dir
+    files <- search searchKey dir
     print files
     
       

@@ -27,8 +27,8 @@ module Assignment3 where
   {-Test current directory and name is in it-}
   main :: IO ()
   main = do
-    let dir = "."
-    let searchKey = "assignment3"
+    let dir = ".."
+        searchKey = "assignment3"
     pathes <- dir_walk dir
     putStrLn (dir ++ " directory:")
     print pathes

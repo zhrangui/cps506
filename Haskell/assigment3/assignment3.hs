@@ -1,6 +1,5 @@
 module Assignment3 where
   import Control.Monad ( forM, forM_, liftM )
-  import Debug.Trace ( trace )
   import System.Directory
   import System.FilePath.Posix
   import System.IO
@@ -9,9 +8,7 @@ module Assignment3 where
   getRecursiveContents topPath = do
     names <- getDirectoryContents topPath
     let
-      properNames =
-        filter (`notElem` [".", ".."]) $
-        trace ("Processing " ++ topPath) names
+      properNames = filter (`notElem` [".", ".."]) names
     paths <- forM properNames $ \name -> do
       let path = topPath </> name
       isDirectory <- doesDirectoryExist path
@@ -40,7 +37,5 @@ module Assignment3 where
   main :: IO ()
   main = do
     let worker fname = do
-        if (takeExtension fname == ".hs")
-          then putStrLn fname
-          else return ()
+          putStrLn fname
     dir_walk "." worker

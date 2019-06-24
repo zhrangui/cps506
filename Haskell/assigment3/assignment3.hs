@@ -3,6 +3,7 @@ module Assignment3 where
   import System.Directory
   import System.FilePath.Posix
   import System.IO
+  import Data.List
 
   {-find all contents in specified directory-}
   dir_walk :: FilePath -> IO [FilePath]
@@ -27,12 +28,12 @@ module Assignment3 where
   main :: IO ()
   main = do
     let dir = "."
-    let searchKey = "./assignment3.hs"
+    let searchKey = "assignment3"
     pathes <- dir_walk dir
     putStrLn (dir ++ " directory:")
     print pathes
     putStrLn (searchKey ++ " under " ++ dir ++ ":")
-    files <- search (\name -> name == "./assignment3.hs") "."
+    files <- search (\name -> searchKey `isInfixOf` name) "."
     print files
     
       

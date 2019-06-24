@@ -6,22 +6,22 @@ module Assignment3 where
   import Data.List
 
   {-find all contents in specified directory-}
-  dir_walk :: FilePath -> IO [FilePath]
-  dir_walk top = do
-    names <- getDirectoryContents top
+  dirWalk :: FilePath -> IO [FilePath]
+  dirWalk dir = do
+    names <- getDirectoryContents dir
     let properNames = filter (`notElem` [".", ".."]) names
     paths <- forM properNames $ \name -> do
-      let path = top </> name
+      let path = dir </> name
       isDir <- doesDirectoryExist path
       if isDir
-        then dir_walk path
+        then dirWalk path
         else return [path]
     return (concat paths)
 
-  {-determin if file in under specified directory -}
+  {-determine if file in under specified directory -}
   search :: FilePath -> FilePath -> IO [FilePath]
   search key path = do
-    names <- dir_walk path
+    names <- dirWalk path
     return (filter (\name -> key `isInfixOf` name) names)
   
   {-Test current directory and name is in it-}
@@ -29,7 +29,7 @@ module Assignment3 where
   main = do
     let dir = ".."
         searchKey = "assignment3.hs"
-    pathes <- dir_walk dir
+    pathes <- dirWalk dir
     putStrLn (dir ++ " directory:")
     print pathes
     putStrLn (searchKey ++ " under " ++ dir ++ ":")

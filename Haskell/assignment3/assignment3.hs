@@ -28,12 +28,12 @@ module Assignment3 where
   main :: IO ()
   main = do
     let dir = ".."
-        searchKey = "assignment3"
+        searchKey = "assignment3.hs"
     pathes <- dir_walk dir
     putStrLn (dir ++ " directory:")
     print pathes
     putStrLn (searchKey ++ " under " ++ dir ++ ":")
-    files <- search (\name -> searchKey `isInfixOf` name) "."
+    files <- search (\name -> searchKey `isInfixOf` name) dir
     print files
     
       

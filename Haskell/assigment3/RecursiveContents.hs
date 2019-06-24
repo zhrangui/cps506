@@ -1,5 +1,5 @@
 module Main where
-
+import Test.QuickCheck
 import Control.Monad ( forM, forM_, liftM )
 import Debug.Trace ( trace )
 import System.Directory ( doesDirectoryExist, getDirectoryContents )

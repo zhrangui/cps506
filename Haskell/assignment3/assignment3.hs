@@ -1,7 +1,7 @@
 module Assignment3 where
   import Control.Monad ( forM, forM_, liftM )
   import System.Directory
-  import System.FilePath.Posix
+  import System.FilePath
   import System.IO
   import Data.List
 

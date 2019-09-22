@@ -1,17 +1,17 @@
-﻿CCPS 721 Example Prolog Programs
+﻿% CCPS 721 Example Prolog Programs
 
 
-Rosetta Code (chosen by the instructor from Category:Prolog)
+% Rosetta Code (chosen by the instructor from Category:Prolog)
 
 
-Fizzbuzz: https://rosettacode.org/wiki/FizzBuzz#Prolog
-Guess the number: https://rosettacode.org/wiki/Guess_the_number#Prolog
-Fibonacci sequence: https://rosettacode.org/wiki/Fibonacci_sequence#Prolog
-Mandelbrot set: https://rosettacode.org/wiki/Mandelbrot_set#Prolog
-Quicksort: https://rosettacode.org/wiki/Sorting_algorithms/Quicksort#Prolog
+% Fizzbuzz: https://rosettacode.org/wiki/FizzBuzz#Prolog
+% Guess the number: https://rosettacode.org/wiki/Guess_the_number#Prolog
+% Fibonacci sequence: https://rosettacode.org/wiki/Fibonacci_sequence#Prolog
+% Mandelbrot set: https://rosettacode.org/wiki/Mandelbrot_set#Prolog
+% Quicksort: https://rosettacode.org/wiki/Sorting_algorithms/Quicksort#Prolog
 
 
-Prefix, suffix, sublist:
+% Prefix, suffix, sublist:
 
 
 prefix(L1, L2) :- append(L1, _, L2).
@@ -22,7 +22,7 @@ sublist(L1, [_|L2]) :-
     sublist(L1, L2).
 
 
-Check if list is strictly ascending:
+% Check if list is strictly ascending:
 
 
 is_ascending([]).
@@ -51,7 +51,7 @@ maxlist_acc([H|T], M, X) :-
     maxlist_acc(T, M2, X).
 
 
-Reversing a list:
+% Reversing a list:
 
 
 /* naive recursion */
@@ -78,7 +78,7 @@ measure(N, I, J) :-
     J is I4 - I3.
 
 
-Check whether two lists are cyclic shifts of each other:
+% Check whether two lists are cyclic shifts of each other:
 
 
 cyclic_shift([], []).
@@ -87,7 +87,7 @@ cyclic_shift([H|L1], L2) :-
     append(Right, [H|Left], L2). 
 
 
-Forward differences of list:
+% Forward differences of list:
 
 
 forward_difference([], []) :- !.
@@ -97,7 +97,7 @@ forward_difference([X, Y | T], [D | T2]) :-
     forward_difference([Y | T], T2).
 
 
-Generate all subsequences of given list:
+% Generate all subsequences of given list:
 
 
 subsequence([], []).
@@ -107,7 +107,7 @@ subsequence([_|T], T2) :-
     subsequence(T, T2).
 
 
-Test whether given list has zigzag shape:
+% Test whether given list has zigzag shape:
 
 
 zigzag([]).
@@ -119,7 +119,7 @@ zigzag([X, Y, Z | T]) :-
     X > Y, Y < Z, zigzag([Y, Z | T]).
 
 
-Parity partition of list items:
+% Parity partition of list items:
 
 
 pp([], [], []).
@@ -131,7 +131,7 @@ pp([H|T], L, [H|R]) :-
     pp(T, L, R).
 
 
-Mergesort (with a whole bunch of green cuts):
+% Mergesort (with a whole bunch of green cuts):
 
 
 split([], [], []) :- !.
@@ -159,7 +159,7 @@ mergesort([H1,H2|T], S) :-
     merge(S1, S2, S).
 
 
-Falling power:
+% Falling power:
 
 
 falling_power(_, 0, 1) :- !.
@@ -171,7 +171,7 @@ falling_power(X, N, P) :-
     P is X * P2.
 
 
-Falling power with accumulator tail recursion:
+% Falling power with accumulator tail recursion:
 
 
 falling_power(X, N, P) :-
@@ -187,7 +187,7 @@ falling_power_acc(X, N, Acc, P) :-
 
 
 
-Primality testing:
+% Primality testing:
 
 
 is_prime(X) :- X < 2, !, fail.
@@ -206,7 +206,7 @@ is_prime(X, D) :-
 
 
 
-Fibonacci numbers:
+% Fibonacci numbers:
 
 
 /* recursive version */
@@ -233,7 +233,7 @@ fib_acc(N, F2, F1, F) :-
     fib_acc(N2, F1, FF, F).
 
 
-Collatz sequence:
+% Collatz sequence:
 
 
 collatz(1,[1]) :- !.
@@ -284,7 +284,7 @@ longest_collatz_acc(S, E, R, BestSoFar) :-
     longest_collatz_acc(S2, E, R, NewBest).
 
 
-Some useful functional programming operators implemented in Prolog
+% Some useful functional programming operators implemented in Prolog
 
 
 my_fold(X, _, [], X) :- !. /* sometimes also called "reduce" */
@@ -316,7 +316,7 @@ my_take_while(_, [_|_], []).
 
 
 
-Automated testing and measuring of given query:
+% Automated testing and measuring of given query:
 
 
 /*
@@ -341,7 +341,7 @@ test(_, _, 0, _, _).
 
 
 
-Mathematica-style term rewriting:
+% Mathematica-style term rewriting:
 
 
 rewrite(T, X, Y, Y) :- T == X, !.
@@ -358,7 +358,7 @@ rewrite_list([H|T], X, Y, [H2|T2]) :-
     rewrite_list(T, X, Y, T2).
 
 
-Iterative deepening depth first search:
+% Iterative deepening depth first search:
 
 
 /* For demo purposes, Collatz state space as a graph. */
@@ -394,7 +394,7 @@ idfs(X, L, D, M) :-
     idfs(X, L, D2, M).
 
 
-Simplification of fractions, followed by building expression to produce given value:
+% Simplification of fractions, followed by building expression to produce given value:
 
 
 sign(0, 0).
@@ -476,7 +476,7 @@ solve(L, E, Goal) :-
     simp(E, G).
 
 
-Minesweeper framework:
+% Minesweeper framework:
 
 
 :- dynamic(ms_isopen/1).
@@ -665,7 +665,7 @@ drawfield :-
 drawfield.
 
 
-Some binary search tree operations.
+% Some binary search tree operations.
 
 
 bst_add(nil, X, tr(nil, X, nil)) :- !.
@@ -711,7 +711,7 @@ bst_verify(tr(T1, X, T2), Min, Max) :-
     bst_verify(T2, X, Max).
 
 
-Delete element at every position given in position list:
+% Delete element at every position given in position list:
 
 
 delat(Pos, L, Res) :- delat(Pos, L, Res, 1).
@@ -720,7 +720,7 @@ delat([Ph|Pt],[_|T],T2,Ph) :- !, Pn is Ph + 1, delat(Pt, T, T2, Pn).
 delat(Pos,[H|T],[H|T2],Off) :- Off2 is Off + 1, delat(Pos,T,T2,Off2).
 
 
-General cryptarithmetic solver:
+% General cryptarithmetic solver:
 
 
 /* Checks if all elements of list are strictly different. */
@@ -796,7 +796,7 @@ add(S, H3, T1, T2, T3, Vars) :-
     solve(T1, T2, T3, 1, Vars).
 
 
-Polynomial addition and multiplication:
+% Polynomial addition and multiplication:
 
 
 /* Eliminate terms with zero coefficient. */
@@ -833,7 +833,7 @@ polymul(P1, [(B2,E2)|T2], P) :-
     polyadd(P2, P3, P).
 
 
-Bisection of a list of integers into two sublists of equal sums:
+% Bisection of a list of integers into two sublists of equal sums:
 
 
 sum(L, A) :- sum(L, 0, A).
@@ -856,7 +856,7 @@ bisect([H|T], L1, [H|L2], S1, S2) :-
    bisect(T, L1, L2, S1, S22).
 
 
-Single machine job shop scheduling problem:
+% Single machine job shop scheduling problem:
 
 
 jobshop(Jobs, Chosen, Profit) :- jobshop(Jobs, Chosen, 0, Profit).
@@ -872,7 +872,7 @@ jobshop([_|T], Chosen, Time, Profit) :-
     jobshop(T, Chosen, Time, Profit).
 
 
-N queens solver (adapted from Rosetta Code):
+% N queens solver (adapted from Rosetta Code):
 
 
 nqueens(L, N) :- nqueens(L, N, N).
@@ -896,7 +896,7 @@ noattack(X, [Y|L], D) :-
     noattack(X, L, D2).
 
 
-Constraint logic programming over integers
+% Constraint logic programming over integers
 
 
 :- use_module(library(clpfd)).

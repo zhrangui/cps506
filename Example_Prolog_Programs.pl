@@ -32,7 +32,7 @@ is_ascending([X, Y | T]) :-
     is_ascending([Y|T]).
 
 
-Maximum element of list:
+% Maximum element of list:
 
 
 /* recursive version */

@@ -1,3 +1,4 @@
+% Q1: first_missing_positive(Items, Result)
 first_missing_positive(Items, Result) :-
     first_missing_positive(Items, 1, Result).
 first_missing_positive(Items, Result, Result) :-
@@ -15,24 +16,29 @@ test(first_missing_positive_str, [true(N =:= 1)]) :-
     first_missing_positive([bob, jack, foo(bar, baz, qux)], N).
 :- end_tests(first_missing_positive).
 
-
-riffle([], _, Result, left) :-
-    Result = Result.
-riffle([Left|Lefts], [Right|Rights], Result, left) :-
-    riffle(Lefts, Rights, [Left,Right|Result], left).
-riffle([Left|Lefts], [Right|Rights], Result, right) :-
-    riffle(Lefts, Rights, [Right,Left|Result], right).
+% Q2: riffle(Left, Right, Result, Mode)
+riffle([], _, [], left).
+riffle(_, [], [], left).
+riffle([], _, [], right).
+riffle(_, [], [], right).
+riffle([], _, R, _, R).
+riffle(_,  _, R, _, R).
+riffle([Left|Lefts], [Right|Rights], Result, left, R) :-
+    riffle(Lefts, Rights, [Left,Right|Result], left, R).
+    
+riffle([Left|Lefts], [Right|Rights], Result, right, R) :-
+    riffle(Lefts, Rights, [Right,Left|Result], right, R).
 
 :- begin_tests(riffle).
 test(riffle, [true(L == [bob, 99, 42, hello, foo(bar), world])]) :-
     riffle([bob, 42, foo(bar)], [99, hello, world], L, left).
-test(rifle_false, [true(false)]) :-
-    riffle(L1, L2, [odd, number, of, elements, cannot, succeed, here], M).
+test(rifle_false, [fail]) :-
+    riffle(_, _, [odd, number, of, elements, cannot, succeed, here], _).
 test(rifle_mode, [true(Mode == false)]) :-
-    riffle([42, bob, 99], [55, jack, tom], [55|_], Mode). 
+    riffle([42, bob, 99], [55, jack, tom], [55|_], Mode).
 :- end_tests(riffle).
 
-
+% Q3: sz(N, SZ)
 seven_zero_rec(0, 0, 0) :- !.
 seven_zero_rec(N, S, Z) :-
     Z > 0,
@@ -82,11 +88,23 @@ sz(N, R, SZ) :-
         sz(1234, SZ).
 :- end_tests(sz).
 
+% Q4: crag(A, B, C, Score)
+crag(A, B, C, Score) :- !.
 
-% crag(A, B, C, Score).
-% count_dominators(Items, Result).
-% running_median(Items, Medians).
-% safe_squares_rooks(Rooks, N, S).
-% trick_winner(Cards, Winner).
-% sum_of_distinct_cubes(N, L).
-% fibonacci_sum(N, L).
+% Q5: count_dominators(Items, Result)
+count_dominators(Items, Result) :- !.
+
+% Q6: running_median(Items, Medians)
+running_median(Items, Medians) :- !.
+
+% Q7. safe_squares_rooks(Rooks, N, S)
+safe_squares_rooks(Rooks, N, S) :- !.
+
+% Q8. trick_winner(Cards, Winner)
+trick_winner(Cards, Winner) :- !.
+
+% Q9. sum_of_distinct_cubes(N, L)
+sum_of_distinct_cubes(N, L) :- !.
+
+% Q10.  fibonacci_sum(N, L)
+fibonacci_sum(N, L) :- !.

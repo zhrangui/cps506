@@ -33,18 +33,17 @@ test(rifle_mode, [true(Mode == false)]) :-
 :- end_tests(riffle).
 
 
-seven_zero1(_, 0, 0) :- 
-    seven_zero1(0, 0, 0).
-seven_zero1(N, S, Z) :-
-    S > 0,
-    plus(S, -1, S1),
-    seven_zero1(N, S1, Z),
-    N is N*10+7.
-seven_zero1(N, S, Z) :-
+seven_zero_rec(0, 0, 0) :- !.
+seven_zero_rec(N, S, Z) :-
     Z > 0,
     plus(Z, -1, Z1),
-    seven_zero1(N, S, Z1),
-    N is N*10.
+    seven_zero_rec(N1, S, Z1),
+    N is N1*10.
+seven_zero_rec(N, S, 0) :-
+    S > 0,
+    plus(S, -1, S1),
+    seven_zero_rec(N1, S1, 0),
+    N is N1*10+7.
 
 seven_zero(N, S, Z) :-
     seven_zero(N, S, Z, 0).

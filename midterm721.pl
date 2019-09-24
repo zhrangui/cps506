@@ -170,23 +170,21 @@ trick_winner(Cards, Winner) :- !.
 :- end_tests(trick_winner).
 
 % Q9. sum_of_distinct_cubes(N, L)
-sum_of_distinct_cubes(N, [N]) :-
+sum_of_distinct_cubes(N, _, [N]) :-
     N>0,
     floor(N^(1/3))^3 =:= N.
-sum_of_distinct_cubes(N, L) :-
+sum_of_distinct_cubes(N, M, L) :-
     N > 0,
-    Root is floor(N^(1/3)),
+    Root is floor(N^(1/3))-M,
+    Root>0,
     Rem is N-Root^3,
     Rem < Root^3,
-    sum_of_distinct_cubes(Rem, L1),
-    append([Root], L1, L).
+    (sum_of_distinct_cubes(Rem, M, L1) ->
+    append([Root], L1, L);
+    plus(M, 1, M1),
+    sum_of_distinct_cubes(N, M1, L)).
 sum_of_distinct_cubes(N, L) :-
-    N > 0,
-    Root is floor(N^(1/3))-1,
-    Rem is N-Root^3,
-    Rem < Root^3,
-    sum_of_distinct_cubes(N, L1),
-    append([Root], L1, L).
+    sum_of_distinct_cubes(N, 0, L).
 
 :- begin_tests(sum_of_distinct_cubes).
     test(sum_of_distinct_cubes100, [true(L == [4, 3, 2, 1])]) :-

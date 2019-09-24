@@ -124,18 +124,35 @@ plus(Result1, 1, Result); Result is Result1).
 % Q6: running_median(Items, Medians)
 running_median(Items, Medians) :- !.
 :- begin_tests(running_median).
-    test(count_dominators3, [true(D =:= 3)]) :-
-        count_dominators([42, 99, 17, 3, 9], D).
-    test(count_dominators4, [true(D =:= 4)]) :-
-        count_dominators([4, 3, 2, 1], D).
-    test(count_dominators1, [true(D =:= 1)]) :-
-        count_dominators([1, 2, 3, 4], D). 
-    test(count_dominators0, [true( D =:= 0)]) :-
-        count_dominators([], D).
+    test(running_median5, [true(M == [1, 2, 2, 3, 4])]) :-
+        count_dominators([1, 2, 3, 4, 5], M).
+    test(running_median7, [true(M == [99, 42, 42, 42, 17, 18, 18])]) :-
+        running_median([99, 42, 17, 55, -4, 18, 77], M).
+    test(running_median42, [true(M == [42, 42, 42, 42, 42])]) :-
+        running_median([42, 42, 99, 42, 42], M).
 :- end_tests(running_median).
 
 % Q7. safe_squares_rooks(Rooks, N, S)
-safe_squares_rooks(Rooks, N, S) :- !.
+safe_squares_rooks(Rooks, N, S) :-
+    safe_squares_rooks(Rooks, [], [], N, S).
+safe_squares_rooks([], Rs, Cs, N, S) :-
+    list_to_set(Rs, Ru),
+    list_to_set(Cs, Cu),
+    length(Ru, Lr),
+    length(Cu, Lc),
+    S is (N-Lr) * (N-Lc).
+
+safe_squares_rooks([(R,C)|Rooks], Rs, Cs, N, S) :- 
+    safe_squares_rooks(Rooks, [R|Rs], [C|Cs], N, S).
+
+:- begin_tests(safe_squares_rooks).
+    test(safe_squares_rooks4, [true(S== 4)]) :-
+        safe_squares_rooks([(2, 2), (3, 1), (5, 5), (2, 5)], 5, S).
+    test(safe_squares_rooks0, [true(S == 0)]) :-
+        safe_squares_rooks([(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], 5, S). 
+    test(safe_squares_rooks10000, [true(S == 10000)]) :-
+        safe_squares_rooks([], 100, S).
+:- end_tests(safe_squares_rooks).
 
 % Q8. trick_winner(Cards, Winner)
 trick_winner(Cards, Winner) :- !.

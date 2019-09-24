@@ -159,6 +159,33 @@ trick_winner(Cards, Winner) :- !.
 
 % Q9. sum_of_distinct_cubes(N, L)
 sum_of_distinct_cubes(N, L) :- !.
+:- begin_tests(sum_of_distinct_cubes).
+    test(sum_of_distinct_cubes100, [true(L == [4, 3, 2, 1])]) :-
+        sum_of_distinct_cubes(100, L).
+    test(sum_of_distinct_cubes721, [fail]) :-
+        sum_of_distinct_cubes(721, _L). 
+    test(sum_of_distinct_cubes12345, [true(L == [20, 12, 10, 9, 8, 6, 5, 3, 2])]) :-
+        sum_of_distinct_cubes(12345, L).
+    test(sum_of_distinct_cubes999999999999, [true(L == [9999, 669, 81, 27, 7, 6, 2])]) :-
+        sum_of_distinct_cubes(999999999999, L).
+    test(sum_of_distinct_cubes587848752, [true(L == [837, 113, 30, 13, 6, 5, 4])]) :-
+        X is 123^3 + 456^3 + 789^3,
+        sum_of_distinct_cubes(X, L).
+:- end_tests(sum_of_distinct_cubes).
 
 % Q10.  fibonacci_sum(N, L)
+fibs_upto(N, L) :- !.
 fibonacci_sum(N, L) :- !.
+:- begin_tests(fibonacci_sum).
+    test(fibs_upto, [true(L == [34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-
+        fibs_upto(34, L).
+    test(fibs_upto77, [true(L == [55, 34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-
+        fibs_upto(77, L).    
+    test(fibonacci_sum30, [true(L == [21, 8, 1])]) :-
+        fibonacci_sum(30, L).
+    test(fibonacci_sum1000000, [true(L == [832040, 121393, 46368, 144, 55])]) :-
+        fibonacci_sum(1000000, L).
+    test(fibonacci_sum100000000000000000000, [true(L == [83621143489848422977, 12200160415121876738, 2880067194370816120, 1100087778366101931, 160500643816367088, 37889062373143906, 117669030460994, 27777890035288, 4052739537881|...])]) :-
+        X is 10^20,
+        fibonacci_sum(X, L). 
+:- end_tests(fibonacci_sum).

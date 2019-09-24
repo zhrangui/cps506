@@ -18,16 +18,14 @@ test(first_missing_positive_str, [true(N =:= 1)]) :-
 
 % Q2: riffle(Left, Right, Result, Mode)
 riffle([], _, [], left).
-riffle(_, [], [], left).
-riffle([], _, [], right).
 riffle(_, [], [], right).
-riffle([], _, R, _, R).
-riffle(_,  _, R, _, R).
-riffle([Left|Lefts], [Right|Rights], Result, left, R) :-
-    riffle(Lefts, Rights, [Left,Right|Result], left, R).
+
+riffle([Left|Lefts], [Right|Rights], Result, left) :-
+    riffle(Lefts, Rights, Result1, left),
+    append([Left,Right], Result1, Result).
     
-riffle([Left|Lefts], [Right|Rights], Result, right, R) :-
-    riffle(Lefts, Rights, [Right,Left|Result], right, R).
+riffle([Left|Lefts], [Right|Rights], Result, right) :-
+    riffle(Lefts, Rights, [Right,Left|Result], right).
 
 :- begin_tests(riffle).
 test(riffle, [true(L == [bob, 99, 42, hello, foo(bar), world])]) :-
@@ -66,14 +64,15 @@ seven_zero(N, 0, Z, Acc) :-
     seven_zero(N, 0, Z1, Acc1).
 
 sz(N, SZ) :-
-    sz(N, 7, SZ).
-sz(N, SZ, SZ) :-
-    0 =:= mod(SZ, N).
-sz(N, R, SZ) :-
-    R0 is R*10,
-    R7 is R*10 + 7,
-    sz(N, R0, SZ);
-    sz(N, R7, SZ).
+    sz(N, SZ, 1, 0).
+sz(N, SZ, SN, ZN) :-
+    seven_zero(SZ, SN, ZN),
+    0 =:= mod(SZ, N), !.
+sz(N, SZ, SN, ZN) :-
+    plus(ZN, 1, ZN1),
+    sz(N, SZ, SN, ZN1),
+    plus(SN, 1, SN1),
+    sz(N, SZ, SN1, ZN).
 
 :- begin_tests(sz).
     test(sz42, [true(SZ =:= 7770)]) :-
@@ -89,13 +88,51 @@ sz(N, R, SZ) :-
 :- end_tests(sz).
 
 % Q4: crag(A, B, C, Score)
-crag(A, B, C, Score) :- !.
+crag([4, 5, 4], 50).
+crag([2, 3, 3], 6).
+crag([2, 6, 4], 20).
+crag(A, B, C, Score) :-!.
+:- begin_tests(crag).
+    test(crag50, [true(S =:= 50)]) :-
+        crag([4, 5, 4], S).
+    test(crag6, [true(S =:= 6)]) :-
+        crag([2, 3, 3], S).
+    test(crag20, [true(S =:= 20)]) :-
+        crag([2, 6, 4], S).
+    test(findall, [true( L =:= 12)]) :-
+        findall((X, Y, Z),crag([X, Y, Z], 26), _L), length(_L, L).
+:- end_tests(crag).
 
 % Q5: count_dominators(Items, Result)
-count_dominators(Items, Result) :- !.
+count_dominators([], 0).
+count_dominators([Item|Items], Result) :-
+    count_dominators(Items, Result1),
+    (max_member(Item, [Item|Items]) ->
+plus(Result1, 1, Result); Result is Result1).
+    
+:- begin_tests(count_dominators).
+    test(count_dominators3, [true(D =:= 3)]) :-
+        count_dominators([42, 99, 17, 3, 9], D).
+    test(count_dominators4, [true(D =:= 4)]) :-
+        count_dominators([4, 3, 2, 1], D).
+    test(count_dominators1, [true(D =:= 1)]) :-
+        count_dominators([1, 2, 3, 4], D). 
+    test(count_dominators0, [true( D =:= 0)]) :-
+        count_dominators([], D).
+:- end_tests(count_dominators).
 
 % Q6: running_median(Items, Medians)
 running_median(Items, Medians) :- !.
+:- begin_tests(running_median).
+    test(count_dominators3, [true(D =:= 3)]) :-
+        count_dominators([42, 99, 17, 3, 9], D).
+    test(count_dominators4, [true(D =:= 4)]) :-
+        count_dominators([4, 3, 2, 1], D).
+    test(count_dominators1, [true(D =:= 1)]) :-
+        count_dominators([1, 2, 3, 4], D). 
+    test(count_dominators0, [true( D =:= 0)]) :-
+        count_dominators([], D).
+:- end_tests(running_median).
 
 % Q7. safe_squares_rooks(Rooks, N, S)
 safe_squares_rooks(Rooks, N, S) :- !.

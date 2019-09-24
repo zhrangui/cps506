@@ -155,7 +155,19 @@ safe_squares_rooks([(R,C)|Rooks], Rs, Cs, N, S) :-
 :- end_tests(safe_squares_rooks).
 
 % Q8. trick_winner(Cards, Winner)
+suit(S) :- !.
+higher_rank(R1, R2).
 trick_winner(Cards, Winner) :- !.
+:- begin_tests(trick_winner).
+    test(trick_winner9, [true(C == (nine, spades))]) :-
+        trick_winner([(four, spades), (deuce, hearts), (nine, spades), (nine, clubs)], C).
+    test(trick_winner6, [true(X == five)]) :-
+        trick_winner([(six, spades), (deuce, hearts), (X, spades), (nine, clubs)], (six, spades)).
+    test(trick_winner, [true(_L = [_G1415, _G1412, _G1409, _G1406, _G1403, _G1400, _G1397, _G1394, _G1391|...])]) :- % , L = 300
+        findall(H, trick_winner([C1,C2,C3,C4], (five, spades)), _L), length(_L, L).
+    test(trick_winner, [true(LL = 1344)]) :-
+        findall((R1,R2,R3,R4), trick_winner([(R1,spades),(R2,spades),(R3,spades),(R4,spades)], (ten, spades)), _L), length(_L, LL).
+:- end_tests(trick_winner).
 
 % Q9. sum_of_distinct_cubes(N, L)
 sum_of_distinct_cubes(N, L) :- !.

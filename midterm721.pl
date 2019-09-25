@@ -214,16 +214,17 @@ fibs_upto(N, L1, L) :-
 fibs_upto(N, L) :-
     fibs_upto(N, [1,1], L).
 
-fibonacci_sum(N, L1, L) :-
-    [H|_] = L1,
-    H>N,
+fibonacci_sum(N, _, L) :-
+    N =:= 0,
     L=[].
-fibonacci_sum(N, L1, L) :-
-    [H|T] = L1,
-    H=<N,
+fibonacci_sum(N, F, L) :-
+    [H|T] = F,
+    (H=<N ->
     N1 is N-H,
     fibonacci_sum(N1, T, L1),
-    append([N], L1, L).
+    append([N], L1, L);
+    fibonacci_sum(N, T, L)).
+    
 fibonacci_sum(N, L) :- 
    fibs_upto(N, F),
    fibonacci_sum(N, F, L).
@@ -231,9 +232,9 @@ fibonacci_sum(N, L) :-
 :- begin_tests(fibonacci_sum).
     test(fibs_upto, [true(L == [34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-
         fibs_upto(34, L).
-    test(fibs_upto77, [true(L == [55, 34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-
-        fibs_upto(77, L).
-    test(fibs_upto77, [true(L == [87778742049, 4807526976, 2971215073, 1836311903, 1134903170, 701408733, 433494437, 267914296, 165580141|...])]) :-
+    test(fibs_upto55, [true(L == [55, 34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-
+        fibs_upto(55, L).
+    test(fibs_upto10_10, [true(L == [87778742049, 4807526976, 2971215073, 1836311903, 1134903170, 701408733, 433494437, 267914296, 165580141|...])]) :-
         fibs_upto(10^10, L).
     test(fibonacci_sum30, [true(L == [21, 8, 1])]) :-
         fibonacci_sum(30, L).

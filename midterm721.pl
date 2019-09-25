@@ -178,8 +178,8 @@ sum_of_distinct_cubes(N, M, L) :-
     Root is floor(N^(1/3))-M,
     Root>0,
     Rem is N-Root^3,
-    Rem < Root^3,
-    (sum_of_distinct_cubes(Rem, M, L1) ->
+    (sum_of_distinct_cubes(Rem, M, L1), 
+    [H|_]=L1, H =\= Root ->
     append([Root], L1, L);
     plus(M, 1, M1),
     sum_of_distinct_cubes(N, M1, L)).
@@ -200,8 +200,18 @@ sum_of_distinct_cubes(N, L) :-
         sum_of_distinct_cubes(X, L).
 :- end_tests(sum_of_distinct_cubes).
 
-% Q10.  fibonacci_sum(N, L)
-fibs_upto(N, L) :- !.
+% Q10. fibonacci_sum(N, L)
+
+fibs_upto(_, [1, 1]).
+fibs_upto(N, L) :-
+    [Lf,Ls|_]=L,
+    F is Lf+Ls,
+    N < F,!.
+fibs_upto(N, L) :-
+    [Lf,Ls|_]=L,
+    F is Lf+Ls,
+    fibs_upto(N, [F|L]).   
+
 fibonacci_sum(N, L) :- !.
 :- begin_tests(fibonacci_sum).
     test(fibs_upto, [true(L == [34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-

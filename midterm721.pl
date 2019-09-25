@@ -208,7 +208,7 @@ fibs_upto(N, L, L) :-
 fibs_upto(N, L1, L) :-
     [Lf,Ls|_]=L1,
     F is Lf+Ls,
-    N>F,
+    N>=F,
     append([F], L1, L2),
     fibs_upto(N, L2, L).
 fibs_upto(N, L) :-

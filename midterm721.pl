@@ -201,23 +201,40 @@ sum_of_distinct_cubes(N, L) :-
 :- end_tests(sum_of_distinct_cubes).
 
 % Q10. fibonacci_sum(N, L)
-
-fibs_upto(_, [1, 1]).
-fibs_upto(N, L) :-
+fibs_upto(N, L, L) :-
     [Lf,Ls|_]=L,
     F is Lf+Ls,
-    N < F,!.
-fibs_upto(N, L) :-
-    [Lf,Ls|_]=L,
+    N<F.
+fibs_upto(N, L1, L) :-
+    [Lf,Ls|_]=L1,
     F is Lf+Ls,
-    fibs_upto(N, [F|L]).   
+    N>F,
+    append([F], L1, L2),
+    fibs_upto(N, L2, L).
+fibs_upto(N, L) :-
+    fibs_upto(N, [1,1], L).
 
-fibonacci_sum(N, L) :- !.
+fibonacci_sum(N, L1, L) :-
+    [H|_] = L1,
+    H>N,
+    L=[].
+fibonacci_sum(N, L1, L) :-
+    [H|T] = L1,
+    H=<N,
+    N1 is N-H,
+    fibonacci_sum(N1, T, L1),
+    append([N], L1, L).
+fibonacci_sum(N, L) :- 
+   fibs_upto(N, F),
+   fibonacci_sum(N, F, L).
+    
 :- begin_tests(fibonacci_sum).
     test(fibs_upto, [true(L == [34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-
         fibs_upto(34, L).
     test(fibs_upto77, [true(L == [55, 34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-
-        fibs_upto(77, L).    
+        fibs_upto(77, L).
+    test(fibs_upto77, [true(L == [87778742049, 4807526976, 2971215073, 1836311903, 1134903170, 701408733, 433494437, 267914296, 165580141|...])]) :-
+        fibs_upto(10^10, L).
     test(fibonacci_sum30, [true(L == [21, 8, 1])]) :-
         fibonacci_sum(30, L).
     test(fibonacci_sum1000000, [true(L == [832040, 121393, 46368, 144, 55])]) :-

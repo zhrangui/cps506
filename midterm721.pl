@@ -1,6 +1,6 @@
 /*command run_tests to run all unit test cases or run_tests(fibonacci_sum) to execute individual test cases*/
 
-% Q1: first_missing_positive(Items, Result)
+% Q1: first_missing_positive(Items, Result) V
 first_missing_positive(Items, Result) :-
     first_missing_positive(Items, 1, Result).
 first_missing_positive(Items, Result, Result) :-
@@ -135,7 +135,7 @@ crag(_, 0).
         findall((X, Y, Z),crag([X, Y, Z], 26), L), length(L, LL).
 :- end_tests(crag).
 
-% Q5: count_dominators(Items, Result)
+% Q5: count_dominators(Items, Result) V
 count_dominators([], 0).
 count_dominators([Item|Items], Result) :-
     count_dominators(Items, Result1),
@@ -153,7 +153,7 @@ plus(Result1, 1, Result); Result is Result1).
         count_dominators([], D).
 :- end_tests(count_dominators).
 
-% Q6: running_median(Items, Medians)
+% Q6: running_median(Items, Medians) V
 median(L, X) :-
     msort(L, SL),
     length(L, Len),
@@ -178,7 +178,7 @@ running_median(Items, Medians) :-
         running_median([42, 42, 99, 42, 42], M).
 :- end_tests(running_median).
 
-% Q7. safe_squares_rooks(Rooks, N, S)
+% Q7. safe_squares_rooks(Rooks, N, S) V
 safe_squares_rooks(Rooks, N, S) :-
     safe_squares_rooks(Rooks, [], [], N, S).
 safe_squares_rooks([], Rs, Cs, N, S) :-
@@ -297,7 +297,7 @@ sum_of_distinct_cubes(N, L) :-
         sum_of_distinct_cubes(X, L).
 :- end_tests(sum_of_distinct_cubes).
 
-% Q10. fibonacci_sum(N, L)
+% Q10. fibonacci_sum(N, L) V
 fibs_upto(N, L, L) :-
     [Lf,Ls|_]=L,
     F is Lf+Ls,

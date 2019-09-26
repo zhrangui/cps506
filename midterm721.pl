@@ -19,22 +19,24 @@ test(first_missing_positive_str, [true(N =:= 1)]) :-
 :- end_tests(first_missing_positive).
 
 % Q2: riffle(Left, Right, Result, Mode)
-riffle([], _, [], left).
-riffle(_, [], [], right).
-
+riffle([], [], [], _).
 riffle([Left|Lefts], [Right|Rights], Result, left) :-
+    %length(Result, Len),
+    %mod(Len, 2) =:= 0,
     riffle(Lefts, Rights, Result1, left),
     append([Left,Right], Result1, Result).
-    
 riffle([Left|Lefts], [Right|Rights], Result, right) :-
-    riffle(Lefts, Rights, [Right,Left|Result], right).
+    %length(Result, Len),
+    %mod(Len, 2) =:= 0,
+    riffle(Lefts, Rights, Result1, right),
+    append([Right,Left], Result1, Result).
 
 :- begin_tests(riffle).
 test(riffle, [true(L == [bob, 99, 42, hello, foo(bar), world])]) :-
     riffle([bob, 42, foo(bar)], [99, hello, world], L, left).
 test(rifle_false, [fail]) :-
     riffle(_, _, [odd, number, of, elements, cannot, succeed, here], _).
-test(rifle_mode, [true(Mode == false)]) :-
+test(rifle_mode, [true(Mode == right)]) :-
     riffle([42, bob, 99], [55, jack, tom], [55|_], Mode).
 :- end_tests(riffle).
 

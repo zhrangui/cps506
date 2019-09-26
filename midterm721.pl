@@ -123,21 +123,19 @@ plus(Result1, 1, Result); Result is Result1).
 
 % Q6: running_median(Items, Medians)
 median(L, X) :-
-    sort(L, SL),
+    msort(L, SL),
     length(L, Len),
     Len2 is floor(Len/2),
     nth0(Len2, SL, X).
 
-running_median([], _, Medians).
-running_median(Items, M, Medians) :-
-    append(H,[T],Items),
-    running_median(H, M1, Medians),
-    (length(M1, Len), Len<3 -> append(M1, [T], Medians);
-    append(_,[L1,L2],M1),
-    median([L1,L2,T], X),
-    append(M1, [X], Medians)).
+running_median([], []).
 running_median(Items, Medians) :-
-    running_median(Items, [], Medians).
+    append(H,[T], Items),
+    running_median(H, Medians1),
+    (length(Medians1,Len), Len<2 -> append(H, [T], Medians);
+    append(_,[L1,L2], H),
+    median([L1,L2,T], X),
+    append(Medians1, [X], Medians)).
 
 :- begin_tests(running_median).
     test(running_median5, [true(M == [1, 2, 2, 3, 4])]) :-

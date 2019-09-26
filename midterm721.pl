@@ -88,10 +88,42 @@ sz(N, SZ, SN, ZN) :-
 :- end_tests(sz).
 
 % Q4: crag(A, B, C, Score)
-crag([4, 5, 4], 50).
-crag([2, 3, 3], 6).
-crag([2, 6, 4], 20).
-crag(A, B, C, Score) :-!.
+crag([A, B, C], 50) :-
+    A+B+C =:= 13,
+    (A =:= B; B =:= C; C =:= A),!.
+crag([A, B, C], 26) :-
+    A+B+C =:= 13,!.
+crag([A, B, C], 25) :-
+    A =:= B,
+    B =:= C,!.
+crag([A, B, C], 20) :-
+    msort([A, B, C], L),
+    L=[1,2,3],!.
+crag([A, B, C], 20) :-
+    msort([A, B, C], L),
+    L=[1,2,3],!.
+crag([A, B, C], 20) :-
+    msort([A, B, C], L),
+    L=[4,5,6],!.
+crag([A, B, C], 20) :-
+    msort([A, B, C], L),
+    L=[2,4,6],!.
+crag([A, B, C], 12) :-
+    msort([A, B, C], L),
+    member(6, L),!.
+crag([A, B, C], 8) :-
+    msort([A, B, C], L),
+    member(4, L),!.
+crag([A, B, C], 9) :-
+    msort([A, B, C], L),
+    member(3, L),!.
+crag([A, B, C], 4) :-
+    msort([A, B, C], L),
+    member(2, L),!.
+crag([A, B, C], 3) :-
+    msort([A, B, C], L),
+    member(1, L),!.
+crag(_, 0).
 :- begin_tests(crag).
     test(crag50, [true(S =:= 50)]) :-
         crag([4, 5, 4], S).

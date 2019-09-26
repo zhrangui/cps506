@@ -1,3 +1,5 @@
+/*command run_tests to run all unit test cases or run_tests(fibonacci_sum) to execute individual test cases*/
+
 % Q1: first_missing_positive(Items, Result)
 first_missing_positive(Items, Result) :-
     first_missing_positive(Items, 1, Result).
@@ -48,7 +50,6 @@ seven_zero_rec(N, S, 0) :-
     plus(S, -1, S1),
     seven_zero_rec(N1, S1, 0),
     N is N1*10+7.
-
 seven_zero(N, S, Z) :-
     seven_zero(N, S, Z, 0).
 seven_zero(N, 0, 0, N).
@@ -62,7 +63,6 @@ seven_zero(N, 0, Z, Acc) :-
     plus(Z, -1, Z1),
     Acc1 is Acc*10,
     seven_zero(N, 0, Z1, Acc1).
-
 sz(N, SZ) :-
     sz(N, SZ, 1, 0).
 sz(N, SZ, SN, ZN) :-
@@ -141,7 +141,6 @@ safe_squares_rooks([], Rs, Cs, N, S) :-
     length(Ru, Lr),
     length(Cu, Lc),
     S is (N-Lr) * (N-Lc).
-
 safe_squares_rooks([(R,C)|Rooks], Rs, Cs, N, S) :- 
     safe_squares_rooks(Rooks, [R|Rs], [C|Cs], N, S).
 
@@ -170,16 +169,18 @@ trick_winner(Cards, Winner) :- !.
 :- end_tests(trick_winner).
 
 % Q9. sum_of_distinct_cubes(N, L)
-sum_of_distinct_cubes(N, _, [N]) :-
+sum_of_distinct_cubes(N, 0, L) :-
     N>0,
-    floor(N^(1/3))^3 =:= N.
+    Root is round(N^(1/3)),
+    N =:= Root^3,
+    L=[Root].
 sum_of_distinct_cubes(N, M, L) :-
-    N > 0,
+    N>0,
     Root is floor(N^(1/3))-M,
     Root>0,
     Rem is N-Root^3,
     (sum_of_distinct_cubes(Rem, M, L1), 
-    [H|_]=L1, H =\= Root ->
+    [H|_]=L1, H < Root ->
     append([Root], L1, L);
     plus(M, 1, M1),
     sum_of_distinct_cubes(N, M1, L)).
@@ -224,7 +225,6 @@ fibonacci_sum(N, F, L) :-
     fibonacci_sum(N1, T, L1),
     append([H], L1, L);
     fibonacci_sum(N, T, L)).
-    
 fibonacci_sum(N, L) :- 
    fibs_upto(N, F),
    fibonacci_sum(N, F, L).
@@ -242,7 +242,8 @@ fibonacci_sum(N, L) :-
         fibonacci_sum(30, L).
     test(fibonacci_sum1000000, [true(L == [832040, 121393, 46368, 144, 55])]) :-
         fibonacci_sum(1000000, L).
-    test(fibonacci_sum100000000000000000000, [true(L == [83621143489848422977, 12200160415121876738, 2880067194370816120, 1100087778366101931, 160500643816367088, 37889062373143906, 117669030460994, 27777890035288, 4052739537881
+    test(fibonacci_sum100000000000000000000, [true(L == [83621143489848422977, 12200160415121876738, 2880067194370816120, 1100087778366101931,
+            160500643816367088, 37889062373143906, 117669030460994, 27777890035288, 4052739537881
             ,1548008755920,365435296162,2971215073,24157817,3524578,196418,75025,10946,4181,610,233,89,21,3,1])]) :-
         X is 10^20,
         fibonacci_sum(X, L). 

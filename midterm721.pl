@@ -212,10 +212,47 @@ higher_rank(R1, R2) :-
     P1<P2.
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)] = Cards,
-    (S1 \== S2;(S1 == S2,higher_rank(C1, C2))),
-    (S1 \== S3;(S1 == S3,higher_rank(C1, C3))),
-    (S1 \== S4;(S1 == S4,higher_rank(C1, C4))),
+    suit(S1),
+    suit(S2),
+    suit(S3),
+    suit(S4),
+    (S1 == S2 -> higher_rank(C1, C2); true),
+    (S1 == S3 -> higher_rank(C1, C3); true),
+    (S1 == S4 -> higher_rank(C1, C4); true),
     Winner = (C1,S1).
+trick_winner(Cards, Winner) :-
+    [(C1,S1),(C2,S2),(C3,S3),(C4,S4)] = Cards,
+    suit(S1),
+    suit(S2),
+    suit(S3),
+    suit(S4),
+    S1 == S2,
+    higher_rank(C2, C1),
+    (S2 == S3 -> higher_rank(C2, C3); true),
+    (S2 == S4 -> higher_rank(C2, C4); true),
+    Winner = (C2,S2).
+trick_winner(Cards, Winner) :-
+    [(C1,S1),(C2,S2),(C3,S3),(C4,S4)] = Cards,
+    suit(S1),
+    suit(S2),
+    suit(S3),
+    suit(S4),
+    S3 == S1,
+    higher_rank(C3, C1),
+    (S3 == S2 -> higher_rank(C3, C2); true),
+    (S3 == S4 -> higher_rank(C3, C4); true),
+    Winner = (C3,S3).
+trick_winner(Cards, Winner) :-
+    [(C1,S1),(C2,S2),(C3,S3),(C4,S4)] = Cards,
+    suit(S1),
+    suit(S2),
+    suit(S3),
+    suit(S4),
+    S4 == S1,
+    higher_rank(C4, C1),
+    (S4 == S2 -> higher_rank(C4, C2); true),
+    (S4 == S3 -> higher_rank(C4, C3); true),
+    Winner = (C4,S4).
 :- begin_tests(trick_winner).
     test(trick_winner_nine, [true(C == (nine, spades))]) :-
         trick_winner([(four, spades), (deuce, hearts), (nine, spades), (nine, clubs)], C).

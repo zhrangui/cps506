@@ -41,7 +41,7 @@ test(rifle_mode, [true(Mode == right)]) :-
 :- end_tests(riffle).
 
 % Q3: sz(N, SZ)
-seven_zero_rec(0, 0, 0) :- !.
+seven_zero_rec(0, 0, 0).
 seven_zero_rec(N, S, Z) :-
     Z > 0,
     plus(Z, -1, Z1),
@@ -52,6 +52,7 @@ seven_zero_rec(N, S, 0) :-
     plus(S, -1, S1),
     seven_zero_rec(N1, S1, 0),
     N is N1*10+7.
+
 seven_zero(N, S, Z) :-
     seven_zero(N, S, Z, 0).
 seven_zero(N, 0, 0, N).
@@ -65,6 +66,7 @@ seven_zero(N, 0, Z, Acc) :-
     plus(Z, -1, Z1),
     Acc1 is Acc*10,
     seven_zero(N, 0, Z1, Acc1).
+
 sz(N, SZ) :-
     sz(N, SZ, 1, 0).
 sz(N, SZ, SN, ZN) :-

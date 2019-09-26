@@ -131,8 +131,8 @@ crag(_, 0).
         crag([2, 3, 3], S).
     test(crag20, [true(S =:= 20)]) :-
         crag([2, 6, 4], S).
-    test(findall, [true( L =:= 12)]) :-
-        findall((X, Y, Z),crag([X, Y, Z], 26), _L), length(_L, L).
+    test(findall, [true(LL =:= 12)]) :-
+        findall((X, Y, Z),crag([X, Y, Z], 26), L), length(L, LL).
 :- end_tests(crag).
 
 % Q5: count_dominators(Items, Result)
@@ -191,7 +191,7 @@ safe_squares_rooks([(R,C)|Rooks], Rs, Cs, N, S) :-
     safe_squares_rooks(Rooks, [R|Rs], [C|Cs], N, S).
 
 :- begin_tests(safe_squares_rooks).
-    test(safe_squares_rooks4, [true(S== 4)]) :-
+    test(safe_squares_rooks4, [true(S == 4)]) :-
         safe_squares_rooks([(2, 2), (3, 1), (5, 5), (2, 5)], 5, S).
     test(safe_squares_rooks0, [true(S == 0)]) :-
         safe_squares_rooks([(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], 5, S). 
@@ -200,18 +200,31 @@ safe_squares_rooks([(R,C)|Rooks], Rs, Cs, N, S) :-
 :- end_tests(safe_squares_rooks).
 
 % Q8. trick_winner(Cards, Winner)
-suit(S) :- !.
-higher_rank(R1, R2).
-trick_winner(Cards, Winner) :- !.
+suit(clubs).
+suit(diamonds).
+suit(hearts).
+suit(spades).
+rank([ace, king, queen, jack, ten, nine, eight, seven, six, five, four, trey, deuce]).
+higher_rank(R1, R2) :-
+    rank(R),
+    nth0(P1, R, R1),
+    nth0(P2, R, R2),
+    P1<P2.
+trick_winner(Cards, Winner) :-
+    [(C1,S1),(C2,S2),(C3,S3),(C4,S4)] = Cards,
+    (S1 \== S2;(S1 == S2,higher_rank(C1, C2))),
+    (S1 \== S3;(S1 == S3,higher_rank(C1, C3))),
+    (S1 \== S4;(S1 == S4,higher_rank(C1, C4))),
+    Winner = (C1,S1).
 :- begin_tests(trick_winner).
-    test(trick_winner9, [true(C == (nine, spades))]) :-
+    test(trick_winner_nine, [true(C == (nine, spades))]) :-
         trick_winner([(four, spades), (deuce, hearts), (nine, spades), (nine, clubs)], C).
     test(trick_winner6, [true(X == five)]) :-
         trick_winner([(six, spades), (deuce, hearts), (X, spades), (nine, clubs)], (six, spades)).
-    test(trick_winner, [true(_L = [_G1415, _G1412, _G1409, _G1406, _G1403, _G1400, _G1397, _G1394, _G1391|...])]) :- % , L = 300
-        findall(H, trick_winner([C1,C2,C3,C4], (five, spades)), _L), length(_L, L).
-    test(trick_winner, [true(LL = 1344)]) :-
-        findall((R1,R2,R3,R4), trick_winner([(R1,spades),(R2,spades),(R3,spades),(R4,spades)], (ten, spades)), _L), length(_L, LL).
+    test(trick_winner_300, [true(LL =:= 300)]) :-
+        findall(_H, trick_winner([_C1,_C2,_C3,_C4], (five, spades)), L), length(L, LL).
+    test(trick_winner_1344, [true(LL = 1344)]) :-
+        findall((R1,R2,R3,R4), trick_winner([(R1,spades),(R2,spades),(R3,spades),(R4,spades)], (ten, spades)), L), length(L, LL).
 :- end_tests(trick_winner).
 
 % Q9. sum_of_distinct_cubes(N, L)

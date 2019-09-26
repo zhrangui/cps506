@@ -122,10 +122,26 @@ plus(Result1, 1, Result); Result is Result1).
 :- end_tests(count_dominators).
 
 % Q6: running_median(Items, Medians)
-running_median(Items, Medians) :- !.
+median(L, X) :-
+    sort(L, SL),
+    length(L, Len),
+    Len2 is floor(Len/2),
+    nth0(Len2, SL, X).
+
+running_median([], _, Medians).
+running_median(Items, M, Medians) :-
+    append(H,[T],Items),
+    running_median(H, M1, Medians),
+    (length(M1, Len), Len<3 -> append(M1, [T], Medians);
+    append(_,[L1,L2],M1),
+    median([L1,L2,T], X),
+    append(M1, [X], Medians)).
+running_median(Items, Medians) :-
+    running_median(Items, [], Medians).
+
 :- begin_tests(running_median).
     test(running_median5, [true(M == [1, 2, 2, 3, 4])]) :-
-        count_dominators([1, 2, 3, 4, 5], M).
+        running_median([1, 2, 3, 4, 5], M).
     test(running_median7, [true(M == [99, 42, 42, 42, 17, 18, 18])]) :-
         running_median([99, 42, 17, 55, -4, 18, 77], M).
     test(running_median42, [true(M == [42, 42, 42, 42, 42])]) :-

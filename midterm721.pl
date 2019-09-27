@@ -208,12 +208,25 @@ suit(clubs).
 suit(diamonds).
 suit(hearts).
 suit(spades).
-rank([ace, king, queen, jack, ten, nine, eight, seven, six, five, four, trey, deuce]).
+successor(ace,king).
+successor(king,queen).
+successor(queen,jack).
+successor(jack,ten).
+successor(ten,nine).
+successor(nine,eight).
+successor(eight,seven).
+successor(seven,six).
+successor(six,five).
+successor(five,four).
+successor(four,trey).
+successor(trey,deuce).
+rank(X,Y) :-
+    successor(X,Y).
+rank(X,Y) :-
+    successor(X, Z),
+    successor(Z, Y).
 higher_rank(R1, R2) :-
-    rank(R),
-    nth0(P1, R, R1),
-    nth0(P2, R, R2),
-    P1<P2.
+    rank(R1,R2).
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)] = Cards,
     suit(S1),

@@ -18,17 +18,15 @@ test(first_missing_positive_str, [true(N =:= 1)]) :-
     first_missing_positive([bob, jack, foo(bar, baz, qux)], N).
 :- end_tests(first_missing_positive).
 
-/**/ Q2: riffle(Left, Right, Result, Mode)
+/*Q2: riffle(Left, Right, Result, Mode)*/ 
 riffle([], [], [], _).
 riffle([Left|Lefts], [Right|Rights], Result, left) :-
-    /**/length(Result, Len),
-    /**/mod(Len, 2) =:= 0,
     riffle(Lefts, Rights, Result1, left),
+    % (var(Result); length(Result, Len), mod(Len, 2) =:= 0),
     append([Left,Right], Result1, Result).
 riffle([Left|Lefts], [Right|Rights], Result, right) :-
-    /**/length(Result, Len),
-    /**/mod(Len, 2) =:= 0,
     riffle(Lefts, Rights, Result1, right),
+    % (var(Result); length(Result, Len), mod(Len, 2) =:= 0),
     append([Right,Left], Result1, Result).
 
 :- begin_tests(riffle).
@@ -40,7 +38,7 @@ test(rifle_mode, [true(Mode == right)]) :-
     riffle([42, bob, 99], [55, jack, tom], [55|_], Mode).
 :- end_tests(riffle).
 
-/**/ Q3: sz(N, SZ)
+/*P Q3: sz(N, SZ)*/
 seven_zero_rec(0, 0, 0).
 seven_zero_rec(N, S, Z) :-
     Z > 0,
@@ -68,15 +66,20 @@ seven_zero(N, 0, Z, Acc) :-
     seven_zero(N, 0, Z1, Acc1).
 
 sz(N, SZ) :-
-    sz(N, SZ, 1, 0).
-sz(N, SZ, SN, ZN) :-
+    sz(N, SZ, 1).
+sz(N, SZ, T) :- 
+    sz(N, SZ, 1, T),!.
+sz(N, SZ, T) :- 
+    plus(T, 1, T1),
+    sz(N, SZ, T1).
+sz(N, SZ, SN, T) :-
+    plus(SN, ZN, T),
     seven_zero(SZ, SN, ZN),
-    0 =:= mod(SZ, N), !.
-sz(N, SZ, SN, ZN) :-
-    plus(ZN, 1, ZN1),
-    sz(N, SZ, SN, ZN1),
+    0 =:= mod(SZ, N),!.
+sz(N, SZ, SN, T) :-
+    SN<T,
     plus(SN, 1, SN1),
-    sz(N, SZ, SN1, ZN).
+    sz(N, SZ, SN1, T).
 
 :- begin_tests(sz).
     test(sz42, [true(SZ =:= 7770)]) :-
@@ -91,7 +94,7 @@ sz(N, SZ, SN, ZN) :-
         sz(1234, SZ).
 :- end_tests(sz).
 
-/**/ Q4: crag(A, B, C, Score)
+/* Q4: crag(A, B, C, Score)*/
 crag([A, B, C], 50) :-
     A+B+C =:= 13,
     (A =:= B; B =:= C; C =:= A),!.
@@ -139,7 +142,7 @@ crag(_, 0).
         findall((X, Y, Z),crag([X, Y, Z], 26), L), length(L, LL).
 :- end_tests(crag).
 
-/**/P Q5: count_dominators(Items, Result)
+/*P Q5: count_dominators(Items, Result)*/
 count_dominators([], 0).
 count_dominators([Item|Items], Result) :-
     count_dominators(Items, Result1),
@@ -157,7 +160,7 @@ plus(Result1, 1, Result); Result is Result1).
         count_dominators([], D).
 :- end_tests(count_dominators).
 
-/**/P Q6: running_median(Items, Medians)
+/*P Q6: running_median(Items, Medians)*/
 median(L, X) :-
     msort(L, SL),
     length(L, Len),
@@ -182,7 +185,7 @@ running_median(Items, Medians) :-
         running_median([42, 42, 99, 42, 42], M).
 :- end_tests(running_median).
 
-/**/P Q7. safe_squares_rooks(Rooks, N, S)
+/*P Q7. safe_squares_rooks(Rooks, N, S)*/
 safe_squares_rooks(Rooks, N, S) :-
     safe_squares_rooks(Rooks, [], [], N, S).
 safe_squares_rooks([], Rs, Cs, N, S) :-
@@ -203,7 +206,7 @@ safe_squares_rooks([(R,C)|Rooks], Rs, Cs, N, S) :-
         safe_squares_rooks([], 100, S).
 :- end_tests(safe_squares_rooks).
 
-/**/ Q8. trick_winner(Cards, Winner)
+/* Q8. trick_winner(Cards, Winner)*/
 suit(clubs).
 suit(diamonds).
 suit(hearts).
@@ -281,7 +284,7 @@ trick_winner(Cards, Winner) :-
         findall((R1,R2,R3,R4), trick_winner([(R1,spades),(R2,spades),(R3,spades),(R4,spades)], (ten, spades)), L), length(L, LL).
 :- end_tests(trick_winner).
 
-/**/ Q9. sum_of_distinct_cubes(N, L)
+/* Q9. sum_of_distinct_cubes(N, L)*/
 sum_of_distinct_cubes(N, 0, L) :-
     N>0,
     Root is round(N^(1/3)),
@@ -314,7 +317,7 @@ sum_of_distinct_cubes(N, L) :-
         sum_of_distinct_cubes(X, L).
 :- end_tests(sum_of_distinct_cubes).
 
-/**/P Q10. fibonacci_sum(N, L)
+/*P Q10. fibonacci_sum(N, L)*/
 fibs_upto(N, L, L) :-
     [Lf,Ls|_]=L,
     F is Lf+Ls,

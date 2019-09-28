@@ -295,11 +295,14 @@ sum_of_distinct_cubes(N, M, L) :-
     Root is floor(N^(1/3))-M,
     Root>0,
     Rem is N-Root^3,
-    (sum_of_distinct_cubes(Rem, M, L1), 
-    [H|_]=L1, H < Root ->
-    append([Root], L1, L);
+    sum_of_distinct_cubes(Rem, 0, L1), 
+    [H|_]=L1,
+    H < Root,
+    append([Root], L1, L),!.
+sum_of_distinct_cubes(N, M, L) :-
+    M < floor(N^(1/3)),
     plus(M, 1, M1),
-    sum_of_distinct_cubes(N, M1, L)).
+    sum_of_distinct_cubes(N, M1, L).
 sum_of_distinct_cubes(N, L) :-
     sum_of_distinct_cubes(N, 0, L).
 

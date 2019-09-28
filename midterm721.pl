@@ -211,67 +211,112 @@ suit(clubs).
 suit(diamonds).
 suit(hearts).
 suit(spades).
-successor(ace,king).
-successor(king,queen).
-successor(queen,jack).
-successor(jack,ten).
-successor(ten,nine).
-successor(nine,eight).
-successor(eight,seven).
-successor(seven,six).
-successor(six,five).
-successor(five,four).
-successor(four,trey).
-successor(trey,deuce).
+rank(ace).
+rank(king).
+rank(queen).
+rank(jack).
+rank(ten).
+rank(nine).
+rank(eight).
+rank(seven).
+rank(six).
+rank(five).
+rank(four).
+rank(trey).
+rank(deuce).
+resucc(ace,king).
+resucc(king,queen).
+resucc(queen,jack).
+resucc(jack,ten).
+resucc(ten,nine).
+resucc(nine,eight).
+resucc(eight,seven).
+resucc(seven,six).
+resucc(six,five).
+resucc(five,four).
+resucc(four,trey).
+resucc(trey,deuce).
 rank(X,Y) :-
-    successor(X,Y).
+    resucc(X,Y).
 rank(X,Y) :-
-    successor(X, Z),
-    successor(Z, Y).
+    resucc(X, Z),
+    rank(Z, Y).
 higher_rank(R1, R2) :-
     rank(R1,R2).
+valid_card((_,S1),(_,S2)) :-
+    S1\==S2.
+valid_card((C1,S1),(C2,S2)) :-
+    S1==S2,
+    C1\==C2.
+valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)) :-
+    valid_card((C1,S1),(C2,S2)),
+    valid_card((C1,S1),(C3,S3)),
+    valid_card((C1,S1),(C4,S4)),
+    valid_card((C2,S2),(C3,S3)),
+    valid_card((C2,S2),(C4,S4)),
+    valid_card((C3,S3),(C4,S4)).
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)] = Cards,
+    rank(C1),
+    rank(C2),
+    rank(C3),
+    rank(C4),
     suit(S1),
     suit(S2),
     suit(S3),
     suit(S4),
-    (S1 == S2 -> higher_rank(C1, C2); true),
-    (S1 == S3 -> higher_rank(C1, C3); true),
-    (S1 == S4 -> higher_rank(C1, C4); true),
+    (S1 \== S2; higher_rank(C1, C2)),
+    (S1 \== S3; higher_rank(C1, C3)),
+    (S1 \== S4; higher_rank(C1, C4)),
+    valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
     Winner = (C1,S1).
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)] = Cards,
+    rank(C1),
+    rank(C2),
+    rank(C3),
+    rank(C4),
     suit(S1),
     suit(S2),
     suit(S3),
     suit(S4),
     S1 == S2,
     higher_rank(C2, C1),
-    (S2 == S3 -> higher_rank(C2, C3); true),
-    (S2 == S4 -> higher_rank(C2, C4); true),
+    (S2 \== S3; higher_rank(C2, C3)),
+    (S2 \== S4; higher_rank(C2, C4)),
+    valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
     Winner = (C2,S2).
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)] = Cards,
+    rank(C1),
+    rank(C2),
+    rank(C3),
+    rank(C4),
     suit(S1),
     suit(S2),
     suit(S3),
     suit(S4),
     S3 == S1,
     higher_rank(C3, C1),
-    (S3 == S2 -> higher_rank(C3, C2); true),
-    (S3 == S4 -> higher_rank(C3, C4); true),
+    (S3 \== S2; higher_rank(C3, C2)),
+    (S3 \== S4; higher_rank(C3, C4)),
+    valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
     Winner = (C3,S3).
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)] = Cards,
+    rank(C1),
+    rank(C2),
+    rank(C3),
+    rank(C4),
     suit(S1),
     suit(S2),
     suit(S3),
     suit(S4),
     S4 == S1,
     higher_rank(C4, C1),
-    (S4 == S2 -> higher_rank(C4, C2); true),
-    (S4 == S3 -> higher_rank(C4, C3); true),
+    (S4 \== S2; higher_rank(C4, C2)),
+    (S4 \== S3; higher_rank(C4, C3)),
+    valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
     Winner = (C4,S4).
 :- begin_tests(trick_winner).
     test(trick_winner_nine, [true(C == (nine, spades))]) :-
@@ -279,32 +324,32 @@ trick_winner(Cards, Winner) :-
     test(trick_winner6, [true(X == five)]) :-
         trick_winner([(six, spades), (deuce, hearts), (X, spades), (nine, clubs)], (six, spades)).
     test(trick_winner_300, [true(LL =:= 300)]) :-
-        findall(_H, trick_winner([_C1,_C2,_C3,_C4], (five, spades)), L), length(L, LL).
+        findall(H, trick_winner([(C1,S1),(C2,S2),(C3,S3),(C4,S4)], (five, spades)), L), length(L, LL).
     test(trick_winner_1344, [true(LL = 1344)]) :-
         findall((R1,R2,R3,R4), trick_winner([(R1,spades),(R2,spades),(R3,spades),(R4,spades)], (ten, spades)), L), length(L, LL).
 :- end_tests(trick_winner).
 
 /* Q9. sum_of_distinct_cubes(N, L)*/
-sum_of_distinct_cubes(N, 0, L) :-
+sum_of_distinct_cubes(N, R, [R]) :-
     N>0,
-    Root is round(N^(1/3)),
-    N =:= Root^3,
-    L=[Root].
-sum_of_distinct_cubes(N, M, L) :-
-    N>0,
-    Root is floor(N^(1/3))-M,
-    Root>0,
-    Rem is N-Root^3,
-    sum_of_distinct_cubes(Rem, 0, L1), 
+    N =:= R^3.
+sum_of_distinct_cubes(N, R, L) :-
+    N1 is N-R^3,
+    N1>0,
+    R1 is round(N1^(1/3)),
+    sum_of_distinct_cubes(N1, R1, L1),!,
     [H|_]=L1,
-    H < Root,
-    append([Root], L1, L),!.
-sum_of_distinct_cubes(N, M, L) :-
-    M < floor(N^(1/3)),
-    plus(M, 1, M1),
-    sum_of_distinct_cubes(N, M1, L).
+    H < R,
+    append([R], L1, L).
+sum_of_distinct_cubes(N, R, L) :-
+    plus(R1, 1, R),
+    R1>0,
+    sum_of_distinct_cubes(N, R1, L).
+
 sum_of_distinct_cubes(N, L) :-
-    sum_of_distinct_cubes(N, 0, L).
+    N>0,
+    R is round(N^(1/3)),
+    sum_of_distinct_cubes(N, R, L).
 
 :- begin_tests(sum_of_distinct_cubes).
     test(sum_of_distinct_cubes100, [true(L == [4, 3, 2, 1])]) :-

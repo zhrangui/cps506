@@ -22,11 +22,17 @@ test(first_missing_positive_str, [true(N =:= 1)]) :-
 riffle([], [], [], _).
 riffle([Left|Lefts], [Right|Rights], Result, left) :-
     riffle(Lefts, Rights, Result1, left),
-    % (var(Result); length(Result, Len), mod(Len, 2) =:= 0),
+    length(Result, Len),
+    length(Result, Len1),
+    abs(Len-Len1, Diff),
+    Diff =\= 1,
     append([Left,Right], Result1, Result).
 riffle([Left|Lefts], [Right|Rights], Result, right) :-
     riffle(Lefts, Rights, Result1, right),
-    % (var(Result); length(Result, Len), mod(Len, 2) =:= 0),
+    length(Result, Len),
+    length(Result, Len1),
+    abs(Len-Len1, Diff),
+    Diff =\= 1,
     append([Right,Left], Result1, Result).
 
 :- begin_tests(riffle).
@@ -359,15 +365,15 @@ trick_winner(Cards, Winner) :-
         findall((R1,R2,R3,R4), trick_winner([(R1,spades),(R2,spades),(R3,spades),(R4,spades)], (ten, spades)), L), length(L, LL).
 :- end_tests(trick_winner).
 
-/* Q9. sum_of_distinct_cubes(N, L)*/
+/*P Q9. sum_of_distinct_cubes(N, L)*/
 sum_of_distinct_cubes(N, R, [R]) :-
     N>0,
     N =:= R^3.
 sum_of_distinct_cubes(N, R, L) :-
     N1 is N-R^3,
     N1>0,
-    R1 is round(N1^(1/3)),
-    R1<R,
+    R1 is R-1,
+    R1 > 0,
     sum_of_distinct_cubes(N1, R1, L1),
     append([R], L1, L).
 sum_of_distinct_cubes(N, R, L) :-

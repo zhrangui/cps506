@@ -94,7 +94,6 @@ sz(N, SZ, SN, T) :-
         sz(1234, SZ).
 :- end_tests(sz).
 
-
 /*P Q4: crag(A, B, C, Score)*/
 dice(1).
 dice(2).
@@ -368,15 +367,13 @@ sum_of_distinct_cubes(N, R, L) :-
     N1 is N-R^3,
     N1>0,
     R1 is round(N1^(1/3)),
-    sum_of_distinct_cubes(N1, R1, L1),!,
-    [H|_]=L1,
-    H < R,
+    R1<R,
+    sum_of_distinct_cubes(N1, R1, L1),
     append([R], L1, L).
 sum_of_distinct_cubes(N, R, L) :-
     plus(R1, 1, R),
     R1>0,
-    sum_of_distinct_cubes(N, R1, L).
-
+    sum_of_distinct_cubes(N, R1, L),!.
 sum_of_distinct_cubes(N, L) :-
     N>0,
     R is round(N^(1/3)),

@@ -1,6 +1,6 @@
 /*command run_tests to run all unit test cases or run_tests(fibonacci_sum) to execute individual test cases*/
 
-/* P Q1: first_missing_positive(Items, Result) */
+/*P Q1: first_missing_positive(Items, Result) */
 first_missing_positive(Items, Result) :-
     first_missing_positive(Items, 1, Result).
 first_missing_positive(Items, Result, Result) :-
@@ -10,29 +10,24 @@ first_missing_positive(Items, N, Result) :-
     first_missing_positive(Result, N1, Items).
 
 :- begin_tests(first_missing_positive).
-test(first_missing_positive, [true(N =:= 3)]) :-
+test(first_missing_positive_3, [true(N =:= 3)]) :-
     first_missing_positive([6, 8, 2, 999, 1, 4, 7], N).
-test(first_missing_positive_minus, [true(N =:= 1)]) :-
+test(first_missing_positive_1, [true(N =:= 1)]) :-
     first_missing_positive([42, 99, 123456, -3, 777], N).
 test(first_missing_positive_str, [true(N =:= 1)]) :-
     first_missing_positive([bob, jack, foo(bar, baz, qux)], N).
 :- end_tests(first_missing_positive).
 
-/*Q2: riffle(Left, Right, Result, Mode)*/ 
+/*P Q2: riffle(Left, Right, Result, Mode)*/ 
 riffle([], [], [], _).
+riffle([], [], Result, _) :-
+    length(Result, L),
+    0 =:= mod(L, 2),!.
 riffle([Left|Lefts], [Right|Rights], Result, left) :-
     riffle(Lefts, Rights, Result1, left),
-    length(Result, Len),
-    length(Result, Len1),
-    abs(Len-Len1, Diff),
-    Diff =\= 1,
     append([Left,Right], Result1, Result).
 riffle([Left|Lefts], [Right|Rights], Result, right) :-
     riffle(Lefts, Rights, Result1, right),
-    length(Result, Len),
-    length(Result, Len1),
-    abs(Len-Len1, Diff),
-    Diff =\= 1,
     append([Right,Left], Result1, Result).
 
 :- begin_tests(riffle).

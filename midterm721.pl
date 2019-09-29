@@ -293,7 +293,6 @@ trick_winner(Cards, Winner) :-
     % rank(C2),
     % rank(C3),
     % rank(C4),
-    % rank(C),
     suit(S1),
     suit(S2),
     suit(S3),
@@ -303,7 +302,8 @@ trick_winner(Cards, Winner) :-
     (S1 == S3 -> higher_rank(C1, C3); true),
     (S1 == S4 -> higher_rank(C1, C4); true),
     valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
-    Winner = (C1,S1).
+    C=C1,
+    S=S1.
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)]=Cards,
     (C,S)=Winner,
@@ -311,17 +311,18 @@ trick_winner(Cards, Winner) :-
     % rank(C2),
     % rank(C3),
     % rank(C4),   
-    % rank(C),
     suit(S1),
     suit(S2),
     suit(S3),
     suit(S4),
+    suit(S),
     S1 == S2,
     higher_rank(C2, C1),
     (S1 == S3 -> higher_rank(C2, C3); true),
     (S1 == S4 -> higher_rank(C2, C4); true),
     valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
-    Winner = (C2,S2).
+    C=C2,
+    S=S2.
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)]=Cards,
     (C,S)=Winner,
@@ -329,17 +330,18 @@ trick_winner(Cards, Winner) :-
     % rank(C2),
     % rank(C3),
     % rank(C4),
-    % rank(C),
     suit(S1),
     suit(S2),
     suit(S3),
     suit(S4),
+    suit(S),
     S1 == S3,
     higher_rank(C3, C1),
     (S1 == S2 -> higher_rank(C3, C2); true),
     (S1 == S4 -> higher_rank(C3, C4); true),
     valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
-    Winner = (C3,S3).
+    C=C3,
+    S=S3.
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)]=Cards,
     (C,S)=Winner,
@@ -347,17 +349,18 @@ trick_winner(Cards, Winner) :-
     % rank(C2),
     % rank(C3),
     % rank(C4),
-    % rank(C),
     suit(S1),
     suit(S2),
     suit(S3),
     suit(S4),
+    suit(S),
     S1 == S4,
     higher_rank(C4, C1),
     (S1 == S2 -> higher_rank(C4, C2); true),
     (S1 == S3 -> higher_rank(C4, C3); true),
     valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
-    Winner = (C4,S4).
+    C=C4,
+    S=S4.
 :- begin_tests(trick_winner).
     test(trick_winner_nine, [true(C == (nine, spades))]) :-
         trick_winner([(four, spades), (deuce, hearts), (nine, spades), (nine, clubs)], C).

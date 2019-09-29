@@ -274,6 +274,11 @@ rank(X,Y) :-
     rank(Z, Y).
 higher_rank(R1, R2) :-
     rank(R1,R2).
+higher_suit((_,S1),(_,S2)) :-
+    S1 \== S2. 
+higher_suit((C1,S1),(C2,S2)) :-
+    S1 == S2,
+    higher_rank(C1, C2).
 valid_card((_,S1),(_,S2)) :-
     S1\==S2.
 valid_card((C1,S1),(C2,S2)) :-
@@ -298,9 +303,9 @@ trick_winner(Cards, Winner) :-
     suit(S3),
     suit(S4),
     suit(S),
-    (S1 == S2 -> higher_rank(C1, C2); true),
-    (S1 == S3 -> higher_rank(C1, C3); true),
-    (S1 == S4 -> higher_rank(C1, C4); true),
+    higher_suit((C1,S1),(C2,S2)),
+    higher_suit((C1,S1),(C3,S3)),
+    higher_suit((C1,S1),(C4,S4)),
     valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
     C=C1,
     S=S1.
@@ -318,8 +323,8 @@ trick_winner(Cards, Winner) :-
     suit(S),
     S1 == S2,
     higher_rank(C2, C1),
-    (S1 == S3 -> higher_rank(C2, C3); true),
-    (S1 == S4 -> higher_rank(C2, C4); true),
+    higher_suit((C2,S2),(C3,S3)),
+    higher_suit((C2,S2),(C4,S4)),
     valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
     C=C2,
     S=S2.
@@ -337,8 +342,8 @@ trick_winner(Cards, Winner) :-
     suit(S),
     S1 == S3,
     higher_rank(C3, C1),
-    (S1 == S2 -> higher_rank(C3, C2); true),
-    (S1 == S4 -> higher_rank(C3, C4); true),
+    higher_suit((C3,S3),(C2,S2)),
+    higher_suit((C3,S3),(C4,S4)),
     valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
     C=C3,
     S=S3.
@@ -356,8 +361,8 @@ trick_winner(Cards, Winner) :-
     suit(S),
     S1 == S4,
     higher_rank(C4, C1),
-    (S1 == S2 -> higher_rank(C4, C2); true),
-    (S1 == S3 -> higher_rank(C4, C3); true),
+    higher_suit((C4,S4),(C2,S2)),
+    higher_suit((C4,S4),(C3,S3)),
     valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)),
     C=C4,
     S=S4.

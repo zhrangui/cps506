@@ -20,6 +20,8 @@ test(first_missing_positive_1, [true(N =:= 1)]) :-
     first_missing_positive([42, 99, 123456, -3, 777], N).
 test(first_missing_positive_str, [true(N =:= 1)]) :-
     first_missing_positive([bob, jack, foo(bar, baz, qux)], N).
+test(first_missing_positive_2_1, [true(N =:= 1)]) :-
+    first_missing_positive([2, 3, 4, [1, 1, 1, 1]], N).
 :- end_tests(first_missing_positive).
 
 /*P Q2: riffle(Left, Right, Result, Mode)*/ 
@@ -41,6 +43,8 @@ test(rifle_false, [fail]) :-
     riffle(_, _, [odd, number, of, elements, cannot, succeed, here], _).
 test(rifle_mode, [true(Mode == right)]) :-
     riffle([42, bob, 99], [55, jack, tom], [55|_], Mode).
+% test(rifle_mode_all, [true(L1 = [A, C, E], L2 = [B, D, F], M = left)]) :-
+%     riffle(L1, L2, [A, B, C, D, E, F], M).
 :- end_tests(riffle).
 
 /*P Q3: sz(N, SZ)*/
@@ -87,6 +91,12 @@ sz(N, SZ, SN, T) :-
     sz(N, SZ, SN1, T).
 
 :- begin_tests(sz).
+    test(seven_zero70, [true(N =:= 7777700000000)]) :-
+        seven_zero(N, 5, 8).
+    test(seven_zero7, [true(N =:= 77777777777777777777)]) :-
+        seven_zero(N, 20, 0).
+    test(seven_zero0, [true(N =:= 0)]) :-
+        seven_zero(N, 0, 10000000000).
     test(sz42, [true(SZ =:= 7770)]) :-
         sz(42, SZ).
     test(sz400000, [true(SZ =:= 70000000)]) :-
@@ -375,8 +385,8 @@ trick_winner(Cards, Winner) :-
         trick_winner([(four, spades), (deuce, hearts), (nine, spades), (nine, clubs)], C).
     test(trick_winner6, [true(X == five)]) :-
         trick_winner([(six, spades), (deuce, hearts), (X, spades), (nine, clubs)], (six, spades)).
-    test(trick_winner_300, [true(LL =:= 300)]) :-
-        findall([C1,C2,C3,C4], trick_winner([C1,C2,C3,C4], (five, spades)), L), length(L, LL).
+    test(trick_winner_300, [true(LL =:= 375)]) :-
+        findall(_, trick_winner([C1,C2,C3,C4], (five, spades)), L), length(L, LL).
     test(trick_winner_1344, [true(LL = 1344)]) :-
         findall((R1,R2,R3,R4), trick_winner([(R1,spades),(R2,spades),(R3,spades),(R4,spades)], (ten, spades)), L), length(L, LL).
 :- end_tests(trick_winner).
@@ -444,14 +454,6 @@ fibonacci_sum(N, L) :-
    fibonacci_sum(N, F, L).
     
 :- begin_tests(fibonacci_sum).
-    test(fibs_upto, [true(L == [34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-
-        fibs_upto(34, L).
-    test(fibs_upto55, [true(L == [55, 34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-
-        fibs_upto(55, L).
-    test(fibs_upto10_10, [true(L == [7778742049, 4807526976, 2971215073, 1836311903, 1134903170, 701408733, 433494437, 267914296, 165580141,
-        102334155,63245986,39088169,24157817,14930352,9227465,5702887,3524578,2178309,1346269,832040,514229,317811,196418,121393,75025,46368,
-        28657,17711,10946,6765,4181,2584,1597,987,610,377,233,144,89,55,34,21,13,8,5,3,2,1,1])]) :-
-        fibs_upto(10^10, L).
     test(fibonacci_sum30, [true(L == [21, 8, 1])]) :-
         fibonacci_sum(30, L).
     test(fibonacci_sum1000000, [true(L == [832040, 121393, 46368, 144, 55])]) :-
@@ -460,5 +462,13 @@ fibonacci_sum(N, L) :-
             160500643816367088, 37889062373143906, 117669030460994, 27777890035288, 4052739537881
             ,1548008755920,365435296162,2971215073,24157817,3524578,196418,75025,10946,4181,610,233,89,21,3,1])]) :-
         X is 10^20,
-        fibonacci_sum(X, L). 
+        fibonacci_sum(X, L).
+    test(fibs_upto, [true(L == [34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-
+        fibs_upto(34, L).
+    test(fibs_upto77, [true(L == [55, 34, 21, 13, 8, 5, 3, 2, 1, 1])]) :-
+        fibs_upto(77, L).
+    test(fibs_upto10_10, [true(L == [7778742049, 4807526976, 2971215073, 1836311903, 1134903170, 701408733, 433494437, 267914296, 165580141,
+        102334155,63245986,39088169,24157817,14930352,9227465,5702887,3524578,2178309,1346269,832040,514229,317811,196418,121393,75025,46368,
+        28657,17711,10946,6765,4181,2584,1597,987,610,377,233,144,89,55,34,21,13,8,5,3,2,1,1])]) :-
+        fibs_upto(10^10, L).
 :- end_tests(fibonacci_sum).

@@ -24,7 +24,7 @@ test(first_missing_positive_2_1, [true(N =:= 1)]) :-
     first_missing_positive([2, 3, 4, [1, 1, 1, 1]], N).
 :- end_tests(first_missing_positive).
 
-/*P Q2: riffle(Left, Right, Result, Mode)*/ 
+/* Q2: riffle(Left, Right, Result, Mode)*/ 
 riffle([], [], [], _).
 riffle([], [], Result, _) :-
     length(Result, L),
@@ -47,7 +47,7 @@ test(rifle_mode, [true(Mode == right)]) :-
 %     riffle(L1, L2, [A, B, C, D, E, F], M).
 :- end_tests(riffle).
 
-/*P Q3: sz(N, SZ)*/
+/* Q3: sz(N, SZ)*/
 seven_zero_rec(0, 0, 0).
 seven_zero_rec(N, S, Z) :-
     Z > 0,
@@ -109,7 +109,7 @@ sz(N, SZ, SN, T) :-
         sz(1234, SZ).
 :- end_tests(sz).
 
-/*P Q4: crag(A, B, C, Score)*/
+/* Q4: crag(A, B, C, Score)*/
 dice(1).
 dice(2).
 dice(3).
@@ -251,7 +251,7 @@ safe_squares_rooks([(R,C)|Rooks], Rs, Cs, N, S) :-
         safe_squares_rooks([], 100, S).
 :- end_tests(safe_squares_rooks).
 
-/* Q8. trick_winner(Cards, Winner)*/
+/*P Q8. trick_winner(Cards, Winner)*/
 suit(clubs).
 suit(diamonds).
 suit(hearts).
@@ -308,10 +308,6 @@ valid_cards((C1,S1),(C2,S2),(C3,S3),(C4,S4)) :-
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)]=Cards,
     (C,S)=Winner,
-    % rank(C1),
-    % rank(C2),
-    % rank(C3),
-    % rank(C4),
     suit(S1),
     suit(S2),
     suit(S3),
@@ -326,10 +322,6 @@ trick_winner(Cards, Winner) :-
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)]=Cards,
     (C,S)=Winner,
-    % rank(C1),
-    % rank(C2),
-    % rank(C3),
-    % rank(C4),   
     suit(S1),
     suit(S2),
     suit(S3),
@@ -345,10 +337,6 @@ trick_winner(Cards, Winner) :-
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)]=Cards,
     (C,S)=Winner,
-    % rank(C1),
-    % rank(C2),
-    % rank(C3),
-    % rank(C4),
     suit(S1),
     suit(S2),
     suit(S3),
@@ -364,10 +352,6 @@ trick_winner(Cards, Winner) :-
 trick_winner(Cards, Winner) :-
     [(C1,S1),(C2,S2),(C3,S3),(C4,S4)]=Cards,
     (C,S)=Winner,
-    % rank(C1),
-    % rank(C2),
-    % rank(C3),
-    % rank(C4),
     suit(S1),
     suit(S2),
     suit(S3),

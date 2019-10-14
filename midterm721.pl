@@ -26,9 +26,9 @@ test(first_missing_positive_2_1, [true(N =:= 1)]) :-
 
 /* Q2: riffle(Left, Right, Result, Mode)*/ 
 riffle([], [], [], _).
-riffle([], [], Result, _) :-
-    length(Result, L),
-    0 =:= mod(L, 2),!.
+% riffle([], [], Result, _) :-
+%     length(Result, L),
+%     0 =:= mod(L, 2),!.
 riffle([Left|Lefts], [Right|Rights], Result, left) :-
     riffle(Lefts, Rights, Result1, left),
     append([Left,Right], Result1, Result).
@@ -43,11 +43,11 @@ test(rifle_false, [fail]) :-
     riffle(_, _, [odd, number, of, elements, cannot, succeed, here], _).
 test(rifle_mode, [true(Mode == right)]) :-
     riffle([42, bob, 99], [55, jack, tom], [55|_], Mode).
-% test(rifle_mode_all, [true(L1 = [A, C, E], L2 = [B, D, F], M = left)]) :-
-%     riffle(L1, L2, [A, B, C, D, E, F], M).
+test(rifle_mode_all, [true([L1, L2, M] == [[A, C, E], [B, D, F], left])]) :-
+    riffle(L1, L2, [A, B, C, D, E, F], M).
 :- end_tests(riffle).
 
-/* Q3: sz(N, SZ)*/
+/*P Q3: sz(N, SZ)*/
 seven_zero_rec(0, 0, 0).
 seven_zero_rec(N, S, Z) :-
     Z > 0,
@@ -68,8 +68,10 @@ seven_zero(N, S, Z, Acc) :-
     plus(S, -1, S1),
     Acc1 is Acc*10+7,
     seven_zero(N, S1, Z, Acc1).
+seven_zero(0, 0, _, 0).
 seven_zero(N, 0, Z, Acc) :-
     Z > 0,
+    Acc > 0,
     plus(Z, -1, Z1),
     Acc1 is Acc*10,
     seven_zero(N, 0, Z1, Acc1).
@@ -109,7 +111,7 @@ sz(N, SZ, SN, T) :-
         sz(1234, SZ).
 :- end_tests(sz).
 
-/* Q4: crag(A, B, C, Score)*/
+/*P Q4: crag(A, B, C, Score)*/
 dice(1).
 dice(2).
 dice(3).
@@ -158,6 +160,15 @@ crag([A, B, C], 20) :-
 crag([A, B, C], 20) :-
     dice(A,B,C),
     msort([A, B, C], [2,4,6]).
+crag([A, B, C], 5) :-
+    dice(A,B,C),
+    msort([A, B, C], [3,4,5]).
+crag([A, B, C], 4) :-
+    dice(A,B,C),
+    msort([A, B, C], [2,3,4]).
+crag([A, B, C], 1) :-
+    dice(A,B,C),
+    msort([A, B, C], [1,3,4]).
 crag([A, B, C], 12) :-
     dice(A,B,C),
     crag_double([A, B, C], 6).
@@ -370,7 +381,7 @@ trick_winner(Cards, Winner) :-
     test(trick_winner6, [true(X == five)]) :-
         trick_winner([(six, spades), (deuce, hearts), (X, spades), (nine, clubs)], (six, spades)).
     test(trick_winner_300, [true(LL =:= 375)]) :-
-        findall(_, trick_winner([C1,C2,C3,C4], (five, spades)), L), length(L, LL).
+        findall(_, trick_winner([_C1,_C2,_C3,_C4], (five, spades)), L), length(L, LL).
     test(trick_winner_1344, [true(LL = 1344)]) :-
         findall((R1,R2,R3,R4), trick_winner([(R1,spades),(R2,spades),(R3,spades),(R4,spades)], (ten, spades)), L), length(L, LL).
 :- end_tests(trick_winner).

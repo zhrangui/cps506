@@ -6,8 +6,9 @@
 
 /*P Q1: first_missing_positive(Items, Result) */
 first_missing_positive(Items, Result) :-
-    min_list(Items, M),
-    Result = M.
+    sort(Items, S),
+    [M|_]= S,
+    Result is M+1.
 
 /* Q2: riffle(Left, Right, Result, Mode)*/ 
 riffle([], [], [], _) :- !.

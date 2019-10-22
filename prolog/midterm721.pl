@@ -6,17 +6,26 @@
 
 /*P Q1: first_missing_positive(Items, Result) */
 
+less_than_second(F, S) :-
+    integer(F),
+    integer(S),
+    F >= 0,
+    F+1 < S.
+less_than_second(F, S) :-
+    integer(F),
+    \+ integer(S).
+    
 first_missing_positive([H|_], M, Result) :-
-    number(M),
-    number(H),
-    M+1 < H,
+    less_than_second(M, H),
     Result is M+1.
-first_missing_positive(_, _, 1) :- !.
+first_missing_positive([], M, Result) :-
+    less_than_second(M, []),
+    Result is M+1.
 first_missing_positive([H|S], _, Result) :-
     first_missing_positive(S, H, Result).
 first_missing_positive(Items, Result) :-
-    sort(Items, [H|S]),
-    first_missing_positive(S, H, Result).
+    sort([0|Items], [H|S]),
+    first_missing_positive(S, H, Result),!.
 
 /* Q2: riffle(Left, Right, Result, Mode)*/ 
 riffle([], [], [], _) :- !.

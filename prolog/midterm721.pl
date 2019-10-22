@@ -136,9 +136,6 @@ crag([A, B, C], 5) :-
 crag([A, B, C], 4) :-
     dice(A,B,C),
     msort([A, B, C], [2,3,4]).
-crag([A, B, C], 1) :-
-    dice(A,B,C),
-    msort([A, B, C], [1,3,4]).
 crag([A, B, C], 12) :-
     dice(A,B,C),
     crag_double([A, B, C], 6).

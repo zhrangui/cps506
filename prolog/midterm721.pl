@@ -5,10 +5,18 @@
     */
 
 /*P Q1: first_missing_positive(Items, Result) */
-first_missing_positive(Items, Result) :-
-    sort(Items, S),
-    [M|_]= S,
+
+first_missing_positive([H|_], M, Result) :-
+    number(M),
+    number(H),
+    M+1 < H,
     Result is M+1.
+first_missing_positive(_, _, 1) :- !.
+first_missing_positive([H|S], _, Result) :-
+    first_missing_positive(S, H, Result).
+first_missing_positive(Items, Result) :-
+    sort(Items, [H|S]),
+    first_missing_positive(S, H, Result).
 
 /* Q2: riffle(Left, Right, Result, Mode)*/ 
 riffle([], [], [], _) :- !.

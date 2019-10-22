@@ -6,12 +6,8 @@
 
 /*P Q1: first_missing_positive(Items, Result) */
 first_missing_positive(Items, Result) :-
-    first_missing_positive(Items, 1, Result).
-first_missing_positive(Items, Result, Result) :-
-    \+ member(Result, Items).
-first_missing_positive(Items, N, Result) :-
-    N1 is N+1,
-    first_missing_positive(Result, N1, Items).
+    min_list(Items, M),
+    Result = M.
 
 /* Q2: riffle(Left, Right, Result, Mode)*/ 
 riffle([], [], [], _) :- !.

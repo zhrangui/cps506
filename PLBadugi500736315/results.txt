@@ -1,5 +1,5 @@
 1 : Badugi Boogie 1 : 2
-2 : Badugi Boogie 2 : 0
+2 : Badugi Boogie 1 : 0
 
 
 

@@ -308,7 +308,7 @@ public class PLBadugiRunner {
         /* Modify this array to include the player classes that participate in the tournament. */
 
         String[] playerClasses = {
-          "IlkkaPlayer3", "IlkkaPlayer3"
+          "IlkkaPlayer3", "PLBadugi500736315"
         };
         
         PrintWriter out = new PrintWriter(System.out);

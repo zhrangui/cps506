@@ -157,10 +157,15 @@ crag([A, B, C], 3) :-
 
 /*P Q5: count_dominators(Items, Result)*/
 count_dominators([], 0).
-count_dominators([Item|Items], Result) :-
-    count_dominators(Items, Result1),
-    (max_member(Item, [Item|Items]) ->
-plus(Result1, 1, Result); Result is Result1).
+count_dominators(Items, Result) :-
+count_dominators(Items, Result, _).
+count_dominators([Item], 1, Item).
+count_dominators([Item|Items], Result, Item) :-
+    count_dominators(Items, Result1, Max),
+    Item > Max,
+    plus(Result1, 1, Result),!.
+count_dominators([_|Items], Result, Max) :-
+    count_dominators(Items, Result, Max).
 
 /*P Q6: running_median(Items, Medians)*/
 median(L, X) :-

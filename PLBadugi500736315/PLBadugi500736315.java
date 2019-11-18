@@ -3,15 +3,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-// VERSION OF FEBRUARY 4, 2017, FIXED VARIOUS BUGS AND ADDED COMMENTS
-
 public class PLBadugi500736315 implements PLBadugiPlayer {
 
     private static final double MAXAGGRO = 5;
 
-    private Random rng = new Random();
+    private Random rnd = new Random();
     private int position;
 
+    private double probability4Suit = 52.0*39.0*26.0*13.0/(52.0*51.0*50.0*49.0);
+    private double[] suitProbabilities = {1.0/8.0, 2.0/8.0, 3.0/8.0, 1.0};
+    private double[] chanceThresholds = {0.25, 0.5, 0.90};
     // State variables for the current hand, meaning exactly what the names say.
     private int lastBetWasBluff = -1;
     private int lastDrawWasBluff = -1;
@@ -33,11 +34,11 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
     private int[] ourAggro = new int[4];
 
     private static DecimalFormat df = new DecimalFormat();
+
     static {
         df.setMaximumFractionDigits(3);
     }
-
-    // Counter of how many IlkkaPlayer3 objects have been created.
+    // Counter of how many raymond objects have been created.
     private static int id = 0;
 
     public PLBadugi500736315(String name) {
@@ -45,29 +46,47 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
     }
 
     public PLBadugi500736315() {
-        this.name = "Badugi Boogie " + (++id);
+        this.name = "Raymond " + (++id);
     }
-    
+
     // Threshold hands to estimate the value of our hand for the drawing rounds
     private PLBadugiHand[][] thresholds = {
-        // Thresholds for 0 draws remaining
-        { new PLBadugiHand("kh7h4c2d"), new PLBadugiHand("qh5s2h2d"), new PLBadugiHand("th9c4das"), new PLBadugiHand("7d6c3sah") },
-        // Thresholds for 1 draws remaining
-        { new PLBadugiHand("qh9d5c4c"), new PLBadugiHand("7s7c6c2d"), new PLBadugiHand("jh9h7s2c"), new PLBadugiHand("jd7c5s4h") },
-        // Thresholds for 2 draws remaining
-        { new PLBadugiHand("kstc7c2s"), new PLBadugiHand("js8s4d3d"), new PLBadugiHand("js6d4c2s"), new PLBadugiHand("ks7d4h2c") },
-        // Thresholds for 3 draws remaining
-        { new PLBadugiHand("khks7h2d"), new PLBadugiHand("Qs8h7s5c"), new PLBadugiHand("Th6h4s2c"), new PLBadugiHand("KhQsJdTc")}
+            // Thresholds for 0 draws remaining
+            {new PLBadugiHand("kh7h4c2d"), new PLBadugiHand("qh5s2h2d"), new PLBadugiHand("th9c4das"), new PLBadugiHand("7d6c3sah")},
+            // Thresholds for 1 draws remaining
+            {new PLBadugiHand("qh9d5c4c"), new PLBadugiHand("7s7c6c2d"), new PLBadugiHand("jh9h7s2c"), new PLBadugiHand("jd7c5s4h")},
+            // Thresholds for 2 draws remaining
+            {new PLBadugiHand("kstc7c2s"), new PLBadugiHand("js8s4d3d"), new PLBadugiHand("js6d4c2s"), new PLBadugiHand("ks7d4h2c")},
+            // Thresholds for 3 draws remaining
+            {new PLBadugiHand("khks7h2d"), new PLBadugiHand("Qs8h7s5c"), new PLBadugiHand("Th6h4s2c"), new PLBadugiHand("KhQsJdTc")}
     };
-    
-    // Initialize the counters at the start of each hand.
+
+    /**
+     * The method to inform the agent that a new heads-up match is starting.
+     *
+     * @param handsToGo How many hands this tournament consists of.
+     */
     public void startNewMatch(int handsToGo) {
         handCount = new int[4];
         opponentAggro[0] = opponentAggro[1] = opponentAggro[2] = opponentAggro[3] = 0;
         ourAggro[0] = ourAggro[1] = ourAggro[2] = ourAggro[3] = 0;
-    }    
-    
-    // Initialize the hand state variables at the start of the new hand.
+    }
+
+    /**
+     * The method to inform the agent that the current heads-up match has ended.
+     *
+     * @param finalScore The total number of chips accumulated by this player during the match.
+     */
+    public void finishedMatch(int finalScore) {
+    }
+
+    /**
+     * The method to inform the agent that a new hand is starting.
+     *
+     * @param position     0 if the agent is the dealer in this hand, 1 if the opponent.
+     * @param handsToGo    The number of hands left to play in this heads-up tournament.
+     * @param currentScore The current score of the tournament.
+     */
     public void startNewHand(int position, int handsToGo, int currentScore) {
         lastBetWasBluff = -1;
         lastDrawWasBluff = -1;
@@ -76,100 +95,112 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
         chances = 1.0;
         this.position = position;
     }
-    
-    public int bettingAction(int drawsRemaining, PLBadugiHand hand, int pot, int raises, int toCall,
-                             int minRaise, int maxRaise, int opponentDrew) 
-    {
-        // Increment the counter for hands that have reached this drawing round.
-        if(raises < 2) { handCount[drawsRemaining]++; }
-        // Opponent raising lowers our chances.
-        if(raises > 0) { chances = (1 + chances) / 2; }
-        // Compute the opponent aggro and our aggro on this drawing round based on previous hands.
-        double opAg, ourAg;
-        if(handCount[drawsRemaining] > 50) { // Use history only after 50 hands
-            opAg= opponentAggro[drawsRemaining] / (3 + (double)(handCount[drawsRemaining]));
-            ourAg = ourAggro[drawsRemaining] / (3 + (double)(handCount[drawsRemaining]));
-        }
-        else { opAg = 0.3; ourAg = 0.3; }
-        weRaisedLast = -1;
-        // Pot odds often affect what we do this betting round.
-        double potOdds = toCall / (double) pot;
-        if(toCall > 0) { // Opponent made a raise in this drawing round.
-            opponentAggro[drawsRemaining] += raises;
-        }
-        // If opponent did not bet ahead of us, our chances improve.
-        if(position == 1 && toCall == 0) { chances *= (1.1 + rng.nextDouble() * 0.5); }
-        // Compare the hand to the threshold hands for the current betting round.
-        for(PLBadugiHand other: thresholds[drawsRemaining]) {
-            if(hand.compareTo(other) > 0) { chances *= 1.05; }
-            else { break; }
-        }
-        // Adjust our chances by our inactive cards and by how many card the opponent drew.
-        if(hand.getInactiveCards().size() > 1) { chances = 0.8 * chances; }
-        for(int i = 0; i < opponentDrew; i++) { chances *= 1.2 + rng.nextDouble() * 0.3; }
 
-        // If our last draw was a bluff, raise now.
-        if(lastDrawWasBluff > -1) {
-            lastDrawWasBluff = rng.nextDouble() < .5 ? -1 : drawsRemaining;
-            return maxRaise - rng.nextInt(maxRaise - minRaise + 1) / 2;
-        }
-        
-        //System.out.printf("Chances for %s feel like %.3f.\n", name, chances);
-        if(chances < 3 * potOdds / (1 - opAg) && hand.compareTo(thresholds[0][thresholds[0].length - 1]) < 0) {
-            if(raises < 2 && rng.nextDouble() * 0.5 < 1 - ourAg) {
-                lastBetWasBluff = drawsRemaining;
-                return maxRaise - rng.nextInt(maxRaise - minRaise + 1) / 3;
-            }
-            else if(drawsRemaining > 0 && hand.getActiveCards().size() == 4 && opponentDrew > 0 && rng.nextDouble() < ourAggro[drawsRemaining] ) {
-                return toCall;
-            }
-            else { 
-                if(toCall > 0) { weFoldedToRaise = drawsRemaining; }
-                return 0;
-            }
-        }
-        
-        double action = chances + (0.2 + 0.3 * rng.nextDouble()) * (1 - opAg) - 0.3;
-        if(action < 3 * potOdds * drawMult[drawsRemaining] * (1 - ourAg)) { return toCall; }
-        else if(opponentDrew == 0 && drawsRemaining == 0) { return toCall; }
-        else if(opponentDrew < 2 && drawsRemaining == 0 && hand.getInactiveCards().size() > 0) { return toCall; } 
-        else {
-            int amount = (int)(maxRaise - (maxRaise - minRaise) * (rng.nextDouble() * 0.7 + 0.3));
-            weRaisedLast = drawsRemaining;
-            ourAggro[drawsRemaining]++;
+    /**
+     * The method to ask the agent what betting action it wants to perform.
+     *
+     * @param drawsRemaining How many draws are remaining after this betting round.
+     * @param hand           The current hand held by this player.
+     * @param pot            The current size of the pot.
+     * @param raises         The number of raises made in this round.
+     * @param toCall         The cost to call to stay in the pot.
+     * @param minRaise       The minimum allowed raise to make, if the agent wants to raise.
+     * @param maxRaise       The maximum allowed raise to make, if the agent wants to raise.
+     * @param opponentDrew   How many cards the opponent drew in the previous drawing round. In the
+     *                       first betting round, this argument will be -1.
+     * @return The amount of chips that the player pushes into the pot. Putting in less than
+     * toCall means folding. Any amount less than minRaise becomes a call, and any amount between
+     * minRaise and maxRaise, inclusive, is a raise. Any amount greater than maxRaise is clipped at
+     * maxRaise.
+     */
+    public int bettingAction(int drawsRemaining, PLBadugiHand hand, int pot, int raises, int toCall,
+                             int minRaise, int maxRaise, int opponentDrew) {
+        int suit = hand.getActiveCards().size() - 1;
+        int rank = hand.getActiveCards().get(0).getRank();
+        double probability13Card = 1.0 - (rank + 1) / 13.0;
+        chances = suitProbabilities[suit] * probability13Card;
+
+        if (chances > chanceThresholds[2]) {
+            return maxRaise;
+        } else if (chances > chanceThresholds[1]) {
+            int amount = (int) (minRaise + (maxRaise - minRaise) * (chances));
             return amount;
+        } else if (chances > chanceThresholds[0]) {
+            return toCall;
+        } else {
+            return toCall;
         }
-        
     }
-    
+
+    /**
+     * The method to ask the agent which cards it wants to replace in this drawing round.
+     *
+     * @param drawsRemaining How many draws are remaining, including this drawing round.
+     * @param hand           The current hand held by this player.
+     * @param pot            The current size of the pot.
+     * @param dealerDrew     How many cards the dealer drew in this drawing round. When this method is called
+     *                       for the dealer, this argument will be -1.
+     * @return The list of cards in the hand that the agent wants to replace.
+     */
     public List<Card> drawingAction(int drawsRemaining, PLBadugiHand hand, int pot, int dealerDrew) {
         List<Card> allCards = hand.getAllCards();
         List<Card> inactiveCards = hand.getInactiveCards();
         List<Card> pitch = new ArrayList<Card>();
         // Don't break a made badugi when the opponent is drawing.
-        if(inactiveCards.size() == 0 && drawsRemaining < 2 && dealerDrew > 0) { ourLastDraw = 0; return pitch; }
+        if (inactiveCards.size() == 0 && drawsRemaining < 2 && dealerDrew > 0) {
+            ourLastDraw = 0;
+            return pitch;
+        }
         // If we are bluffing, are we going to keep bluffing?
-        if(lastDrawWasBluff > -1 && dealerDrew != 0 || Math.max(dealerDrew, 0) * rng.nextDouble() * (1 - chances) 
-        * (opponentAggro[drawsRemaining] / (double) handCount[drawsRemaining]) > 0.4) {
-            ourLastDraw = 0; lastDrawWasBluff = drawsRemaining; return pitch;
+        if (lastDrawWasBluff > -1 && dealerDrew != 0 || Math.max(dealerDrew, 0) * rnd.nextDouble() * (1 - chances)
+                * (opponentAggro[drawsRemaining] / (double) handCount[drawsRemaining]) > 0.4) {
+            ourLastDraw = 0;
+            lastDrawWasBluff = drawsRemaining;
+            return pitch;
         }
         // Pitch the inactive cards and also the active cards that are too high in rank.
-        for(Card c: allCards) {
-            if(c.getRank() > 12 + dealerDrew - drawsRemaining || inactiveCards.contains(c)) {
+        for (Card c : allCards) {
+            if (c.getRank() > 12 + dealerDrew - drawsRemaining || inactiveCards.contains(c)) {
                 pitch.add(c);
             }
         }
         ourLastDraw = pitch.size();
         return pitch;
     }
-    
-    public void handComplete(PLBadugiHand yourHand, PLBadugiHand opponentHand, int totalPot) {
+
+    /**
+     * The method that gets called at the end of the current hand, whether fold or showdown.
+     *
+     * @param yourHand     The hand held by this agent.
+     * @param opponentHand The hand held by the opponent, or null if either player folded.
+     * @param result       The win or the loss in chips for the player.
+     */
+    public void handComplete(PLBadugiHand yourHand, PLBadugiHand opponentHand, int result) {
         lastBetWasBluff = -1;
         weRaisedLast = -1;
         weFoldedToRaise = -1;
     }
-    
-    public String getAgentName() { return name; }
-    
-    public String getAuthor() { return "Kokkarinen, Ilkka"; }
+
+    /**
+     * Returns the nickname of this agent.
+     *
+     * @return The nickname of this agent.
+     */
+    public String getAgentName() {
+        return name;
+    }
+
+    /**
+     * Returns the author of this agent. The name should be given in the format "Last, First".
+     *
+     * @return The author of this agent.
+     */
+
+    public String getAuthor() {
+        return "Rui Zhang 500736315";
+    }
+
+    private boolean probability (double threshold) {
+        return rnd.nextDouble() <= threshold;
+    }
 }

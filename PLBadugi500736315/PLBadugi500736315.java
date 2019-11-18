@@ -11,7 +11,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
     private int position;
 
     private double probability4Suit = 52.0*39.0*26.0*13.0/(52.0*51.0*50.0*49.0);
-    private double[] suitProbabilities = {1.0/8.0, 2.0/8.0, 3.0/8.0, 1.0};
+    private double[] suitProbabilities = {1.0/64.0, 1.0/16.0, 1.0/4.0, 1.0};
     private double[] chanceThresholds = {0.25, 0.5, 0.90};
     // State variables for the current hand, meaning exactly what the names say.
     private int lastBetWasBluff = -1;

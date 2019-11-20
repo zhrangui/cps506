@@ -223,19 +223,19 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
     private double suitChance(int draw, int suit) {
         double dist = 0;
         int total = 0;
-        for (int s : suitDistribution[draw]) {
-            total += s;
-        }
 
-        for (int s : suitDistribution[draw]) {
-            total += s;
+        for (int i = 0; i < suitDistribution[draw].length; i++) {
+            total += suitDistribution[draw][i];
+            if (i < suit) {
+                dist = total;
+            }
         }
-
         if (total > 0) {
-            dist = (double)suitDistribution[draw][suit] / (double)total;
+            dist = dist / (double)total;
         }
         return dist;
     }
+    
     private double handChance(int draw, int rank) {
         return probability(handDistribution, draw, rank);
     }

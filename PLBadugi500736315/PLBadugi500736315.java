@@ -9,10 +9,10 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
 
     private Random rnd = new Random();
     private int position;
-
-    private double probability4Suit = 52.0*39.0*26.0*13.0/(52.0*51.0*50.0*49.0);
-    private double[] suitProbabilities = {1.0/64.0, 1.0/16.0, 1.0/4.0, 1.0};
-    private double[] chanceThresholds = {0.25, 0.5, 0.90};
+    private int[][] suitDistribution = new int[4][4];
+    private int[][] handDistribution = new int[4][13];
+    private double[] suitDefaultProbabilities = {1.0/64.0, 1.0/16.0, 1.0/4.0, 1.0};
+    private double[] chanceDefaultProbabilities = {0.25, 0.5, 0.90};
     // State variables for the current hand, meaning exactly what the names say.
     private int lastBetWasBluff = -1;
     private int lastDrawWasBluff = -1;
@@ -115,17 +115,21 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
      */
     public int bettingAction(int drawsRemaining, PLBadugiHand hand, int pot, int raises, int toCall,
                              int minRaise, int maxRaise, int opponentDrew) {
+
         int suit = hand.getActiveCards().size() - 1;
         int rank = hand.getActiveCards().get(0).getRank();
-        double probability13Card = 1.0 - (rank + 1) / 13.0;
-        chances = suitProbabilities[suit] * probability13Card;
+        suitDistribution[drawsRemaining][suit]++;
+        handDistribution[drawsRemaining][rank]++;
 
-        if (chances > chanceThresholds[2]) {
+        double probability13Card = 1.0 - (rank + 1) / 13.0;
+        chances = suitDefaultProbabilities[suit] * probability13Card;
+
+        if (chances > chanceDefaultProbabilities[2]) {
             return maxRaise;
-        } else if (chances > chanceThresholds[1]) {
+        } else if (chances > chanceDefaultProbabilities[1]) {
             int amount = (int) (minRaise + (maxRaise - minRaise) * (chances));
             return amount;
-        } else if (chances > chanceThresholds[0]) {
+        } else if (chances > chanceDefaultProbabilities[0]) {
             return toCall;
         } else {
             return toCall;
@@ -200,7 +204,39 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
         return "Rui Zhang 500736315";
     }
 
-    private boolean probability (double threshold) {
-        return rnd.nextDouble() <= threshold;
+    private double probability (int[][] distribution, int draw, int index) {
+        double dist = 0;
+        int total = 0;
+        for (int s : distribution[draw]) {
+            total += s;
+        }
+
+        for (int s : distribution[draw]) {
+            total += s;
+        }
+
+        if (total > 0) {
+            dist = (double)distribution[draw][index] / (double)total;
+        }
+        return dist;
+    }
+    private double suitChance(int draw, int suit) {
+        double dist = 0;
+        int total = 0;
+        for (int s : suitDistribution[draw]) {
+            total += s;
+        }
+
+        for (int s : suitDistribution[draw]) {
+            total += s;
+        }
+
+        if (total > 0) {
+            dist = (double)suitDistribution[draw][suit] / (double)total;
+        }
+        return dist;
+    }
+    private double handChance(int draw, int rank) {
+        return probability(handDistribution, draw, rank);
     }
 }

@@ -10,9 +10,9 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
     private Random rnd = new Random();
     private int position;
     private int[][] suitDistribution = new int[4][4];
-    private int[][] handDistribution = new int[4][13];
     private double[] suitDefaultProbabilities = {1.0/64.0, 1.0/16.0, 1.0/4.0, 1.0};
-    private double[] chanceDefaultProbabilities = {0.25, 0.5, 0.90};
+    private int[][] handDistribution = new int[4][13];
+    private double[][] chanceDefaultProbabilities = {{0.4, 0.5, 0.90}, {0.1, 0.25, 0.80}, {0.1, 0.25, 0.80}, {0.1, 0.25, 0.80}};
     // State variables for the current hand, meaning exactly what the names say.
     private int lastBetWasBluff = -1;
     private int lastDrawWasBluff = -1;
@@ -117,22 +117,32 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
                              int minRaise, int maxRaise, int opponentDrew) {
 
         int suit = hand.getActiveCards().size() - 1;
-        int rank = hand.getActiveCards().get(0).getRank();
+        int rank = hand.getActiveCards().get(0).getRank() - 1;
         suitDistribution[drawsRemaining][suit]++;
         handDistribution[drawsRemaining][rank]++;
 
-        double probability13Card = 1.0 - (rank + 1) / 13.0;
-        chances = suitDefaultProbabilities[suit] * probability13Card;
+        chances = suitChance(drawsRemaining, suit) * handChance(drawsRemaining, rank);
 
-        if (chances > chanceDefaultProbabilities[2]) {
+        switch (drawsRemaining) {
+            case 3:
+                break;
+            case 2:
+                break;
+            case 1:
+                break;
+            default:
+                break;
+        }
+
+        if (chances > chanceDefaultProbabilities[drawsRemaining][2]) {
             return maxRaise;
-        } else if (chances > chanceDefaultProbabilities[1]) {
+        } else if (chances > chanceDefaultProbabilities[drawsRemaining][1]) {
             int amount = (int) (minRaise + (maxRaise - minRaise) * (chances));
             return amount;
-        } else if (chances > chanceDefaultProbabilities[0]) {
+        } else if (chances > chanceDefaultProbabilities[drawsRemaining][0]) {
             return toCall;
         } else {
-            return toCall;
+            return 0;
         }
     }
 
@@ -204,39 +214,39 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
         return "Rui Zhang 500736315";
     }
 
-    private double probability (int[][] distribution, int draw, int index) {
-        double dist = 0;
-        int total = 0;
-        for (int s : distribution[draw]) {
-            total += s;
-        }
-
-        for (int s : distribution[draw]) {
-            total += s;
-        }
-
-        if (total > 0) {
-            dist = (double)distribution[draw][index] / (double)total;
-        }
-        return dist;
-    }
     private double suitChance(int draw, int suit) {
-        double dist = 0;
-        int total = 0;
+        double frequency = 0;
+        double total = 0;
+        double probability = suitDefaultProbabilities[suit];
 
         for (int i = 0; i < suitDistribution[draw].length; i++) {
             total += suitDistribution[draw][i];
-            if (i < suit) {
-                dist = total;
+            if (i <= suit) {
+                frequency = total;
             }
         }
-        if (total > 0) {
-            dist = dist / (double)total;
+
+        if (total > 0 && frequency > 0) {
+            probability = frequency / total;
         }
-        return dist;
+        return probability;
     }
-    
+
     private double handChance(int draw, int rank) {
-        return probability(handDistribution, draw, rank);
+        double frequency = 0;
+        double total = 0;
+        double probability = 1 - rank  / 13.0;
+
+        for (int i = handDistribution[draw].length - 1; i >= 0 ; i--) {
+            total += handDistribution[draw][i];
+            if (i >= rank) {
+                frequency = total;
+            }
+        }
+
+        if (total > 0 && frequency > 0) {
+            probability = frequency / total;
+        }
+        return probability;
     }
 }

@@ -1,7 +1,7 @@
-1 : Badugi Boogie 1 : 2
+1 : Raymond 1 : 2
 2 : Badugi Boogie 1 : 0
 
 
 
-1: Kokkarinen, Ilkka
+1: Rui Zhang 500736315
 2: Kokkarinen, Ilkka

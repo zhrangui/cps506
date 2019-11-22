@@ -13,6 +13,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
     private double[] suitDefaultProbabilities = {1.0/64.0, 1.0/16.0, 1.0/4.0, 1.0};
     private int[][] handDistribution = new int[4][13];
     private double[][] chanceDefaultProbabilities = {{0.4, 0.5, 0.90}, {0.1, 0.25, 0.80}, {0.1, 0.25, 0.80}, {0.1, 0.25, 0.80}};
+    private int[][][] resultStatistics = new int[2][4][13];
     // State variables for the current hand, meaning exactly what the names say.
     private int lastBetWasBluff = -1;
     private int lastDrawWasBluff = -1;
@@ -78,6 +79,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
      * @param finalScore The total number of chips accumulated by this player during the match.
      */
     public void finishedMatch(int finalScore) {
+        posteriorChance(3, 0);
     }
 
     /**
@@ -123,17 +125,6 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
 
         chances = suitChance(drawsRemaining, suit) * handChance(drawsRemaining, rank);
 
-        switch (drawsRemaining) {
-            case 3:
-                break;
-            case 2:
-                break;
-            case 1:
-                break;
-            default:
-                break;
-        }
-
         if (chances > chanceDefaultProbabilities[drawsRemaining][2]) {
             return maxRaise;
         } else if (chances > chanceDefaultProbabilities[drawsRemaining][1]) {
@@ -160,25 +151,13 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
         List<Card> allCards = hand.getAllCards();
         List<Card> inactiveCards = hand.getInactiveCards();
         List<Card> pitch = new ArrayList<Card>();
-        // Don't break a made badugi when the opponent is drawing.
-        if (inactiveCards.size() == 0 && drawsRemaining < 2 && dealerDrew > 0) {
-            ourLastDraw = 0;
-            return pitch;
-        }
-        // If we are bluffing, are we going to keep bluffing?
-        if (lastDrawWasBluff > -1 && dealerDrew != 0 || Math.max(dealerDrew, 0) * rnd.nextDouble() * (1 - chances)
-                * (opponentAggro[drawsRemaining] / (double) handCount[drawsRemaining]) > 0.4) {
-            ourLastDraw = 0;
-            lastDrawWasBluff = drawsRemaining;
-            return pitch;
-        }
+
         // Pitch the inactive cards and also the active cards that are too high in rank.
         for (Card c : allCards) {
-            if (c.getRank() > 12 + dealerDrew - drawsRemaining || inactiveCards.contains(c)) {
+            if (c.getRank() > 10 - drawsRemaining || inactiveCards.contains(c)) {
                 pitch.add(c);
             }
         }
-        ourLastDraw = pitch.size();
         return pitch;
     }
 
@@ -193,6 +172,13 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
         lastBetWasBluff = -1;
         weRaisedLast = -1;
         weFoldedToRaise = -1;
+        int suit = yourHand.getActiveCards().size() - 1;
+        int rank = yourHand.getActiveCards().get(0).getRank() - 1;
+        if(result >=0) {
+            resultStatistics[0][suit][rank]++;
+        } else {
+            resultStatistics[1][suit][rank]++;
+        }
     }
 
     /**
@@ -226,7 +212,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
             }
         }
 
-        if (total > 0 && frequency > 0) {
+        if (frequency > 0) {
             probability = frequency / total;
         }
         return probability;
@@ -244,8 +230,42 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
             }
         }
 
-        if (total > 0 && frequency > 0) {
+        if (frequency > 0) {
             probability = frequency / total;
+        }
+        return probability;
+    }
+
+    /***
+     * posterior win propability
+     * @param rank
+     * @param suit
+     * @return
+     */
+    private double posteriorChance(int suit, int rank)
+    {
+        double twin = 0;
+        double tlose = 0;
+        double probability = suitChance(0, suit) * handChance(0, rank);
+        double total = 0;
+        double win = 0;
+        for(int i = 0; i < 2; i++ ) {
+            for(int j = 0; j < 4; j++) {
+                for (int k = 0; k < 13; k++) {
+                    total += resultStatistics[i][j][k];
+                    if (i == 0 && (j < suit || (j==suit && k <= k))) {
+                        win += resultStatistics[i][j][k];
+                    }
+                    if(i==0) {
+                        twin += resultStatistics[i][j][k];
+                    } else {
+                        tlose += resultStatistics[i][j][k];
+                    }
+                }
+            }
+        }
+        if (win > 0) {
+            probability = win / total;
         }
         return probability;
     }

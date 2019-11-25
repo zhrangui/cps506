@@ -12,7 +12,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
     private int[][] suitDistribution = new int[4][4];
     private double[] suitDefaultProbabilities = {1.0/64.0, 1.0/16.0, 1.0/4.0, 1.0};
     private int[][] handDistribution = new int[4][13];
-    private double[][] chanceDefaultProbabilities = {{0.4, 0.6, 0.90}, {0.2, 0.25, 0.80}, {0.2, 0.25, 0.80}, {0.2, 0.5, 0.80}};
+    private double[][] chanceDefaultProbabilities = {{0.4, 0.6, 0.90}, {0.2, 0.25, 0.80}, {0.2, 0.25, 0.80}, {0.2, 0.25, 0.80}};
     private int[][][][] resultStatistics = new int[4][2][4][13];
     private int[] winlose = new int[2];
     // State variables for the current hand, meaning exactly what the names say.

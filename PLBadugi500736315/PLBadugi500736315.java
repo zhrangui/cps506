@@ -129,7 +129,6 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
          chances = suitChance(drawsRemaining, suit) * handChance(drawsRemaining, rank);
         if(chances > 1) {
             // System.out.printf("Chances %.3f.\n", chances);
-            chances = 1;
         }
         chanceSistribution[(int)(chances*10)]++;
         if (chances > chanceDefaultProbabilities[drawsRemaining][2]) {

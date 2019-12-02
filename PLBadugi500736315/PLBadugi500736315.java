@@ -10,7 +10,12 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
     private Random rnd = new Random();
     private int position;
     private int[][] suitDistribution = new int[4][4];
-    private double[] suitDefaultProbabilities = {1.0/64.0, 1.0/16.0, 1.0/4.0, 1.0};
+    private double[][] suitDefaultProbabilities = {{0.015625, 0.00005, 0.64977, 1.0},{0.015625, 0.016505, 0.771204, 1.0},
+            {0.001833, 0.186927, 0.895833, 1.0},{0.007319, 0.348600, 0.940659, 1.0}};
+    private double[][] handDefaultProbabilities = {{1.000000,1.000000,0.999992,0.938842,0.788014,0.610866,0.355143,0.091855,0.075946,0.061351,0.046778,0.031554,0.015801},
+            {1.000000,1.000000,0.997903,0.956716,0.857003,0.687420,0.450127,0.147172,0.073803,0.060864,0.046391,0.031486,0.015738},
+            {1.000000,0.999299,0.981496,0.932941,0.845773,0.714636,0.539302,0.321166,0.247791,0.200827,0.153235,0.104705,0.052432},
+            {1.000000,0.997794,0.979658,0.945443,0.895045,0.828842,0.746441,0.648747,0.556025,0.447862,0.325137,0.188307,0.096741}};
     private int[][] handDistribution = new int[4][13];
     private double[][] chanceDefaultProbabilities = {{0.4, 0.6, 0.90}, {0.2, 0.25, 0.80}, {0.2, 0.25, 0.80}, {0.2, 0.25, 0.80}};
     private int[][][][] resultStatistics = new int[4][2][4][13];
@@ -83,6 +88,20 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
      */
     public void finishedMatch(int finalScore) {
         posteriorChance(0, 3, 0);
+        for (int i = 0; i < 4; i++) {
+//            System.out.printf("{");
+            for (int j = 0; j < 4; j++) {
+//                System.out.printf("%f,", suitChance(i, j));
+            }
+//            System.out.printf("},\n");
+        }
+        for (int i = 0; i < 4; i++) {
+//            System.out.printf("{");
+            for (int j = 0; j < 13; j++) {
+//                System.out.printf("%f,", handChance(i, j));
+            }
+//            System.out.printf("},\n ");
+        }
     }
 
     /**
@@ -120,6 +139,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
      */
     public int bettingAction(int drawsRemaining, PLBadugiHand hand, int pot, int raises, int toCall,
                              int minRaise, int maxRaise, int opponentDrew) {
+        handCount[drawsRemaining]++;
         int suit = hand.getActiveCards().size() - 1;
         int rank = hand.getActiveCards().get(0).getRank() - 1;
         suitDistribution[drawsRemaining][suit]++;
@@ -212,7 +232,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
     private double suitChance(int draw, int suit) {
         double frequency = 0;
         double total = 0;
-        double probability = suitDefaultProbabilities[suit];
+        double probability = suitDefaultProbabilities[draw][suit];
 
         for (int i = 0; i < suitDistribution[draw].length; i++) {
             total += suitDistribution[draw][i];
@@ -221,7 +241,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
             }
         }
 
-        if (frequency > 0) {
+        if (handCount[draw]>100 && frequency > 0) {
             probability = frequency / total;
         }
         return probability;
@@ -230,7 +250,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
     private double handChance(int draw, int rank) {
         double frequency = 0;
         double total = 0;
-        double probability = 1 - rank  / 13.0;
+        double probability = handDefaultProbabilities[draw][rank];
 
         for (int i = handDistribution[draw].length - 1; i >= 0 ; i--) {
             total += handDistribution[draw][i];
@@ -239,7 +259,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
             }
         }
 
-        if (frequency > 0) {
+        if (handCount[draw]>100 && frequency > 0) {
             probability = frequency / total;
         }
         return probability;

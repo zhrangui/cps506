@@ -87,21 +87,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
      * @param finalScore The total number of chips accumulated by this player during the match.
      */
     public void finishedMatch(int finalScore) {
-        posteriorChance(0, 3, 0);
-        for (int i = 0; i < 4; i++) {
-//            System.out.printf("{");
-            for (int j = 0; j < 4; j++) {
-//                System.out.printf("%f,", suitChance(i, j));
-            }
-//            System.out.printf("},\n");
-        }
-        for (int i = 0; i < 4; i++) {
-//            System.out.printf("{");
-            for (int j = 0; j < 13; j++) {
-//                System.out.printf("%f,", handChance(i, j));
-            }
-//            System.out.printf("},\n ");
-        }
+//        priorProbabilities();
     }
 
     /**
@@ -298,5 +284,23 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
             probability = win / total;
         }
         return probability;
+    }
+
+    private void priorProbabilities() {
+        posteriorChance(0, 3, 0);
+        for (int i = 0; i < 4; i++) {
+            System.out.printf("{");
+            for (int j = 0; j < 4; j++) {
+                System.out.printf("%f,", suitChance(i, j));
+            }
+            System.out.printf("},\n");
+        }
+        for (int i = 0; i < 4; i++) {
+            System.out.printf("{");
+            for (int j = 0; j < 13; j++) {
+                System.out.printf("%f,", handChance(i, j));
+            }
+            System.out.printf("},\n ");
+        }
     }
 }

@@ -55,7 +55,7 @@ public class PLBadugi500736315 implements PLBadugiPlayer {
     }
 
     public PLBadugi500736315() {
-        this.name = "Raymond " + (++id);
+        this.name = "Raymond Zhang " + (++id);
     }
 
     // Threshold hands to estimate the value of our hand for the drawing rounds

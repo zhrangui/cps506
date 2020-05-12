@@ -30,3 +30,8 @@ _ReSharper*/
 .vs/
 #Nuget packages folder
 packages/
+<<<<<<< HEAD
+=======
+.RData
+.Rhistory
+>>>>>>> e640239 (start CIND123)

@@ -91,18 +91,24 @@ e) Explain the output of this R-command:
 `c(0:5)[NA]`
 
 ```{r}
-#INSERT YOUR ANSWER HERE  
+c(0:5)[NA]
+# Create 5 vector, each one has NA value  
 ```
 
 f) What is the difference between is.vector() and is.numeric() functions?
 
 ```{r}
-is.vector checks 
+# is.vector tests if input argument is vector
+# is.vector tests if each element of input argument is vecor
 ```
 
 g) List at least three advantages and three disadvantages of using `RShiny` package?
 ```{r}
-#INSERT YOUR ANSWER HERE 
+# 1. easy to build interactive web apps straight from R
+# 2. extend Shiny apps with CSS themes, htmlwidgets, and JavaScript actions
+# 3. Shiny apps are easy to write. No web development skills are required
+# 4. You can communicate results via interactive charts, visualizations, text, or tables
+# 5. Built-in capabilities let you share your work easily with colleagues and friends.
 ```
 
 \newpage
@@ -117,7 +123,7 @@ library(datasets)
 a) Display the first six rows of the `iris` data set.
 
 ```{r}
-#INSERT YOUR ANSWER HERE
+head(iris)
 ```
 
 b) Compute the average of the first four variables (Sepal.Length, Sepal.Width, Petal.Length and Petal.Width) using `sapply()` function.
@@ -125,36 +131,44 @@ b) Compute the average of the first four variables (Sepal.Length, Sepal.Width, P
 Hint: You might need to consider removing the `NA` values, otherwise the average will not be computed.
 
 ```{r}
-#INSERT YOUR ANSWER HERE
+sapply(iris[c(1:4)], mean, na.rm = TRUE)
 ```
 
 c) Show how to use R to replace the missing values in this dataset with plausible ones.
 
 ```{r}
-#INSERT YOUR ANSWER HERE
+iris$Sepal.Length[is.na(iris$Sepal.Length)] <- mean(iris$Sepal.Length, na.rm=T)
+iris$Sepal.Width[is.na(iris$Sepal.Width)] <- mean(iris$Sepal.Width, na.rm=T)
+iris$Petal.Length[is.na(iris$Petal.Length)] <- mean(iris$Petal.Length, na.rm=T)
+iris$Petal.Width[is.na(iris$Petal.Width)] <- mean(iris$Petal.Width, na.rm=T)
 ```
 
 d) Compute the standard deviation for only the first and the third variables (Sepal.Length and Petal.Length)
 
 ```{r}
-#INSERT YOUR ANSWER HERE
+sd(iris$Sepal.Length, na.rm=T)
+sd(iris$Petal.Length, na.rm=T)
 ```
 
 e) Construct a boxplot for `Sepal.Width` variable, then display the values of all the outliers. Explain how these outliers have been calculated.
 
 ```{r}
-#INSERT YOUR ANSWER HERE
+boxplot(iris$Sepal.Width)
+#TODO:
 ```
 
 f) Compute the upper quartile of the `Sepal.Width` variable with two different methods.
 
 ```{r}
-#INSERT YOUR ANSWER HERE
+quantile(iris$Sepal.Width, 0.75, na.rm=T)
+summary(iris$Sepal.Width)[5]
 ```
 
 g) Construct a pie chart to describe the species with 'Sepal.Length' less than 7 centimeters.
+
 ```{r}
-#INSERT YOUR ANSWER HERE
+labels <- unique(iris$Species)
+pie(iris[iris$Sepal.Length<7,]$Sepal.Length, labels)
 ```
 
 END of Assignment #1.

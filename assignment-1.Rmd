@@ -154,7 +154,7 @@ e) Construct a boxplot for `Sepal.Width` variable, then display the values of al
 
 ```{r}
 boxplot(iris$Sepal.Width)
-#TODO:
+# outliers are points below lower fence Q1-1.5(IQR) or higer than Upper fence Q3+1.5(IQR)
 ```
 
 f) Compute the upper quartile of the `Sepal.Width` variable with two different methods.
@@ -168,7 +168,11 @@ g) Construct a pie chart to describe the species with 'Sepal.Length' less than 7
 
 ```{r}
 labels <- unique(iris$Species)
-pie(iris[iris$Sepal.Length<7,]$Sepal.Length, labels)
+sepalLess7 = iris[iris$Sepal.Length<7,]
+setosa = sepalLess7[sepalLess7$Species==labels[1],]
+versicolor = sepalLess7[sepalLess7$Species==labels[2],]
+virginica = sepalLess7[sepalLess7$Species==labels[3],]
+pie(c(length(setosa),length(versicolor),length(versicolor)), labels)
 ```
 
 END of Assignment #1.

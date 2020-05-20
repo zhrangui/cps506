@@ -2,8 +2,8 @@
 title: 'CIND 123 - Data Analytics: Basic Methods'
 author: Rui Zhang
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
   word_document: default
 ---
 <center> <h1> Assignment 1 (10%) </h1> </center>
@@ -56,7 +56,8 @@ factorVar <- as.numeric(factorVar)
 d) A comma-separated values file `dataset.csv` consists of missing values represented by question marks (`?`) and exclamation mark (`!`). How can you read this type of files in R?
 
 ```{r}
-#INSERT YOUR ANSWER HERE
+# replace "?" and "!" by "NA" 
+# read.csv("dataset.csv", na.strings=c("?","!","NA"))
 ```
 
 \newpage

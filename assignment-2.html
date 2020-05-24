@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head></head><body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row">
+
+
+
+<h1 class="title toc-ignore">CIND 123 - Data Analytics: Basic Methods</h1>
+<h4 class="author"></h4>
+
+</div>
+
+
+<center>
+<h1>
+Assignment 2 (10%)
+</h1>
+</center>
+<center>
+<h3>
+[Insert your full name]
+
+</h3></center>
+<center>
+<h3>
+[Insert course section &amp; student number]
+
+</h3></center>
+<hr/>
+<div class="section level2">
+<h2>Instructions</h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. Review this website for more details on using R Markdown <a rel="noopener" href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>Use RStudio for this assignment. Complete the assignment by inserting your R code wherever you see the string “#INSERT YOUR ANSWER HERE”.</p>
+<p>When you click the <strong>Knit</strong> button, a document (PDF, Word, or HTML format) will be generated that includes both the assignment content as well as the output of any embedded R code chunks.</p>
+<p>Submit <strong>both</strong> the rmd and generated output files. Failing to submit both files will be subject to mark deduction.</p>
+</div>
+<div class="section level2">
+<h2>Sample Question and Solution</h2>
+<p>Use <code>seq()</code> to create the vector <span class="math inline">\((1,2,3,\ldots,20)\)</span>.</p>
+<pre class="r"><code>seq(1,20)</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20</code></pre>
+<hr/>
+<div></div>
+</div>
+<div class="section level2">
+<h2>Question 1</h2>
+<p>The Titanic Passenger Survival DataSet provides information on the fate of passengers on the fatal maiden voyage of the ocean liner “Titanic.” The dataset is available from the Department of Biostatistics at the Vanderbilt University School of Medicine (<a rel="noopener" href="http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3.csv)in" class="uri">http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3.csv)in</a> several formats. store the Titanic DataSet <code>titanic_train</code> using the following commands.</p>
+<pre class="r"><code>library(titanic)
+titanicDataset &lt;- read.csv(file = &quot;http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic3.csv&quot;, stringsAsFactors = F)
+summary(titanicDataset)</code></pre>
+<pre><code>##      pclass         survived         name               sex           
+##  Min.   :1.000   Min.   :0.000   Length:1309        Length:1309       
+##  1st Qu.:2.000   1st Qu.:0.000   Class :character   Class :character  
+##  Median :3.000   Median :0.000   Mode  :character   Mode  :character  
+##  Mean   :2.295   Mean   :0.382                                        
+##  3rd Qu.:3.000   3rd Qu.:1.000                                        
+##  Max.   :3.000   Max.   :1.000                                        
+##                                                                       
+##       age            sibsp            parch          ticket         
+##  Min.   : 0.17   Min.   :0.0000   Min.   :0.000   Length:1309       
+##  1st Qu.:21.00   1st Qu.:0.0000   1st Qu.:0.000   Class :character  
+##  Median :28.00   Median :0.0000   Median :0.000   Mode  :character  
+##  Mean   :29.88   Mean   :0.4989   Mean   :0.385                     
+##  3rd Qu.:39.00   3rd Qu.:1.0000   3rd Qu.:0.000                     
+##  Max.   :80.00   Max.   :8.0000   Max.   :9.000                     
+##  NA&#39;s   :263                                                        
+##       fare            cabin             embarked             boat          
+##  Min.   :  0.000   Length:1309        Length:1309        Length:1309       
+##  1st Qu.:  7.896   Class :character   Class :character   Class :character  
+##  Median : 14.454   Mode  :character   Mode  :character   Mode  :character  
+##  Mean   : 33.295                                                           
+##  3rd Qu.: 31.275                                                           
+##  Max.   :512.329                                                           
+##  NA&#39;s   :1                                                                 
+##       body        home.dest        
+##  Min.   :  1.0   Length:1309       
+##  1st Qu.: 72.0   Class :character  
+##  Median :155.0   Mode  :character  
+##  Mean   :160.8                     
+##  3rd Qu.:256.0                     
+##  Max.   :328.0                     
+##  NA&#39;s   :1188</code></pre>
+<ol style="list-style-type: lower-alpha;">
+<li>Extract the columns <code>sex</code>, <code>age</code>, <code>cabin</code> and <code>survived</code> into a new data frame of the name ‘titanicSubset’.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="2" style="list-style-type: lower-alpha;">
+<li>Use the aggregate() function to display the total number of survivors grouped by <code>sex</code></li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="3" style="list-style-type: lower-alpha;">
+<li>Use the count() function in <code>dplyr</code> package to display the total number of passengers within each Ticket Class <code>Pclass.</code></li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="4" style="list-style-type: lower-alpha;">
+<li>Answer the following graphically:</li>
+</ol>
+<ol style="list-style-type: decimal;">
+<li>What was the survival rates for females and males?</li>
+<li>What was the age distribution on the Titanic?</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<p>e)Use the <code>for</code> loop and <code>if</code> control statements to list the children’s names, aged 14 or under, on the Titanic.</p>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<hr/>
+<div></div>
+</div>
+<div class="section level2">
+<h2>Question 2</h2>
+<p>In an experiment of rolling 10 dice simultaneously. Use the binomial distribution to calculate the followings:</p>
+<ol style="list-style-type: lower-alpha;">
+<li>The probability of getting six 6’s</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="2" style="list-style-type: lower-alpha;">
+<li>The probability of getting six, seven, or eight 3’s</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="3" style="list-style-type: lower-alpha;">
+<li>The probability of getting six even numbers</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<hr/>
+<div></div>
+</div>
+<div class="section level2">
+<h2>Question 3</h2>
+<p>In a shipment of 20 engines, history shows that the probability of any one engine proving unsatisfactory is 0.1</p>
+<ol style="list-style-type: lower-alpha;">
+<li>Use the Binomial approximation to calculate the probability that at least three engines are defective?</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="2" style="list-style-type: lower-alpha;">
+<li>Use the Poisson approximation to calculate the probability that at least three engines are defective?</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="3" style="list-style-type: lower-alpha;">
+<li>Compare the results of parts a and b, then illustrate graphically on how well the Poisson probability distribution approximates the Binomial probability distribution.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<hr/>
+<div></div>
+</div>
+<div class="section level2">
+<h2>Question 4</h2>
+<p>Write a script in R to compute the following probabilities of a normal random variable with mean 16 and variance 9</p>
+<ol style="list-style-type: lower-alpha;">
+<li>lies between 14.4 and 20.3 (inclusive)</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="2" style="list-style-type: lower-alpha;">
+<li>is greater than 21.8</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="3" style="list-style-type: lower-alpha;">
+<li>is less or equal to 10.5</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="4" style="list-style-type: lower-alpha;">
+<li>is less than 13 or greater than 19</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<hr/>
+<p>END of Assignment #2.</p>
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/d2l/common/math/MathML.js?v=20.20.4.21309-61 "></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() { D2LMathML.DesktopInit('https://s.brightspace.com/lib/mathjax/2.7.4/MathJax.js?config=MML_HTMLorMML','https://s.brightspace.com/lib/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML','130'); });</script></body></html>

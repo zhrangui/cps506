@@ -1,14 +1,14 @@
 ---
 title: 'CIND 123 - Data Analytics: Basic Methods'
-author: 
+author: Rui Zhang
 output:
   html_document: default
   word_document: default
   pdf_document: default
 ---
 <center> <h1> Assignment 2 (10%) </h1> </center>
-<center>  <h3> [Insert your full name] </h2> </center>
-<center> <h3> [Insert course section & student number] </h2> </center>
+<center>  <h3> Rui Zhang </h2> </center>
+<center> <h3> DHA 500736315 </h2> </center>
 ---
 ## Instructions 
 
@@ -43,20 +43,22 @@ summary(titanicDataset)
 a) Extract the columns `sex`, `age`, `cabin` and `survived` into a new data frame of the name 'titanicSubset'.
 
 ```{r}
-#INSERT YOUR ANSWER HERE
+titanicSubset <- titanicDataset[c("sex","age","cabin","survived")]
+summary(titanicSubset)
 ```
 
 
 b) Use the aggregate() function to display the total number of survivors grouped by `sex`
 
 ```{r}
-#INSERT YOUR ANSWER HERE
+aggregate(titanicDataset$survived, by=list(titanicDataset$sex), FUN=sum, na.rm=TRUE)
 ```
 
 c) Use the count() function in `dplyr` package to display the total number of passengers within each Ticket Class `Pclass.`
-
 ```{r}
-#INSERT YOUR ANSWER HERE
+#install.packages("dplyr")
+library(dplyr)
+count(titanicDataset, pclass)
 ```
 
 d) Answer the following graphically:
@@ -64,6 +66,8 @@ d) Answer the following graphically:
 2. What was the age distribution on the Titanic?
 ```{r}
 #INSERT YOUR ANSWER HERE
+
+summary(titanicDataset$age)
 ```
 
 e)Use the `for` loop and `if` control statements to list the children's names, aged 14 or under, on the Titanic.

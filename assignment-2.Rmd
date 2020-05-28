@@ -65,14 +65,20 @@ d) Answer the following graphically:
 1. What was the survival rates for females and males?
 2. What was the age distribution on the Titanic?
 ```{r}
-#INSERT YOUR ANSWER HERE
-
+sum(titanicDataset[titanicDataset$sex=="male",]$survived, na.rm=T)/length(titanicDataset[titanicDataset$sex=="male",])
+sum(titanicDataset[titanicDataset$sex=="female",]$survived, na.rm=T)/length(titanicDataset[titanicDataset$sex=="female",])
 summary(titanicDataset$age)
 ```
 
 e)Use the `for` loop and `if` control statements to list the children's names, aged 14 or under, on the Titanic.
 ```{r}
-#INSERT YOUR ANSWER HERE
+titanicDataset.nona = titanicDataset[!is.na(titanicDataset$age),]
+for (i in 1:nrow(titanicDataset.nona)) {
+    if (titanicDataset.nona[i,]$age <= 14) {
+      print(titanicDataset.nona[i,]$name)
+    }
+}
+
 ```
 
 
@@ -84,17 +90,17 @@ In an experiment of rolling 10 dice simultaneously. Use the binomial distributio
 
 a) The probability of getting six 6's
 ```{r}
-#INSERT YOUR ANSWER HERE
+dbinom(6,10,1/6)
 ```
 
 b) The probability of getting six, seven, or eight 3's
 ```{r}
-#INSERT YOUR ANSWER HERE
+sum(dbinom(c(6,7,8),10,1/6))
 ```
 
 c) The probability of getting six even numbers
 ```{r}
-#INSERT YOUR ANSWER HERE
+sum(dbinom(c(0,2,4,6,8,10),10,1/6))
 ```
 
 
@@ -106,19 +112,22 @@ In a shipment of 20 engines, history shows that the probability of any one engin
 
 a) Use the Binomial approximation to calculate the probability that at least three engines are defective? 
 ```{r}
-#INSERT YOUR ANSWER HERE
+1 - pbinom(2,20,0.1)
 ```
 
 
 b) Use the Poisson approximation to calculate the probability that at least three engines are defective? 
 ```{r}
 #INSERT YOUR ANSWER HERE
+ppois(2,0.1*20,lower.tail = F)
 ```
 
 
 c) Compare the results of parts a and b, then illustrate graphically on how well the Poisson probability distribution approximates the Binomial probability distribution.
 ```{r}
 #INSERT YOUR ANSWER HERE
+(1 - pbinom(2,20,0.1) - ppois(2,0.1*20,lower.tail = F))/(1 - pbinom(2,20,0.1))
+plot(1 - pbinom(2,20,0.1),ppois(2,0.1*20,lower.tail = F), xlab = "Binomial", ylab="Poisson")
 ```
 
 
@@ -131,25 +140,26 @@ Write a script in R to compute the following probabilities of a normal random va
 
 a) lies between 14.4 and 20.3 (inclusive)
 ```{r}
-#INSERT YOUR ANSWER HERE
+pnorm(20.3,16,3)-pnorm(14.4,16,3)
 ```
 
 
 b) is greater than 21.8
 ```{r}
-#INSERT YOUR ANSWER HERE
+pnorm(21.8,16,3,lower.tail = F)
 ```
 
 
 c) is less or equal to 10.5
 ```{r}
-#INSERT YOUR ANSWER HERE
+pnorm(10.5,16,3)
 ```
 
 
 d) is less than 13 or greater than 19
 ```{r}
 #INSERT YOUR ANSWER HERE
+pnorm(13,16,3) + pnorm(19,16,3,lower.tail = F)
 ```
 
 ******

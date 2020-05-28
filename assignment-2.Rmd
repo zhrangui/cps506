@@ -127,7 +127,7 @@ c) Compare the results of parts a and b, then illustrate graphically on how well
 ```{r}
 #INSERT YOUR ANSWER HERE
 (1 - pbinom(2,20,0.1) - ppois(2,0.1*20,lower.tail = F))/(1 - pbinom(2,20,0.1))
-plot(1 - pbinom(2,20,0.1),ppois(2,0.1*20,lower.tail = F), xlab = "Binomial", ylab="Poisson")
+plot(c(2,2),c(1 - pbinom(2,20,0.1),ppois(2,0.1*20,lower.tail = F)),xlab = "engines", ylab="probability", ylim=c(0.32,0.33 ylim))
 ```
 
 

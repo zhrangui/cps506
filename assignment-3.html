@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head></head><body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row">
+
+
+
+<h1 class="title toc-ignore">CIND 123 - Data Analytics: Basic Methods</h1>
+<h4 class="author"></h4>
+
+</div>
+
+
+<center>
+<h1>
+Assignment 3 (10%)
+</h1>
+</center>
+<center>
+<h3>
+[Insert your full name]
+
+</h3></center>
+<center>
+<h3>
+[Insert course section &amp; student number]
+
+</h3></center>
+<hr/>
+<div class="section level2">
+<h2>Instructions</h2>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. Review this website for more details on using R Markdown <a rel="noopener" href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>Use RStudio for this assignment. Complete the assignment by inserting your R code wherever you see the string “#INSERT YOUR ANSWER HERE”.</p>
+<p>When you click the <strong>Knit</strong> button, a document (PDF, Word, or HTML format) will be generated that includes both the assignment content as well as the output of any embedded R code chunks.</p>
+<p>Submit <strong>both</strong> the rmd and generated output files. Failing to submit both files will be subject to mark deduction.</p>
+</div>
+<div class="section level2">
+<h2>Sample Question and Solution</h2>
+<p>Use <code>seq()</code> to create the vector <span class="math inline">\((2,4,6,\ldots,20)\)</span>.</p>
+<pre class="r"><code>#Insert your code here.
+seq(2,20,by = 2)</code></pre>
+<pre><code>##  [1]  2  4  6  8 10 12 14 16 18 20</code></pre>
+</div>
+<div class="section level2">
+<h2>Question 1</h2>
+<p>Use the following commands to install the <code>airquality</code> dataset and load the <code>datasets</code> package into your session.</p>
+<pre class="r"><code>#install.packages(&quot;datasets&quot;)
+library(datasets) 
+data(airquality)
+str(airquality)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    153 obs. of  6 variables:
+##  $ Ozone  : int  41 36 12 18 NA 28 23 19 8 NA ...
+##  $ Solar.R: int  190 118 149 313 NA NA 299 99 19 194 ...
+##  $ Wind   : num  7.4 8 12.6 11.5 14.3 14.9 8.6 13.8 20.1 8.6 ...
+##  $ Temp   : int  67 72 74 62 56 66 65 59 61 69 ...
+##  $ Month  : int  5 5 5 5 5 5 5 5 5 5 ...
+##  $ Day    : int  1 2 3 4 5 6 7 8 9 10 ...</code></pre>
+<ol style="list-style-type: lower-alpha;">
+<li>Use a histogram to assess the normality of the <code>Ozone</code> variable, then explain why it does not appear normally distributed.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="2" style="list-style-type: lower-alpha;">
+<li>Create a set of boxplots that shows the distribution of <code>Ozone</code> in each month. Use different colors for each month.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<p>##Question 2</p>
+<p>Use the following commands to install the <code>marketing</code> dataset and load the <code>datarium</code> package into your session.</p>
+<pre class="r"><code>#install.packages(&quot;datarium&quot;)
+library(datarium)
+data(&quot;marketing&quot;, package = &quot;datarium&quot;)
+str(marketing)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    200 obs. of  4 variables:
+##  $ youtube  : num  276.1 53.4 20.6 181.8 217 ...
+##  $ facebook : num  45.4 47.2 55.1 49.6 13 ...
+##  $ newspaper: num  83 54.1 83.2 70.2 70.1 ...
+##  $ sales    : num  26.5 12.5 11.2 22.2 15.5 ...</code></pre>
+<ol style="list-style-type: lower-alpha;">
+<li>Find the covariance between the <code>Sales</code> and the advertising budget of <code>newspaper</code>. Comment on the output, in terms of the strength and direction of the relationship.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="2" style="list-style-type: lower-alpha;">
+<li>Plot the <code>Sales</code> as a function of the <code>Youtube</code> variable using a scatterplot, then graph the least-square line on the same plot. Hint: You may use the <code>ggplot()</code> function from <code>ggplot2</code> package.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="3" style="list-style-type: lower-alpha;">
+<li>Use the regression line to predict the <code>Sales</code> amount when <code>newspaper</code> budget is <code>$136.80K</code>. Comment on the difference between the output and the expected value.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="4" style="list-style-type: lower-alpha;">
+<li>Use <code>newspaper</code> and <code>facebook</code> variables to build a linear regression model to predict <code>sales</code>. Display a summary of your model indicating Residuals, Coefficients, …, etc. What conclusion can you draw from this summary?</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="5" style="list-style-type: lower-alpha;">
+<li>Use the regression line to predict the <code>Sales</code> amount when <code>newspaper</code> budget is <code>$136.80K</code> and <code>facebook</code> is <code>$43.92K</code>.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="6" style="list-style-type: lower-alpha;">
+<li>What is the difference between the output in (e) and the output in (c)</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="7" style="list-style-type: lower-alpha;">
+<li>Display the correlation matrix of the variables: <code>youtube</code>, <code>facebook</code>, <code>newspaper</code> and <code>sales</code>. What conclusion can you draw?</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="8" style="list-style-type: lower-alpha;">
+<li>In your opinion, which statistical test should be used to discuss the relationship between <code>youtube</code> and <code>sales</code>? Hint: Review the differnce between Pearson and Spearman tests.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<p>##Question 3</p>
+<p>Install the <code>carData</code> dataset on your computer using the command <code>install.packages(&quot;carData&quot;)</code>. Then load the <code>CanPop: Canadian Population Data</code> into your session using the following command. The CanPop` has 16 rows and 2 columns and represent the decennial time-series of Canadian population between 1851 and 2001.</p>
+<pre class="r"><code>#install.packages(&quot;carData&quot;)
+library(&quot;carData&quot;)
+data(&quot;CanPop&quot;, package = &quot;carData&quot;)
+str(CanPop)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    16 obs. of  2 variables:
+##  $ year      : num  1851 1861 1871 1881 1891 ...
+##  $ population: num  2.44 3.23 3.69 4.33 4.83 ...</code></pre>
+<ol style="list-style-type: lower-alpha;">
+<li>Which of the two variables is the independent variable and which is the dependent variable? Explain your choice.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="2" style="list-style-type: lower-alpha;">
+<li>Assuming that year and population are linearly related, give the equation and the graph of the least-squares regression line. Hint: use lm() function.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="3" style="list-style-type: lower-alpha;">
+<li>Explain the meaning of the slope and y-intercept for the least-squares regression line in (b).</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+<ol start="4" style="list-style-type: lower-alpha;">
+<li>In year 2020, what would you predict the population’s size to be. Does the value of the predicted size matches your expectations? Explain.</li>
+</ol>
+<pre class="r"><code>#INSERT YOUR ANSWER HERE</code></pre>
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/d2l/common/math/MathML.js?v=20.20.5.22012-61 "></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() { D2LMathML.DesktopInit('https://s.brightspace.com/lib/mathjax/2.7.4/MathJax.js?config=MML_HTMLorMML','https://s.brightspace.com/lib/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML','130'); });</script></body></html>

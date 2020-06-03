@@ -1,0 +1,140 @@
+---
+title: 'CIND 123 - Data Analytics: Basic Methods'
+author: Rui Zhang
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+<center> <h1> Assignment 3 (10%) </h1> </center>
+<center>  <h3> Rui Zhang </h2> </center>
+<center> <h3> DHA 500736315 </h2> </center>
+---
+## Instructions 
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. Review this website for more details on using R Markdown <http://rmarkdown.rstudio.com>.
+
+Use RStudio for this assignment. Complete the assignment by inserting your R code wherever you see the string "#INSERT YOUR ANSWER HERE".
+
+When you click the **Knit** button, a document (PDF, Word, or HTML format) will be generated that includes both the assignment content as well as the output of any embedded R code chunks.
+
+Submit **both**  the rmd and generated output files. Failing to submit both files will be subject to mark deduction.
+
+## Sample Question and Solution
+
+Use `seq()` to create the vector $(2,4,6,\ldots,20)$.
+
+```{r}
+#Insert your code here.
+seq(2,20,by = 2)
+```
+
+
+## Question 1
+
+Use the following commands to install the `airquality` dataset and load the `datasets` package into your session.
+```{r}
+#install.packages("datasets")
+library(datasets) 
+data(airquality)
+str(airquality)
+```
+
+
+a) Use a histogram to assess the normality of the `Ozone` variable, then explain why it does not appear normally distributed.
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+b) Create a set of boxplots that shows the distribution of `Ozone` in each month. 
+Use different colors for each month.
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+
+
+##Question 2
+
+Use the following commands to install the `marketing` dataset and load the `datarium` package into your session.
+```{r}
+#install.packages("datarium")
+library(datarium)
+data("marketing", package = "datarium")
+str(marketing)
+```
+
+a)  Find the covariance between the `Sales` and the advertising budget of `newspaper`. Comment on the output, in terms of the strength and direction of the relationship.
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+b) Plot the `Sales` as a function of the `Youtube` variable using a scatterplot, then graph the least-square line on the same plot. 
+Hint: You may use the `ggplot()` function from `ggplot2` package. 
+
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+c) Use the regression line to predict the `Sales` amount when `newspaper` budget is `$136.80K`. Comment on the difference between the output and the expected value. 
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+d) Use `newspaper` and `facebook` variables to build a linear regression model to predict `sales`. Display a summary of your model indicating Residuals, Coefficients, ..., etc. What conclusion can you draw from this summary?
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+e) Use the regression line to predict the `Sales` amount when `newspaper` budget is `$136.80K` and `facebook` is `$43.92K`.
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+f) What is the difference between the output in (e) and the output in (c)
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+g) Display the correlation matrix of the variables: `youtube`, `facebook`, `newspaper` and `sales`. What conclusion can you draw?
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+h) In your opinion, which statistical test should be used to discuss the relationship between `youtube` and `sales`?
+Hint:  Review the differnce between Pearson and Spearman tests.
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+
+##Question 3
+
+Install the `carData` dataset on your computer using the command `install.packages("carData")`. Then load the `CanPop: Canadian Population Data` into your session using the following command.  The CanPop` has 16 rows and 2 columns and represent the decennial time-series of Canadian population between 1851 and 2001.
+```{r}
+#install.packages("carData")
+library("carData")
+data("CanPop", package = "carData")
+str(CanPop)
+```
+
+a) Which of the two variables is the independent variable and which is the dependent variable? Explain your choice.
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+b) Assuming that year and population are linearly related, give the equation and the graph of the least-squares regression line.
+Hint: use lm() function.
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+c) Explain the meaning of the slope and y-intercept for the least-squares regression line in (b).
+```{r}
+#INSERT YOUR ANSWER HERE
+```
+
+d) In year 2020, what would you predict the population's size to be.  Does the value of the predicted size matches your expectations? Explain.
+```{r}
+#INSERT YOUR ANSWER HERE
+```

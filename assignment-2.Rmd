@@ -65,8 +65,8 @@ d) Answer the following graphically:
 1. What was the survival rates for females and males?
 2. What was the age distribution on the Titanic?
 ```{r}
-sum(titanicDataset[titanicDataset$sex=="male",]$survived, na.rm=T)/length(titanicDataset[titanicDataset$sex=="male",])
-sum(titanicDataset[titanicDataset$sex=="female",]$survived, na.rm=T)/length(titanicDataset[titanicDataset$sex=="female",])
+sum(titanicDataset[titanicDataset$sex=="male",]$survived, na.rm=T)/nrow(titanicDataset[titanicDataset$sex=="male",])
+sum(titanicDataset[titanicDataset$sex=="female",]$survived, na.rm=T)/nrow(titanicDataset[titanicDataset$sex=="female",])
 summary(titanicDataset$age)
 ```
 

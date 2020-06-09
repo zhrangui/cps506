@@ -43,13 +43,21 @@ str(airquality)
 
 a) Use a histogram to assess the normality of the `Ozone` variable, then explain why it does not appear normally distributed.
 ```{r}
-#INSERT YOUR ANSWER HERE
+hist(airquality$Ozone, xlim=c(0,200), ylim=c(0, 40))
+#ozone is not symmetric as normal distribution is.
+#It is heavily skewed to right
 ```
 
 b) Create a set of boxplots that shows the distribution of `Ozone` in each month. 
 Use different colors for each month.
 ```{r}
 #INSERT YOUR ANSWER HERE
+library(dplyr)
+dist <- group_by(airquality[!is.na(airquality$Ozone),], Month) %>%
+group_split()
+box <- sapply(dist, function(x){x$Ozone})
+nms <- unique(airquality$Month)
+boxplot(box, names=nms, col = c("orange","red", "yellow","blue","green"))
 ```
 
 
@@ -66,7 +74,9 @@ str(marketing)
 
 a)  Find the covariance between the `Sales` and the advertising budget of `newspaper`. Comment on the output, in terms of the strength and direction of the relationship.
 ```{r}
-#INSERT YOUR ANSWER HERE
+cov(marketing$sales, marketing$newspaper)
+cor(marketing$sales, marketing$newspaper)
+# Sales and newspaper are positive correlated, since correlation coefficient is 0.228, they have weak correlation
 ```
 
 b) Plot the `Sales` as a function of the `Youtube` variable using a scatterplot, then graph the least-square line on the same plot. 
@@ -74,6 +84,11 @@ Hint: You may use the `ggplot()` function from `ggplot2` package.
 
 ```{r}
 #INSERT YOUR ANSWER HERE
+#install.packages("ggplot2")
+library(ggplot2)
+ggplot(marketing, aes(youtube, sales))+geom_point()
+lm(c(marketing$youtube,marketing$sales))
+
 ```
 
 c) Use the regression line to predict the `Sales` amount when `newspaper` budget is `$136.80K`. Comment on the difference between the output and the expected value. 

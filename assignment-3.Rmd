@@ -51,13 +51,12 @@ hist(airquality$Ozone, xlim=c(0,200), ylim=c(0, 40))
 b) Create a set of boxplots that shows the distribution of `Ozone` in each month. 
 Use different colors for each month.
 ```{r}
-#INSERT YOUR ANSWER HERE
 library(dplyr)
 dist <- group_by(airquality[!is.na(airquality$Ozone),], Month) %>%
 group_split()
 box <- sapply(dist, function(x){x$Ozone})
 nms <- unique(airquality$Month)
-boxplot(box, names=nms, col = c("orange","red", "yellow","blue","green"))
+boxplot(box, names=nms, col = c("orange","red", "yellow","blue","green"), xlab="Month", ylab="Ozone")
 ```
 
 
@@ -83,43 +82,68 @@ b) Plot the `Sales` as a function of the `Youtube` variable using a scatterplot,
 Hint: You may use the `ggplot()` function from `ggplot2` package. 
 
 ```{r}
-#INSERT YOUR ANSWER HERE
 #install.packages("ggplot2")
 library(ggplot2)
-ggplot(marketing, aes(youtube, sales))+geom_point()
-lm(c(marketing$youtube,marketing$sales))
-
+model<-lm(sales~youtube, marketing)
+ggplot(marketing, aes(youtube, sales))+
+  geom_point()+
+  stat_smooth(method = "lm", col = "red")
 ```
 
 c) Use the regression line to predict the `Sales` amount when `newspaper` budget is `$136.80K`. Comment on the difference between the output and the expected value. 
 ```{r}
-#INSERT YOUR ANSWER HERE
+sn<-lm(sales~newspaper, marketing)
+summary(sn)
+df.newspaper<-data.frame(newspaper<-c(136.80))
+output<-marketing[which(marketing$newspaper>136.5),]$sales
+prd<-predict(sn, df.newspaper)
+diff<-prd-output
+output
+prd
+diff
+diff/output
+# There is a difference of sales 7.303704 and 0.4869136 relative error between the output and the expected value. newspaper doesn't give good estimation of sales. The t value 3.30 and p value 0.00115 of newspaper also explains that sales have little linear correlation with newspaper
 ```
 
 d) Use `newspaper` and `facebook` variables to build a linear regression model to predict `sales`. Display a summary of your model indicating Residuals, Coefficients, ..., etc. What conclusion can you draw from this summary?
 ```{r}
-#INSERT YOUR ANSWER HERE
+snf<-lm(sales~newspaper+facebook, marketing)
+summary(snf)
+# R-squared=0.3327, this linear regress only explains 33.27% change by independent newspaper and facebook
+# Residuals still show that a big gap can't drawn from these two independent varibles.
+# t and p value of newspaper is so big, they reject newspaper is good varible to estimate sales
+# but small t and p value of facebook draws a conclusion that it has majour influence on sales and contributes the main change of sales
 ```
 
 e) Use the regression line to predict the `Sales` amount when `newspaper` budget is `$136.80K` and `facebook` is `$43.92K`.
 ```{r}
-#INSERT YOUR ANSWER HERE
+snf<-lm(sales~newspaper+facebook, marketing)
+df.independents<-data.frame(newspaper<-c(136.80), facebook<-c(43.92))
+prd<-predict(snf, df.independents)
+prd
 ```
 
 f) What is the difference between the output in (e) and the output in (c)
 ```{r}
 #INSERT YOUR ANSWER HERE
+
 ```
 
 g) Display the correlation matrix of the variables: `youtube`, `facebook`, `newspaper` and `sales`. What conclusion can you draw?
 ```{r}
-#INSERT YOUR ANSWER HERE
+syfn<-c("sales", "youtube", "facebook", "newspaper")
+cor(marketing[syfn], method="pearson")
+# sales is biggest affect by youtube, they have strong positive linear correlation
+# youtube and facebook have weakest positive linear correlation arround 0.05480866
 ```
 
 h) In your opinion, which statistical test should be used to discuss the relationship between `youtube` and `sales`?
 Hint:  Review the differnce between Pearson and Spearman tests.
 ```{r}
-#INSERT YOUR ANSWER HERE
+cor(marketing$sales, marketing$youtube, method="pearson")
+cor(marketing$sales, marketing$youtube, method="spearman")
+# Pearson correlation should be used to discuss the relation between youtube and sales, because the data from youtube and sales are continuous numeric data.
+# spearman correlation is better used to ranking data 
 ```
 
 
@@ -135,21 +159,32 @@ str(CanPop)
 
 a) Which of the two variables is the independent variable and which is the dependent variable? Explain your choice.
 ```{r}
-#INSERT YOUR ANSWER HERE
+# year is independent, it doesn't change by any external factor.
+# population is dependent, the number changes with year, and it is affected by many factors like year.
 ```
 
 b) Assuming that year and population are linearly related, give the equation and the graph of the least-squares regression line.
 Hint: use lm() function.
 ```{r}
-#INSERT YOUR ANSWER HERE
+model.py<-lm(population~year, CanPop)
+summary(model.py)
+# population = -337.09856 + 0.18134*year
+plot(CanPop$year, CanPop$population, las=1)
+abline(model.py)
+
 ```
 
 c) Explain the meaning of the slope and y-intercept for the least-squares regression line in (b).
 ```{r}
-#INSERT YOUR ANSWER HERE
+#slope means that the population inceases 0.18134 when year increases one, population increasing rate is 0.18134 by year
+#intercept means the population is -337.09856 when year equals 0. it is not correct, population can't be zero, that mean the prediction may not right if the predictiing data range is beyond sample data range
 ```
 
 d) In year 2020, what would you predict the population's size to be.  Does the value of the predicted size matches your expectations? Explain.
 ```{r}
-#INSERT YOUR ANSWER HERE
+model.py<-lm(population~year, CanPop)
+predict
+# the prediction is 29.19844, which is lower than 30.007 in 2001. It doesn't match my expectation,
+# because the calculation is extrapolation estimation, the value of independent variable is far from sample data. That is why the regression line fails, the range of independent variable doesn't cover the required value which is applied to prediction future value
+
 ```

@@ -125,8 +125,10 @@ prd
 
 f) What is the difference between the output in (e) and the output in (c)
 ```{r}
-#INSERT YOUR ANSWER HERE
-
+output<-marketing[which(marketing$newspaper>136.7&marketing$facebook==43.92),]$sales
+output
+22.3037-20.67767 
+#(e) with newspaper and facebook variables has more precise closer to observed sale, 15, than (c)'s. The different 1.62603 between (e) and (c) is contributed by facebook variable to predict the observed one more accurately
 ```
 
 g) Display the correlation matrix of the variables: `youtube`, `facebook`, `newspaper` and `sales`. What conclusion can you draw?

@@ -2,9 +2,9 @@
 title: 'CIND 123 - Data Analytics: Basic Methods'
 author: Rui Zhang
 output:
-  html_document: default
-  word_document: default
   pdf_document: default
+  word_document: default
+  html_document: default
 ---
 <center> <h1> Assignment 3 (10%) </h1> </center>
 <center>  <h3> Rui Zhang </h2> </center>
@@ -144,8 +144,8 @@ Hint:  Review the differnce between Pearson and Spearman tests.
 ```{r}
 cor(marketing$sales, marketing$youtube, method="pearson")
 cor(marketing$sales, marketing$youtube, method="spearman")
-# Pearson correlation should be used to discuss the relation between youtube and sales, because the data from youtube and sales are continuous numeric data.
-# spearman correlation is better used to ranking data 
+# Pearson correlation should be used to discuss the relation between youtube and sales, because the data from youtube and sales are continuous numeric and linear data.
+# spearman correlation is better used to ranking, nonlinear data 
 ```
 
 

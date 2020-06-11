@@ -100,7 +100,7 @@ sum(dbinom(c(6,7,8),10,1/6))
 
 c) The probability of getting six even numbers
 ```{r}
-sum(dbinom(c(0,2,4,6,8,10),10,1/6))
+dbinom(c(6),10,1/2)
 ```
 
 

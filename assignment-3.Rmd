@@ -44,7 +44,7 @@ str(airquality)
 a) Use a histogram to assess the normality of the `Ozone` variable, then explain why it does not appear normally distributed.
 ```{r}
 hist(airquality$Ozone, xlim=c(0,200), ylim=c(0, 40))
-#ozone is not symmetric as normal distribution is.
+#Ozone is not symmetric as normal distribution is.
 #It is heavily skewed to right
 ```
 
@@ -135,7 +135,7 @@ g) Display the correlation matrix of the variables: `youtube`, `facebook`, `news
 ```{r}
 syfn<-c("sales", "youtube", "facebook", "newspaper")
 cor(marketing[syfn], method="pearson")
-# sales is biggest affect by youtube, they have strong positive linear correlation
+# sales is biggest affected by youtube, they have strong positive linear correlation
 # youtube and facebook have weakest positive linear correlation arround 0.05480866
 ```
 

@@ -55,13 +55,12 @@ USDAclean<-na.omit(USDA)
 
 #### 7. Which food has the highest sodium level? (6 points)
 ```{r}
-# INSERT YOUR ANSWER HERE
-USDAclean[USDAclean$Sodium==max(USDAclean$Sodium),]
+USDAclean[USDAclean$Sodium==max(USDAclean$Sodium),]$Description
 ```
 
 #### 8. Create a histogram of Vitamin C distribution in foods. (6 points)
 ```{r}
-hist(USDAclean$VitaminC, xlim=c(0,500), ylim=c(0, 0.006), freq = F)
+hist(USDAclean$VitaminC, xlim=c(0, 300), ylim=c(0, 0.06), breaks=100, freq = F)
 ```
 
 #### 9. Create a boxplot to illustrate the distribution of values for TotalFat, Protein and Carbohydrate. (6 points)
@@ -104,22 +103,32 @@ plot(1:4, ty = 'n', ann = F, xaxt = 'n', yaxt = 'n')
 rasterImage(img,1,1,4,4)
 ```
 ```{r}
-# INSERT YOUR ANSWER HERE
+HealthCheck <- function(food) {
+  if(food[1]) {
+    if(food[2]) {
+      if(food[3]) {
+        return("Fail")
+      }
+    }
+  }
+  return("Pass")
+}
 ```
 
 #### 14. Add a new variable called HealthCheck to the data frame using the output of the function. (8 points)
 ```{r}
-# INSERT YOUR ANSWER HERE
+#nrow(USDAclean[USDAclean$HighSodium&USDAclean$HighSugar&USDAclean$HighFat,])
+USDAclean$HealthCheck<-apply(USDAclean[,c("HighSodium","HighSugar","HighFat")], 1, HealthCheck)
 ```
 
 #### 15. How many foods in the USDAclean data frame fail the HealthCheck? (8 points)
 ```{r}
-# INSERT YOUR ANSWER HERE
+sum(USDAclean$HealthCheck=="Fail")
 ```
 
 #### 16. Save your final data frame as "USDAclean_ [your last name]." (3 points)
 ```{r}
-# INSERT YOUR ANSWER HERE
+write.csv(USDAclean, "USDAclean_Zhang.csv")
 ```
 
 

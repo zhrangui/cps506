@@ -1,8 +1,8 @@
 ---
 title: 'CMTH 642 Data Analytics: Advanced Methods'
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
   word_document: default
 ---
 <center> <h1> Assignment 1 (10%) </h1> </center>
@@ -71,7 +71,7 @@ boxplot(USDAclean[nms], names=nms, col = c("orange","red", "yellow"))
 
 #### 10. Create a scatterplot to illustrate the relationship between a food's TotalFat content and its Calorie content. (6 points)
 ```{r}
-plot(USDAclean$TotalFat, USDAclean$Calories, pch = 19, col = "red")
+plot(USDAclean$TotalFat, USDAclean$Calories, col = "red")
 ```
 
 #### 11. Add a variable to the data frame that takes value 1 if the food has higher sodium than average, 0 otherwise. Call this variable HighSodium. Do the same for High Calories, High Protein, High Sugar, and High Fat. How many foods have both high sodium and high fat? (8 points)

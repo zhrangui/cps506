@@ -1,8 +1,6 @@
-library("caret") 
-folds <- createFolds(iris$Species)
-for (f in folds) {
-  train <- iris[-f,]
-  test <- iris[f,]
-  i <- 1
-  }
-
+DT <- c( 75, 79, 69, 78, 65, 87, 74, 81, 77, 88)
+LR <- c( 85, 68, 78, 73, 69, 76, 69, 80, 73, 67, 78, 82)
+wilcox.test(LR, DT)
+DT <- c( 1,3,5,7,9)
+LR <- c( 2,4,6,8,10)
+wilcox.test(LR, DT)

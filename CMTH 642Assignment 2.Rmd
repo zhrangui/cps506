@@ -12,47 +12,51 @@ output:
 
 #### 1. Read the csv file (USDA_Clean.csv) in the folder and assign it to a data frame. (3 points)
 ```{r}
-# INSERT YOUR CODE HERE.
+USDA_Clean <- read.csv("USDA_Clean.csv")
 ```
 
 #### 2. Check the datatypes of the attributes. (3 points)
 ```{r}
-# INSERT YOUR CODE HERE.
+str(USDA_Clean)
 ```
 
 #### 3. Visualize the correlation among Calories, Protein, Total Fat, Carbohydrate, Sodium and Cholesterol. (7 points)
 ```{r}
-# INSERT YOUR CODE HERE.
+cor(USDA_Clean[,c("Calories", "Protein", "TotalFat", "Carbohydrate", "Sodium", "Cholesterol")], method = c("pearson"))
 ```
 
 #### 4. Is the correlation between Calories and Total Fat statistically significant? Why? (7 points)
 ```{r}
-# INSERT YOUR CODE HERE AND EXPLAIN YOUR ANSWER AS A COMMENT.
+cor(USDA_Clean[,c("Calories", "TotalFat")])
+# The correlation between Calories and Total Fat statistically is significant, the correlation coefficient is 0.804 to indicate they are highly correlated
 ```
 
 #### 5. Create a Linear Regression Model, using Calories as the dependent variable Protein, Total Fat, Carbohydrate, Sodium and Cholesterol as the independent variables. (7 points)
 ```{r}
-# INSERT YOUR CODE HERE.
+lm(Calories~Protein+TotalFat+Carbohydrate+Sodium+Cholesterol, data=USDA_Clean)
 ```
 
 #### 6. Write the Linear Regression Equation, using Calories as the dependent variable whereas Protein, TotalFat, Carbohydrate, Sodium and Cholesterol as the independent variables. (7 points)
 ```{r}
-# WRITE YOUR ANSWER AS A COMMENT.
+# Calories = 3.9882753 + 3.9891994xProtein + 8.7716980xTotalFat + 3.7432001xCarbohydrate + 0.0003383xSodium + 0.0110138xCholesterol
 ```
 
 #### 7. Which independent variable is the least significant? Why? (7 points)
 ```{r}
-# INSERT YOUR CODE HERE AND EXPLAIN YOUR ANSWER AS A COMMENT.
+summary(aov(Calories~Protein+TotalFat+Carbohydrate+Sodium+Cholesterol, data=USDA_Clean))
+# Sodium is the least significant because its p value is 0.1378 bigger than 0.1
 ```
 
 #### 8. A new product is just produced with the following data:                                                            Protein=0.1, TotalFat=35, Carbohydrate=405, Sodium=440, Cholesterol=70, Sugar=NA, Calcium=35, Iron=NA, Potassium=35, VitaminC=10,	VitaminE=NA, VitaminD=NA.                                                                                                         Based on the model you created, what is the predicted value for Calories? (7 points)
 ```{r}
-# INSERT YOUR CODE HERE.
+Calories <- 3.9882753 + 3.9891994*0.1 + 8.7716980*35 + 3.7432001*405 + 0.0003383*440 + 0.0110138*70
+Calories
 ```
 
 #### 9. If the Sodium amount increases from 440 to 44440 (10000% increase), how much change will occur on Calories in percent? Explain why? (7 points)
 ```{r}
-# INSERT YOUR CODE HERE AND EXPLAIN YOUR ANSWER AS A COMMENT.
+(44440-440)/440*100
+# calories has also 10000%, because calories and sodium have linear relationship
 ```
 
 
@@ -65,27 +69,31 @@ output:
 
 #### A) What are $H_0$ and $H_a$ ? (5 points)
 ```{r}
-# INSERT YOUR ANSWER AS A COMMENT.
+#$H_0$: the median score from two book articles are identical
+#$H_a$:  the median score from two book articles are different
 ```
 
 #### B) Is this a paired or unpaired experiment? (5 points)
 ```{r}
-# INSERT YOUR ANSWER AS A COMMENT.
+# this is paired experiement
 ```
 
 #### C) Based on your previous answer, which nonparametric test statistic would you use to compare the medians of Article 1 and Article 2. (5 points) 
 ```{r}
-# INSERT YOUR ANSWER AS A COMMENT.
+# Wilcoxon signed-rank test for a paired experiment
 ```
 
 #### D) Use a nonparametric test statistic to check if there is a statistically significant difference between the medians of Article 1 and Article 2. (5 points) 
 ```{r}
-# INSERT YOUR CODE HERE.
+article1 <- c(0.40, 0.72, 0.00, 0.36, 0.55)
+article2 <- c(0.77, 0.49, 0.66, 0.28, 0.38)
+test <- wilcox.test(article1, article2, alternative="two.sided", paired=TRUE)
+test
 ```
 
 #### E) Will you accept or reject your Null Hypothesis? ($\alpha = 0.05$) Do illustrations improve how the students retell an article or not? Why? (5 points)
 ```{r}
-# INSERT YOUR ANSWER AS A COMMENT.
+# Since the p-value 0.8123 is greater than 0.05, we can say that the medians of two articles are not different. It has insufficient evidence to indicate any improvement about how the students retell an article
 ```
 
 #### 11. Two companies selling toothpastes with the lable of 100 grams per tube on the package. We randomly bought eight toothpastes from each company A and B from random stores. Afterwards, we scaled them using high precision scale. Our measurements are recorded as follows:
@@ -96,22 +104,28 @@ output:
 
 #### A) Is this a paired or unpaired experiment? (5 points)
 ```{r}
-# INSERT YOUR ANSWER AS A COMMENT.
+# this is unpaired experiment
 ```
 
 #### B) Based on your previous answer, which nonparametric test statistic would you use to compare the medians of Company A and Company B. (5 points) 
 ```{r}
-# INSERT YOUR ANSWER AS A COMMENT.
+# Friedman Fr-test 
 ```
 
 #### C) Use a nonparametric test statistic to check if there is a statistically significant difference between the medians of Company A and Company B. (5 points) 
 ```{r}
-# INSERT YOUR CODE HERE.
+companyA <- c(97.1, 101.3, 107.8, 101.9, 97.4, 104.5, 99.5, 95.1)
+companyB <- c(103.5, 105.3, 106.5, 107.9, 102.1, 105.6, 109.8, 97.2)
+companies <- c(companyA, companyB)
+treatments <- rep(c('A','B'), each=8)
+blocks <- as.factor(rep(c(1:8), 2))
+friedman.test(companies~treatments|blocks)
 ```
 
 #### D) Will you accept or reject your Null Hypothesis? ($\alpha = 0.05$) Are packaging process similar or different based on weight measurements? Why? (5 points)
 ```{r}
-# INSERT YOUR ANSWER AS A COMMENT.
+# We reject the Null hypothesis
+# Since the p-value 0.03389 is less than 0.05, we conclude that there is a statistically significant difference between the medians of Company A and Company B. Packaging process is different based on weight measurements 
 ```
 
 This is the end of Assignment 2

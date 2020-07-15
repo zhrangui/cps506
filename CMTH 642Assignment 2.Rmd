@@ -22,7 +22,15 @@ str(USDA_Clean)
 
 #### 3. Visualize the correlation among Calories, Protein, Total Fat, Carbohydrate, Sodium and Cholesterol. (7 points)
 ```{r}
-cor(USDA_Clean[,c("Calories", "Protein", "TotalFat", "Carbohydrate", "Sodium", "Cholesterol")], method = c("pearson"))
+USDA_Clean_Select <- USDA_Clean[,c("Calories", "Protein", "TotalFat", "Carbohydrate", "Sodium", "Cholesterol")]
+cor(USDA_Clean_Select)
+panel.cor <- function(x, y, ...)
+{
+  par(usr = c(0, 1, 0, 1))
+  txt <- as.character(format(cor(x, y), digits=2))
+  text(0.5, 0.5, txt, cex = 6* abs(cor(x, y)))
+}
+pairs(USDA_Clean_Select,lower.panel=panel.smooth, upper.panel=panel.cor)
 ```
 
 #### 4. Is the correlation between Calories and Total Fat statistically significant? Why? (7 points)
@@ -43,12 +51,16 @@ lm(Calories~Protein+TotalFat+Carbohydrate+Sodium+Cholesterol, data=USDA_Clean)
 
 #### 7. Which independent variable is the least significant? Why? (7 points)
 ```{r}
+calory.lm <- lm(Calories~Protein+TotalFat+Carbohydrate+Sodium+Cholesterol,data=USDA_Clean)
+anova(calory.lm)
 summary(aov(Calories~Protein+TotalFat+Carbohydrate+Sodium+Cholesterol, data=USDA_Clean))
 # Sodium is the least significant because its p value is 0.1378 bigger than 0.1
 ```
 
 #### 8. A new product is just produced with the following data:                                                            Protein=0.1, TotalFat=35, Carbohydrate=405, Sodium=440, Cholesterol=70, Sugar=NA, Calcium=35, Iron=NA, Potassium=35, VitaminC=10,	VitaminE=NA, VitaminD=NA.                                                                                                         Based on the model you created, what is the predicted value for Calories? (7 points)
 ```{r}
+pred.calory = predict(calory.lm, data.frame(Protein=0.1,TotalFat=35,Carbohydrate=405,Sodium=440,Cholesterol=70))
+pred.calory
 Calories <- 3.9882753 + 3.9891994*0.1 + 8.7716980*35 + 3.7432001*405 + 0.0003383*440 + 0.0110138*70
 Calories
 ```
@@ -56,7 +68,9 @@ Calories
 #### 9. If the Sodium amount increases from 440 to 44440 (10000% increase), how much change will occur on Calories in percent? Explain why? (7 points)
 ```{r}
 (44440-440)/440*100
-# calories has also 10000%, because calories and sodium have linear relationship
+pred.calory10000 = predict(calory.lm, data.frame(Protein=0.1,TotalFat=35,Carbohydrate=405,Sodium=44440,Cholesterol=70))
+(pred.calory10000 - pred.calory)/pred.calory
+# calories changes by 0.814%, sodium has little smallest coefficient 0.0003383, it has little effect on calory
 ```
 
 
@@ -93,7 +107,7 @@ test
 
 #### E) Will you accept or reject your Null Hypothesis? ($\alpha = 0.05$) Do illustrations improve how the students retell an article or not? Why? (5 points)
 ```{r}
-# Since the p-value 0.8123 is greater than 0.05, we can say that the medians of two articles are not different. It has insufficient evidence to indicate any improvement about how the students retell an article
+# Don't reject hypotheses Since the p-value 0.8123 is greater than 0.05, we can say that the medians of two articles are not different. It has no sufficient evidence to indicate any improvement about how the students retell an article
 ```
 
 #### 11. Two companies selling toothpastes with the lable of 100 grams per tube on the package. We randomly bought eight toothpastes from each company A and B from random stores. Afterwards, we scaled them using high precision scale. Our measurements are recorded as follows:
@@ -109,7 +123,7 @@ test
 
 #### B) Based on your previous answer, which nonparametric test statistic would you use to compare the medians of Company A and Company B. (5 points) 
 ```{r}
-# Friedman Fr-test 
+# Wilcoxon rank sum exact test 
 ```
 
 #### C) Use a nonparametric test statistic to check if there is a statistically significant difference between the medians of Company A and Company B. (5 points) 
@@ -117,15 +131,13 @@ test
 companyA <- c(97.1, 101.3, 107.8, 101.9, 97.4, 104.5, 99.5, 95.1)
 companyB <- c(103.5, 105.3, 106.5, 107.9, 102.1, 105.6, 109.8, 97.2)
 companies <- c(companyA, companyB)
-treatments <- rep(c('A','B'), each=8)
-blocks <- as.factor(rep(c(1:8), 2))
-friedman.test(companies~treatments|blocks)
+wilcox.test(companyA, companyB, alternative="two.sided")
 ```
 
 #### D) Will you accept or reject your Null Hypothesis? ($\alpha = 0.05$) Are packaging process similar or different based on weight measurements? Why? (5 points)
 ```{r}
 # We reject the Null hypothesis
-# Since the p-value 0.03389 is less than 0.05, we conclude that there is a statistically significant difference between the medians of Company A and Company B. Packaging process is different based on weight measurements 
+# Since the p-value 0.04988 is less than 0.05, we conclude that there is a statistically significant difference between the medians of Company A and Company B. Packaging process is different based on weight measurements 
 ```
 
 This is the end of Assignment 2

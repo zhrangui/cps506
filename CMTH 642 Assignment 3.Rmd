@@ -1,0 +1,101 @@
+---
+title: 'CMTH 642 Data Analytics: Advanced Methods'
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+<center> <h1> Assignment 3 (10%) </h1> </center>
+<center>  <h3> Rui Zhang </h2> </center>
+<center> <h3> 500736315 </h2> </center>
+---
+
+
+#### 1. Import to R the following fiel: http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv (The dataset is related to white Portuguese "Vinho Verde" wine. For more info: https://archive.ics.uci.edu/ml/datasets/Wine+Quality) (3 points)
+```{r}
+# INSERT YOUR CODE HERE.
+wine <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv", sep=";")
+```
+
+#### 2. Check the datatypes of the attributes. (3 points)
+```{r}
+# INSERT YOUR CODE HERE.
+str(wine)
+```
+  
+#### 3. Are there any missing values in the dataset? (4 points)
+```{r}
+# INSERT YOUR CODE HERE.
+sum(is.na(wine))
+# no missing data
+```
+
+#### 4. What is the correlation between the attributes other than Quality? (10 points)
+```{r}
+# INSERT YOUR CODE HERE.
+wineNoEquality <- wine[, -grep("quality", names(wine))]
+cor(wineNoEquality)
+
+```
+
+#### 5. Graph the frequency distribution of wine quality by using Quality. (10 points)
+```{r}
+# INSERT YOUR CODE 
+hist(wine$quality, ylim=c(0, 2500))
+```
+
+#### 6.	Reduce the levels of rating for quality to three levels as high, medium and low. Assign the levels of 3 and 4 to level 0; 5 and 6 to level 1; and 7,8 and 9 to level 2. (10 points)
+```{r}
+# INSERT YOUR CODE HERE.
+wine.quality <- sapply(wine$quality, function(x) {
+  if (x < 5) {
+    return(0)
+  } else if (x < 7) {
+    return(1)
+  } else {
+    return(2)
+  }
+})
+wine.quality <- as.factor(wine.quality)
+```
+
+#### 7. Normalize the data set by using the following function: (12 points)
+```{r}
+normalize <- function(x){
+  return ((x - min(x)) / (max(x) - min(x)))
+}
+```
+
+```{r}
+# INSERT YOUR CODE HERE.
+sapply(wineNoEquality, normalize)
+```
+
+#### 8. Divide the dataset to training and test sets. (12 points)
+```{r}
+# INSERT YOUR CODE HERE.
+train_index <- sample(1:nrow(wine), 0.7 * nrow(wine))
+train.set <- wine[train_index,]
+test.set <- wine[-train_index,]
+```
+
+#### 9. Use the KNN algorithm to predict the quality of wine using its attributes. (12 points)
+```{r}
+# INSERT YOUR CODE HERE.
+glm_model <- glm(quality~.,train.set, family = "binomial")
+summary(glm_model)
+```
+
+#### 10. Display the confusion matrix to evaluate the model performance. (12 points)
+```{r}
+# INSERT YOUR CODE HERE.
+```
+
+#### 11. Evaluate the model performance by computing Accuracy, Sensitivity and Specificity. (12 points)
+```{r}
+# INSERT YOUR CODE HERE.
+```
+
+This is the end of Assignment 3
+
+Ceni Babaoglu, PhD

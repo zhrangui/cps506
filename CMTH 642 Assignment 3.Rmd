@@ -47,7 +47,7 @@ hist(wine$quality, ylim=c(0, 2500))
 #### 6.	Reduce the levels of rating for quality to three levels as high, medium and low. Assign the levels of 3 and 4 to level 0; 5 and 6 to level 1; and 7,8 and 9 to level 2. (10 points)
 ```{r}
 # INSERT YOUR CODE HERE.
-wine.quality <- sapply(wine$quality, function(x) {
+wine$quality <- sapply(wine$quality, function(x) {
   if (x < 5) {
     return(0)
   } else if (x < 7) {
@@ -56,7 +56,7 @@ wine.quality <- sapply(wine$quality, function(x) {
     return(2)
   }
 })
-wine.quality <- as.factor(wine.quality)
+wine$quality <- as.factor(wine.quality)
 ```
 
 #### 7. Normalize the data set by using the following function: (12 points)
@@ -68,7 +68,7 @@ normalize <- function(x){
 
 ```{r}
 # INSERT YOUR CODE HERE.
-sapply(wineNoEquality, normalize)
+wine[1:10] <- sapply(wine[1:10], normalize)
 ```
 
 #### 8. Divide the dataset to training and test sets. (12 points)
@@ -82,18 +82,27 @@ test.set <- wine[-train_index,]
 #### 9. Use the KNN algorithm to predict the quality of wine using its attributes. (12 points)
 ```{r}
 # INSERT YOUR CODE HERE.
-glm_model <- glm(quality~.,train.set, family = "binomial")
-summary(glm_model)
+library("class")
+library("gmodels")
+train.set_new <- train.set[,-grep("quality", names(wine))]
+test.set_new <- test.set[, -grep("quality", names(wine))]
+wine_train_labels <- train.set$quality
+wine_test_labels <- test.set$quality
+wine_knn_prediction <- knn(train = train.set_new, test = test.set_new, cl= wine_train_labels, k = 3)
+summary(wine_knn_prediction)
 ```
 
 #### 10. Display the confusion matrix to evaluate the model performance. (12 points)
 ```{r}
 # INSERT YOUR CODE HERE.
+ConfusionMatrix <- table(actual =wine_test_labels, predicted = wine_knn_prediction)
+ConfusionMatrix
 ```
 
 #### 11. Evaluate the model performance by computing Accuracy, Sensitivity and Specificity. (12 points)
 ```{r}
 # INSERT YOUR CODE HERE.
+sum(diag(ConfusionMatrix))/nrow(test.set)
 ```
 
 This is the end of Assignment 3

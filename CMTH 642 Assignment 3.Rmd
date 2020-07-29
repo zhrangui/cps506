@@ -112,10 +112,12 @@ CrossTable(x=wine_test_labels, y=wine_knn_prediction, prop.chisq=FALSE)
 #### 11. Evaluate the model performance by computing Accuracy, Sensitivity and Specificity. (12 points)
 ```{r}
 # INSERT YOUR CODE HERE.
+ConfusionMatrix
 sum(diag(ConfusionMatrix))/nrow(test.set)
 #Sensitivity = TP/(TP+FN)
-# ConfusionMatrix[1,1]/()
+(ConfusionMatrix[2,2]+ConfusionMatrix[2,3]+ConfusionMatrix[3,2]+ConfusionMatrix[3,3])/(ConfusionMatrix[2,1]+ConfusionMatrix[2,2]+ConfusionMatrix[2,3]+ConfusionMatrix[3,1]+ConfusionMatrix[3,2]+ConfusionMatrix[3,3])
 #Specificity = TN / (FP + TN)
+ConfusionMatrix[1,1]/(ConfusionMatrix[1,1]+ConfusionMatrix[1,2]+ConfusionMatrix[1,3])
 ```
 
 This is the end of Assignment 3

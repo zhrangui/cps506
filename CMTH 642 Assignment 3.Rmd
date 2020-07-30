@@ -14,7 +14,8 @@ output:
 #### 1. Import to R the following fiel: http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv (The dataset is related to white Portuguese "Vinho Verde" wine. For more info: https://archive.ics.uci.edu/ml/datasets/Wine+Quality) (3 points)
 ```{r}
 # INSERT YOUR CODE HERE.
-wine <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv", sep=";")
+#wine <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv", sep=";")
+wine <- read.csv("winequality-white.csv")
 ```
 
 #### 2. Check the datatypes of the attributes. (3 points)

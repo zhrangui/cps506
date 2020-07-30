@@ -115,9 +115,19 @@ CrossTable(x=wine_test_labels, y=wine_knn_prediction, prop.chisq=FALSE)
 ConfusionMatrix
 sum(diag(ConfusionMatrix))/nrow(test.set)
 #Sensitivity = TP/(TP+FN)
-(ConfusionMatrix[2,2]+ConfusionMatrix[2,3]+ConfusionMatrix[3,2]+ConfusionMatrix[3,3])/(ConfusionMatrix[2,1]+ConfusionMatrix[2,2]+ConfusionMatrix[2,3]+ConfusionMatrix[3,1]+ConfusionMatrix[3,2]+ConfusionMatrix[3,3])
+#high
+ConfusionMatrix[1,1]/sum(ConfusionMatrix[1,])
+#low
+ConfusionMatrix[2,1]/sum(ConfusionMatrix[2,])
+#medium
+ConfusionMatrix[3,1]/sum(ConfusionMatrix[3,])
 #Specificity = TN / (FP + TN)
-ConfusionMatrix[1,1]/(ConfusionMatrix[1,1]+ConfusionMatrix[1,2]+ConfusionMatrix[1,3])
+#high
+sum(ConfusionMatrix[2:3,2:3])/sum(ConfusionMatrix[2:3,])
+#low
+sum(ConfusionMatrix[c(1,3),c(1,3)])/sum(ConfusionMatrix[c(1,3),])
+#medium
+sum(ConfusionMatrix[1:2,1:2])/sum(ConfusionMatrix[1:2,])
 ```
 
 This is the end of Assignment 3
